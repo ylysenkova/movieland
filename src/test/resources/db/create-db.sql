@@ -21,6 +21,7 @@ CREATE TABLE movie (
   description varchar(5000) NOT NULL,
   rating double NOT NULL,
   price double NOT NULL,
+  picture_path varchar(50000) DEFAULT NULL,
   PRIMARY KEY (movie_id)
 );
 drop TABLE IF EXISTS movie_country;
@@ -33,14 +34,6 @@ CREATE TABLE movie_genre (
   movie_id integer DEFAULT NULL,
   genre_id integer DEFAULT NULL
 );
-
-
-drop TABLE IF EXISTS movie_poster;
-CREATE TABLE movie_poster (
-  movie_id integer DEFAULT NULL,
-  picture_id integer DEFAULT NULL
-);
-
 
 drop TABLE IF EXISTS movie_reviews;
 CREATE TABLE movie_reviews (
