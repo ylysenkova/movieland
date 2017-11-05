@@ -17,7 +17,7 @@ public class MovieGenreMapperTest {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
         when(resultSet.getInt("movie_id")).thenReturn(1);
-        when(resultSet.getInt("genre_id")).thenReturn(3);
+        when(resultSet.getInt("id")).thenReturn(3);
         when(resultSet.getString("name")).thenReturn("Drama");
 
         MovieGenreMapper movieGenreMapper = new MovieGenreMapper();

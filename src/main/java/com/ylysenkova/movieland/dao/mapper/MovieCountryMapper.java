@@ -14,7 +14,7 @@ public class MovieCountryMapper implements RowMapper {
         Country country = new Country();
         Pair<Integer, Country> countryByMovieId;
 
-        country.setId(resultSet.getInt("country_id"));
+        country.setId(resultSet.getInt("id"));
         int movieId = resultSet.getInt("movie_id");
         country.setName(resultSet.getString("name"));
         countryByMovieId = new Pair<>(movieId, country);

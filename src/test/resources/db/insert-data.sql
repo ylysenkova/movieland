@@ -1,4 +1,4 @@
-INSERT INTO country (country_id, name) VALUES
+INSERT INTO country (id, name) VALUES
   (1, 'USA'),
   (2, 'France'),
   (3, 'Great Britain'),
@@ -6,7 +6,7 @@ INSERT INTO country (country_id, name) VALUES
   (5, 'Germany'),
   (6, 'Japan'),
   (7, 'Spain');
-INSERT INTO genre (genre_id, name) VALUES
+INSERT INTO genre (id, name) VALUES
   (1, 'drama'),
   (2, 'crime'),
   (3, 'fantasy'),
@@ -23,7 +23,7 @@ INSERT INTO genre (genre_id, name) VALUES
   (14, 'family'),
   (15, 'western');
 
-INSERT INTO movie (movie_id, name_Russian, name_Native, year_Of_Release, description, rating, price, picture_path) VALUES
+INSERT INTO movie (id, name_Russian, name_Native, year_Of_Release, description, rating, price, picture_path) VALUES
   (1, 'Shawshank Redemption', 'The Shawshank Redemption', 1994, 'Successful banker Andy Dufrain is accused of murdering his own wife and her lover.Having been imprisoned under the name of Shawshank, he faces the cruelty and lawlessness that reigns on both sides of the lattice Everyone who enters these walls becomes their slave for the rest of his life, but Andy, armed with a living mind and good heart, refuses to put up with the verdict of fate and begins to work out an incredibly daring plan for his release. ', 8.9, 123.45, 'https://images-na.ssl-images-amazon.com/images/M/MV5BODU4MjU4NjIwNl5BMl5BanBnXkFtZTgwMDU2MjEyMDE@._V1._SY209_CR0,0,140,209_.jpg'),
   (2, 'The Green Mile', 'The Green Mile', 1999, 'Accused of a terrible crime, John Coffey is on the death row of the Cold Mountain prison. "The newcomer was strikingly tall and frighteningly calm, which, incidentally, influenced the attitude of the unit''s chief, Paul Edgcombe, accustomed to carrying out the sentence. ', 8.9, 134.67, 'https://images-na.ssl-images-amazon.com/images/M/MV5BMTUxMzQyNjA5MF5BMl5BanBnXkFtZTYwOTU2NTY3._V1._SY209_CR0,0,140,209_.jpg'),
 (3, 'Forrest Gump', 'Forrest Gump', 1994, 'On behalf of the main character Forrest Gump, a feeble-minded innocent person with a noble and open heart, the story of his extraordinary life is told. In a fantastic way he turns into a famous football player, a war hero, he becomes a billionaire, but he remains just as simple-minded, stupid and kind.Forrest expects constant success in everything, and he loves the girl he was friends with in childhood, but reciprocity comes too late. ', 8.6, 200.6, 'https://images-na.ssl-images-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1._SY209_CR2,0,140,209_.jpg'),
@@ -199,7 +199,7 @@ INSERT INTO movie_reviews (movie_id, review_id) VALUES
 	(13, 32);
 
 
-INSERT INTO reviews (review_id, text, user_id) VALUES
+INSERT INTO reviews (id, text, user_id) VALUES
 (1, 'An ingenious movie! You look and think "It does not happen like this!", But later you realize that it''s the only way. You start to rethink the meaning of the phrase that you constantly use in your life, "Hope dies last." do not hope, then everything in your life goes out, there is no sense. "The film is filled with an infinite number of correct aphorisms, I''m sure that I will review it hundreds of times. ', 2),
 (2, 'Cinema is, of course, "with a quality mark." As for the first place in the rating, I think it was the place to put "ten" from the majority of viewers, coupled with the fanatical enthusiastic response of film critics. and, of course, deserves to be quite high in the world cinema. ', 3),
 (3, 'I have ceased to be surprised that this film occupies only the first places in all sorts of movie ratings.I especially love when, in the adaptation of a literary work, due to the specificity of the cinema, irony disappears and there appears a certain superrealism obliged to keep the viewer at the screen every single second . ', 1),
@@ -233,7 +233,7 @@ INSERT INTO reviews (review_id, text, user_id) VALUES
 (31, 'In the end, we have an excellent representative of his genre, which passed the test of time and still looks great, despite the classic plot', 9),
 (32, 'I will only say one thing - how I regret that I did not see it before!', 10);
 
-INSERT INTO users (user_id, user_name, user_email, password) VALUES
+INSERT INTO users (id, user_name, user_email, password) VALUES
 (1, 'Ronald Reynolds', 'ronald.reynolds66@example.com', 'paco'),
 (2, 'Darlene Edwards', 'darlene.edwards15@example.com', 'bricks'),
 (3, 'Gabriel Jackson', 'gabriel.jackson91@example.com', 'hjkl'),

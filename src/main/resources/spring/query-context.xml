@@ -5,22 +5,22 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="getAllMovies" class="java.lang.String">
-        <constructor-arg value="select movie_id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path from movie;"/>
+        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path from movie;"/>
     </bean>
 
     <bean id="getThreeMovies" class="java.lang.String">
-        <constructor-arg value="select movie_id, name_Russian, name_Native, year_Of_Release, description, rating, price, picture_Path
-                                from movie where movie_id in (:movieIds);"/>
+        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, description, rating, price, picture_Path
+                                from movie where id in (:movieIds);"/>
     </bean>
 
     <bean id="getCountryByThreeMovieId" class="java.lang.String">
-        <constructor-arg value= "select mc.movie_id, c.country_id, c.name from movie_country mc
-                                 join countries c on mc.country_id=c.country_id
+        <constructor-arg value= "select mc.movie_id, c.id, c.name from movie_country mc
+                                 join country c on mc.country_id=c.id
                                  where mc.movie_id in (:movieIds);"/>
     </bean>
     <bean id ="getGenreByThreeMovieId" class="java.lang.String">
-        <constructor-arg value="select mg.movie_id, g.genre_id, g.name from movie_genre mg
-                               join genres g on mg.genre_id=g.genre_id
+        <constructor-arg value="select mg.movie_id, g.id, g.name from movie_genre mg
+                               join genre g on mg.genre_id=g.id
                                where mg.movie_id in (:movieIds);"/>
     </bean>
     <bean id ="getMovieCount" class="java.lang.String">

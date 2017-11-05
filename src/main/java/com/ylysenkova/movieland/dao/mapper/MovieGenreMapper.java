@@ -15,7 +15,7 @@ public class MovieGenreMapper implements RowMapper {
             Genre genre = new Genre();
             Pair<Integer, Genre> genreByMovieId;
 
-            genre.setId(resultSet.getInt("genre_id"));
+            genre.setId(resultSet.getInt("id"));
             int movieId = resultSet.getInt("movie_id");
             genre.setName(resultSet.getString("name"));
             genreByMovieId  = new Pair<>(movieId, genre);

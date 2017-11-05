@@ -8,13 +8,17 @@ import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import javafx.util.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+
 import java.util.*;
+
 
 @Repository
 public class JdbcMovieDaoImpl implements MovieDao {
@@ -22,6 +26,7 @@ public class JdbcMovieDaoImpl implements MovieDao {
 private final MovieMapper movieMapper = new MovieMapper();
 private final MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
 private final MovieGenreMapper movieGenreMapper = new MovieGenreMapper();
+private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -40,12 +45,15 @@ private final MovieGenreMapper movieGenreMapper = new MovieGenreMapper();
 
     @Override
     public List<Movie> getAllMovies() {
-        return jdbcTemplate.query(getAllMovies,  movieMapper);
+        logger.debug("Method getAllMovies has started");
+        List <Movie> moviesList = jdbcTemplate.query(getAllMovies,  movieMapper);
+        logger.debug("Method getAllMovies returned = {}", moviesList);
+        return moviesList;
     }
 
     @Override
     public Set<Integer> getThreeMovieIds() {
-
+    logger.debug("Method getThreeMovieIds has started");
     Set<Integer> movieIds = new HashSet<>();
     Random random = new Random();
 
@@ -61,11 +69,13 @@ private final MovieGenreMapper movieGenreMapper = new MovieGenreMapper();
     while (movieIds.size()<serchCount) {
          movieIds.add(random.nextInt(movieCount)+1);
     }
+    logger.debug("Method getThreeMovieIds returned = {}", movieIds);
 
     return movieIds;
     }
 
     public List<Movie> getThreeMovies(Set<Integer> movieIds){
+        logger.debug("Method getThreeMovies has started");
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieIds", movieIds);
@@ -94,7 +104,7 @@ private final MovieGenreMapper movieGenreMapper = new MovieGenreMapper();
             movie.setGenres(genreList);
         }
 
-
+logger.debug("Method getThreeMovies returned = {}", movieList);
 
     return movieList;
     }

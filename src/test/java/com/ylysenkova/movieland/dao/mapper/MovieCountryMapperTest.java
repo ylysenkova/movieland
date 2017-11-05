@@ -18,7 +18,7 @@ public class MovieCountryMapperTest {
         ResultSet resultSet = Mockito.mock(ResultSet.class);
 
         when(resultSet.getInt("movie_id")).thenReturn(1);
-        when(resultSet.getInt("country_id")).thenReturn(2);
+        when(resultSet.getInt("id")).thenReturn(2);
         when(resultSet.getString("name")).thenReturn("USA");
 
         MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
