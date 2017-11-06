@@ -26,4 +26,7 @@
     <bean id ="getMovieCount" class="java.lang.String">
         <constructor-arg value="select count(*) from movie;"/>
     </bean>
+    <bean id = "getAllGenres" class="java.lang.String">
+        <constructor-arg value="select id, name from genre;"/>
+    </bean>
 </beans>
