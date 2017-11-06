@@ -30,4 +30,10 @@ private JdbcMovieDaoImpl jdbcMovieDao;
 
     }
 
+    @Test
+    public void getMovieCountByGenreId() throws Exception {
+        List<Movie> movieByGenreId = jdbcMovieDao.getMovieByGenreId(2);
+        assertEquals(7, movieByGenreId.size());
+    }
+
 }

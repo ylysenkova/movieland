@@ -53,10 +53,13 @@ public class MovieControllerTest {
         movie.setRating(8.89);
         movie.setPrice(123.45);
         movie.setPicturePath("url");
+        List<Movie> movieList = new ArrayList<>();
+        movieList.add(movie);
 
-        when(movieService.getAllMovies()).thenReturn(Arrays.asList(movie));
+        when(movieService.getAllMovies()).thenReturn(movieList);
 
         mockMvc.perform(get("/v1/movie"))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$[0].id", is(movie.getId())))
@@ -91,7 +94,6 @@ public class MovieControllerTest {
         when(movieService.getThreeMovies()).thenReturn(Arrays.asList(movie));
 
         mockMvc.perform(get("/v1/movie/random"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$[0].id", is(movie.getId())))
@@ -106,6 +108,30 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[0].genres[0].name", is(movie.getGenres().get(0).getName())))
                 .andExpect(jsonPath("$[0].genres[1].name", is(movie.getGenres().get(1).getName())));
     }
+
+    @Test
+    public void getMovieByGenreId () throws Exception {
+        Movie movie = new Movie();
+        movie.setId(9);
+        movie.setNameRussian("ggg");
+        movie.setNameNative("roro");
+        movie.setYearOfRelease(2000);
+        movie.setRating(2.2);
+        movie.setPrice(7.99);
+
+        when(movieService.getMovieByGenreId(3)).thenReturn(Arrays.asList(movie));
+
+        mockMvc.perform(get("/v1/movie/3"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$[0].id", is(movie.getId())))
+                .andExpect(jsonPath("$[0].nameRussian", is(movie.getNameRussian())))
+                .andExpect(jsonPath("$[0].nameNative", is(movie.getNameNative())))
+                .andExpect(jsonPath("$[0].yearOfRelease", is(movie.getYearOfRelease())))
+                .andExpect(jsonPath("$[0].rating", is(movie.getRating())))
+                .andExpect(jsonPath("$[0].price", is(movie.getPrice())));
+    }
+
 }
 
 

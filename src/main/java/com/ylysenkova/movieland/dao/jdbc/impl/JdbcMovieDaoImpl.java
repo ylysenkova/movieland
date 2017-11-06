@@ -42,6 +42,8 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
     private String getCountryByThreeMovieId;
     @Autowired
     private String getGenreByThreeMovieId;
+    @Autowired
+    private String getMovieByGenreId;
 
     @Override
     public List<Movie> getAllMovies() {
@@ -107,5 +109,16 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
 logger.debug("Method getThreeMovies returned = {}", movieList);
 
     return movieList;
+    }
+
+    @Override
+    public List<Movie> getMovieByGenreId(int genreId) {
+        logger.debug("Method getMovieByGenreId is started.");
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("genreId", genreId);
+
+        List<Movie> movies = namedParameterJdbcTemplate.query(getMovieByGenreId, sqlParameterSource, movieMapper);
+        return movies;
     }
 }

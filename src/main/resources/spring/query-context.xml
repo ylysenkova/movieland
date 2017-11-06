@@ -23,6 +23,10 @@
                                join genre g on mg.genre_id=g.id
                                where mg.movie_id in (:movieIds);"/>
     </bean>
+    <bean id = "getMovieByGenreId" class="java.lang.String">
+        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path
+                                from movie m join movie_genre mg on m.id=mg.movie_id where mg.genre_id =:genreId;"/>
+    </bean>
     <bean id ="getMovieCount" class="java.lang.String">
         <constructor-arg value="select count(*) from movie;"/>
     </bean>

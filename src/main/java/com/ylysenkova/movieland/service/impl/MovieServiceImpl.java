@@ -1,6 +1,7 @@
 package com.ylysenkova.movieland.service.impl;
 
 import com.ylysenkova.movieland.dao.jdbc.impl.JdbcMovieDaoImpl;
+import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.service.serviceInterface.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,10 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getThreeMovies() {
         return jdbcMovieDaoImpl.getThreeMovies(jdbcMovieDaoImpl.getThreeMovieIds());
     }
+
+    public List<Movie> getMovieByGenreId(int genreId) {
+        return jdbcMovieDaoImpl.getMovieByGenreId(genreId);
+    }
+
 
 }

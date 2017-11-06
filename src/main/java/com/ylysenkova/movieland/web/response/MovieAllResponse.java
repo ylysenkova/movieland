@@ -4,7 +4,7 @@ import com.ylysenkova.movieland.model.Movie;
 
 public class MovieAllResponse {
 
-    private int Id;
+    private int id;
     private String nameRussian;
     private String nameNative;
     private int yearOfRelease;
@@ -15,22 +15,22 @@ public class MovieAllResponse {
     public MovieAllResponse() {
     }
 
-    public void movieResponse(Movie movie) {
-        Id = movie.getId();
-        nameRussian = movie.getNameRussian();
-        nameNative = movie.getNameNative();
-        yearOfRelease = movie.getYearOfRelease();
-        rating = movie.getRating();
-        price = movie.getPrice();
-        picturePath = movie.getPicturePath();
+    public MovieAllResponse(Movie movie) {
+        this.id = movie.getId();
+        this.nameRussian = movie.getNameRussian();
+        this.nameNative = movie.getNameNative();
+        this.yearOfRelease = movie.getYearOfRelease();
+        this.rating = movie.getRating();
+        this.price = movie.getPrice();
+        this.picturePath = movie.getPicturePath();
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        this.Id = id;
+        this.id = id;
     }
 
     public String getNameRussian() {
@@ -84,7 +84,7 @@ public class MovieAllResponse {
     @Override
     public String toString() {
         return "MovieAllResponse{" +
-                "Id=" + Id +
+                "Id=" + id +
                 ", nameRussian='" + nameRussian + '\'' +
                 ", nameNative='" + nameNative + '\'' +
                 ", yearOfRelease=" + yearOfRelease +

@@ -23,16 +23,16 @@ public class MovieThreeResponse {
     }
 
     public MovieThreeResponse(Movie movie) {
-        id = id;
-        this.nameRussian = nameRussian;
-        this.nameNative = nameNative;
-        this.yearOfRelease = yearOfRelease;
-        this.description = description;
-        this.rating = rating;
-        this.price = price;
-        this.picturePath = picturePath;
-        this.countries = countries;
-        this.genres = genres;
+        id = movie.getId();
+        this.nameRussian = movie.getNameRussian();
+        this.nameNative = movie.getNameNative();
+        this.yearOfRelease = movie.getYearOfRelease();
+        this.description = movie.getDescription();
+        this.rating = movie.getRating();
+        this.price = movie.getPrice();
+        this.picturePath = movie.getPicturePath();
+        this.countries = movie.getCountries();
+        this.genres = movie.getGenres();
     }
 
     public int getId() {

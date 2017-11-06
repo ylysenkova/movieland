@@ -12,4 +12,6 @@ public interface MovieDao {
     public Set<Integer> getThreeMovieIds();
 
     public List<Movie> getThreeMovies(Set<Integer> movieIds);
+
+    public List<Movie> getMovieByGenreId(int genreId);
 }
