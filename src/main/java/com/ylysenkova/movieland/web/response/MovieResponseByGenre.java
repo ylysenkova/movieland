@@ -1,0 +1,96 @@
+package com.ylysenkova.movieland.web.response;
+
+import com.ylysenkova.movieland.model.Movie;
+
+public class MovieResponseByGenre {
+
+    private int id;
+    private String nameRussian;
+    private String nameNative;
+    private int yearOfRelease;
+    private double rating;
+    private double price;
+    private String picturePath;
+
+    public MovieResponseByGenre() {
+    }
+
+    public MovieResponseByGenre(Movie movie) {
+        this.id = movie.getId();
+        this.nameRussian = movie.getNameRussian();
+        this.nameNative = movie.getNameNative();
+        this.yearOfRelease = movie.getYearOfRelease();
+        this.rating = movie.getRating();
+        this.price = movie.getPrice();
+        this.picturePath = movie.getPicturePath();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNameRussian() {
+        return nameRussian;
+    }
+
+    public void setNameRussian(String nameRussian) {
+        this.nameRussian = nameRussian;
+    }
+
+    public String getNameNative() {
+        return nameNative;
+    }
+
+    public void setNameNative(String nameNative) {
+        this.nameNative = nameNative;
+    }
+
+    public int getYearOfRelease() {
+        return yearOfRelease;
+    }
+
+    public void setYearOfRelease(int yearOfRelease) {
+        this.yearOfRelease = yearOfRelease;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieResponseByGenre{" +
+                "id=" + id +
+                ", nameRussian='" + nameRussian + '\'' +
+                ", nameNative='" + nameNative + '\'' +
+                ", yearOfRelease=" + yearOfRelease +
+                ", rating=" + rating +
+                ", price=" + price +
+                ", picturePath='" + picturePath + '\'' +
+                '}';
+    }
+}
