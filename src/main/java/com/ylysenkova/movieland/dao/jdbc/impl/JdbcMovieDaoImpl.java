@@ -44,6 +44,12 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
     private String getGenreByThreeMovieId;
     @Autowired
     private String getMovieByGenreId;
+    @Autowired
+    private String getSortingByRating;
+    @Autowired
+    private String getSortingByPriceDesc;
+    @Autowired
+    private String getSortingByPriceAcs;
 
     @Override
     public List<Movie> getAllMovies() {
@@ -120,5 +126,30 @@ logger.debug("Method getThreeMovies returned = {}", movieList);
 
         List<Movie> movies = namedParameterJdbcTemplate.query(getMovieByGenreId, sqlParameterSource, movieMapper);
         return movies;
+    }
+
+    @Override
+    public List<Movie> getSortingByRating(String sortByRating) {
+        logger.debug("Sorting movies by rating is started.");
+
+        List<Movie> movieList = null;
+        if(sortByRating.equals("desc")) {
+            movieList = jdbcTemplate.query(getSortingByRating, movieMapper);
+        }
+        return movieList;
+    }
+
+    @Override
+    public List<Movie> getSortingByPrice(String sortByPrice) {
+        logger.debug("Sorting movies by price is started.");
+
+        List<Movie> movieList = null;
+        if(sortByPrice.equals("desc")) {
+            movieList = jdbcTemplate.query(getSortingByPriceDesc, movieMapper);
+        }
+        else if (sortByPrice.equals("acs")) {
+            movieList = jdbcTemplate.query(getSortingByPriceAcs, movieMapper);
+        }
+        return movieList;
     }
 }

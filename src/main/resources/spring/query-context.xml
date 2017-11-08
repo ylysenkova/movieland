@@ -18,19 +18,39 @@
                                  join country c on mc.country_id=c.id
                                  where mc.movie_id in (:movieIds);"/>
     </bean>
+
     <bean id ="getGenreByThreeMovieId" class="java.lang.String">
         <constructor-arg value="select mg.movie_id, g.id, g.name from movie_genre mg
                                join genre g on mg.genre_id=g.id
                                where mg.movie_id in (:movieIds);"/>
     </bean>
+
     <bean id = "getMovieByGenreId" class="java.lang.String">
         <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path
                                 from movie m join movie_genre mg on m.id=mg.movie_id where mg.genre_id =:genreId;"/>
     </bean>
+
+    <bean id = "getSortingByRating" class="java.lang.String">
+        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path
+                                from movie order by rating desc;"/>
+    </bean>
+
+    <bean id = "getSortingByPriceDesc" class="java.lang.String">
+        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path
+                                from movie order by price desc;"/>
+    </bean>
+
+    <bean id="getSortingByPriceAcs" class="java.lang.String">
+        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path
+                                from movie order by price acs;"/>
+    </bean>
+
     <bean id ="getMovieCount" class="java.lang.String">
         <constructor-arg value="select count(*) from movie;"/>
     </bean>
+
     <bean id = "getAllGenres" class="java.lang.String">
         <constructor-arg value="select id, name from genre;"/>
     </bean>
+
 </beans>

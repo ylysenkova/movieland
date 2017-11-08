@@ -13,7 +13,7 @@ import java.util.List;
 public class MovieServiceImpl implements MovieService {
 
     @Autowired
-    JdbcMovieDaoImpl jdbcMovieDaoImpl;
+    private JdbcMovieDaoImpl jdbcMovieDaoImpl;
 
     @Override
     public List<Movie> getAllMovies () {
@@ -27,6 +27,14 @@ public class MovieServiceImpl implements MovieService {
 
     public List<Movie> getMovieByGenreId(int genreId) {
         return jdbcMovieDaoImpl.getMovieByGenreId(genreId);
+    }
+
+    public List<Movie> getSortingByRating(String sortByRating) {
+        return jdbcMovieDaoImpl.getSortingByRating(sortByRating);
+    }
+
+    public List<Movie> getSortingByPrice(String sortByPrice) {
+        return jdbcMovieDaoImpl.getSortingByPrice(sortByPrice);
     }
 
 

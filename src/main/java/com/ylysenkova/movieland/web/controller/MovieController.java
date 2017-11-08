@@ -10,10 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +34,7 @@ public class MovieController {
         for (Movie movie : movies) {
             movieAllResponses.add(new MovieAllResponse(movie));
         }
+
         logger.debug("Movie {} is received. It took {} ms", movies, System.currentTimeMillis() - startTime);
         return movieAllResponses;
     }
@@ -54,8 +52,8 @@ public class MovieController {
         return movieRandomResponses;
     }
 
-    @RequestMapping(value = "movie/{genreId}", method = RequestMethod.GET)
-    public @ResponseBody List<MovieResponseByGenre> getMovieByGenreId (@PathVariable int genreId) {
+    @RequestMapping(value = "/movie/{genreId}", method = RequestMethod.GET)
+    public @ResponseBody List<MovieResponseByGenre> getMovieByGenreId (@PathVariable(value = "genreId") int genreId) {
         logger.debug("Sending request...");
         long startTime = System.currentTimeMillis();
         List<Movie> movies = movieService.getMovieByGenreId(genreId);
@@ -65,6 +63,21 @@ public class MovieController {
         }
         logger.debug("Movie {} is received.It took {} ms ", movies, System.currentTimeMillis()-startTime);
         return movieResponseByGenres;
+    }
+
+    @RequestMapping(value = "/movie",params = "rating", method = RequestMethod.GET)
+    public @ResponseBody List<MovieAllResponse> getSortingByRating (@RequestParam(value = "rating", required = true) String sortRating) {
+        logger.debug("Sending request...");
+        long startTime = System.currentTimeMillis();
+
+        List<Movie> movies = movieService.getSortingByRating(sortRating);
+        List<MovieAllResponse> movieAllResponses = new ArrayList<>();
+        for (Movie movie : movies) {
+            movieAllResponses.add(new MovieAllResponse(movie));
+        }
+        logger.debug("Movie {} is received.It took {} ms", System.currentTimeMillis()-startTime);
+
+        return movieAllResponses;
     }
 
 }

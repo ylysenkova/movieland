@@ -12,4 +12,8 @@ public interface MovieService {
     public List<Movie> getThreeMovies();
 
     public List<Movie> getMovieByGenreId(int genreId);
+
+    public List<Movie> getSortingByRating(String sortRating);
+
+    public List<Movie> getSortingByPrice(String sortPrice);
 }
