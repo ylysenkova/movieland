@@ -1,6 +1,6 @@
-package com.ylysenkova.movieland.dao.jdbc.impl;
+package com.ylysenkova.movieland.dao.jdbc;
 
-import com.ylysenkova.movieland.dao.DAOInterface.GenreDao;
+import com.ylysenkova.movieland.dao.GenreDao;
 import com.ylysenkova.movieland.dao.mapper.GenreMapper;
 import com.ylysenkova.movieland.model.Genre;
 import org.slf4j.Logger;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class JdbcGenreDaoImpl implements GenreDao{
+public class JdbcGenreDao implements GenreDao {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final GenreMapper genreMapper = new GenreMapper();
@@ -21,11 +21,12 @@ public class JdbcGenreDaoImpl implements GenreDao{
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private String getAllGenres;
+
     @Override
-    public List<Genre> getAllGenres() {
-        logger.debug("Method getAllGenres is started.");
+    public List<Genre> getAll() {
+        logger.debug("Method getAll is started.");
         List<Genre> genres = jdbcTemplate.query(getAllGenres, genreMapper);
-        logger.debug("Method getAllGenres returned = {}", genres);
+        logger.debug("Method getAll returned = {}", genres);
         return genres;
     }
 }

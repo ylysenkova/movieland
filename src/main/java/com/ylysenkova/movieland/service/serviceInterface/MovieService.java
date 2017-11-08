@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MovieService {
 
-    public List<Movie> getAllMovies();
+    public List<Movie> getAll();
 
     public List<Movie> getThreeMovies();
 

@@ -8,9 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class MovieCountryMapper implements RowMapper {
+public class MovieCountryMapper implements RowMapper<Pair<Integer, Country>> {
     @Override
-    public Object mapRow(ResultSet resultSet, int i) throws SQLException {
+    public Pair<Integer, Country> mapRow(ResultSet resultSet, int i) throws SQLException {
         Country country = new Country();
         Pair<Integer, Country> countryByMovieId;
 

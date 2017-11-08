@@ -1,4 +1,4 @@
-package com.ylysenkova.movieland.dao.DAOInterface;
+package com.ylysenkova.movieland.dao;
 
 import com.ylysenkova.movieland.model.Genre;
 
@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface GenreDao {
 
-    public List<Genre> getAllGenres();
+    public List<Genre> getAll();
 }

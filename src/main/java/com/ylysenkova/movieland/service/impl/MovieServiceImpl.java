@@ -1,7 +1,6 @@
 package com.ylysenkova.movieland.service.impl;
 
-import com.ylysenkova.movieland.dao.jdbc.impl.JdbcMovieDaoImpl;
-import com.ylysenkova.movieland.model.Genre;
+import com.ylysenkova.movieland.dao.jdbc.JdbcMovieDao;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.service.serviceInterface.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +12,11 @@ import java.util.List;
 public class MovieServiceImpl implements MovieService {
 
     @Autowired
-    private JdbcMovieDaoImpl jdbcMovieDaoImpl;
+    private JdbcMovieDao jdbcMovieDaoImpl;
 
     @Override
-    public List<Movie> getAllMovies () {
-      return jdbcMovieDaoImpl.getAllMovies();
+    public List<Movie> getAll() {
+        return jdbcMovieDaoImpl.getAll();
     }
 
     @Override

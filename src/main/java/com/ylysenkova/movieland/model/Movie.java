@@ -4,16 +4,16 @@ import java.util.List;
 
 public class Movie {
 
-private int id;
-private String nameRussian;
-private String nameNative;
-private int yearOfRelease;
-private String description;
-private double rating;
-private double price;
-private String picturePath;
-private List<Country> countries;
-private List<Genre> genres;
+    private int id;
+    private String nameRussian;
+    private String nameNative;
+    private int yearOfRelease;
+    private String description;
+    private double rating;
+    private double price;
+    private String picturePath;
+    private List<Country> countries;
+    private List<Genre> genres;
 
     public Movie() {
     }

@@ -11,13 +11,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilderSupport;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -47,7 +45,7 @@ public class GenreControllerTest {
         genre.setId(1);
         genre.setName("USA");
 
-        when(genreService.getAllGenres()).thenReturn(Arrays.asList(genre));
+        when(genreService.getAll()).thenReturn(Arrays.asList(genre));
 
         mockMvc.perform(get("/v1/genre"))
                 .andExpect(status().isOk())

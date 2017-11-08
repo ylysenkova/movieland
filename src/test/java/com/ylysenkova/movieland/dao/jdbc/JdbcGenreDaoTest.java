@@ -1,5 +1,6 @@
-package com.ylysenkova.movieland.dao.jdbc.impl;
+package com.ylysenkova.movieland.dao.jdbc;
 
+import com.ylysenkova.movieland.dao.jdbc.JdbcGenreDao;
 import com.ylysenkova.movieland.model.Genre;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,13 +14,13 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/spring/spring-test-config.xml"})
-public class JdbcGenreDaoImplTest {
+public class JdbcGenreDaoTest {
 
     @Autowired
-    private JdbcGenreDaoImpl jdbcGenreDao;
+    private JdbcGenreDao jdbcGenreDao;
     @Test
     public void getAllGenres() throws Exception {
-        List<Genre> genresActual = jdbcGenreDao.getAllGenres();
+        List<Genre> genresActual = jdbcGenreDao.getAll();
         assertEquals(15, genresActual.size());
 
     }

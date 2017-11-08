@@ -40,7 +40,7 @@ public class MovieControllerTest {
 
     @Before
     public void initMock() {
-         mockMvc = MockMvcBuilders.standaloneSetup(movieController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(movieController).build();
     }
 
     @Test
@@ -56,7 +56,7 @@ public class MovieControllerTest {
         List<Movie> movieList = new ArrayList<>();
         movieList.add(movie);
 
-        when(movieService.getAllMovies()).thenReturn(movieList);
+        when(movieService.getAll()).thenReturn(movieList);
 
         mockMvc.perform(get("/v1/movie"))
                 .andDo(print())
@@ -70,6 +70,7 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[0].price", is(movie.getPrice())))
                 .andExpect(jsonPath("$[0].picturePath", is(movie.getPicturePath())));
     }
+
     @Test
     public void getThreeMovies() throws Exception {
         Movie movie = new Movie();
@@ -110,7 +111,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void getMovieByGenreId () throws Exception {
+    public void getMovieByGenreId() throws Exception {
         Movie movie = new Movie();
         movie.setId(9);
         movie.setNameRussian("ggg");
@@ -122,6 +123,76 @@ public class MovieControllerTest {
         when(movieService.getMovieByGenreId(3)).thenReturn(Arrays.asList(movie));
 
         mockMvc.perform(get("/v1/movie/3"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$[0].id", is(movie.getId())))
+                .andExpect(jsonPath("$[0].nameRussian", is(movie.getNameRussian())))
+                .andExpect(jsonPath("$[0].nameNative", is(movie.getNameNative())))
+                .andExpect(jsonPath("$[0].yearOfRelease", is(movie.getYearOfRelease())))
+                .andExpect(jsonPath("$[0].rating", is(movie.getRating())))
+                .andExpect(jsonPath("$[0].price", is(movie.getPrice())));
+    }
+
+    @Test
+    public void getSortingByRatingDesc() throws Exception {
+        Movie movie = new Movie();
+        movie.setId(23);
+        movie.setNameRussian("qqq");
+        movie.setNameNative("rrr");
+        movie.setYearOfRelease(1999);
+        movie.setRating(2.0);
+        movie.setPrice(3.99);
+
+        when(movieService.getSortingByRating("desc")).thenReturn(Arrays.asList(movie));
+
+        mockMvc.perform(get("/v1/movie?rating=desc"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$[0].id", is(movie.getId())))
+                .andExpect(jsonPath("$[0].nameRussian", is(movie.getNameRussian())))
+                .andExpect(jsonPath("$[0].nameNative", is(movie.getNameNative())))
+                .andExpect(jsonPath("$[0].yearOfRelease", is(movie.getYearOfRelease())))
+                .andExpect(jsonPath("$[0].rating", is(movie.getRating())))
+                .andExpect(jsonPath("$[0].price", is(movie.getPrice())));
+    }
+
+    @Test
+    public void getSortingByPriceDesc() throws Exception {
+        Movie movie = new Movie();
+        movie.setId(23);
+        movie.setNameRussian("qqq");
+        movie.setNameNative("rrr");
+        movie.setYearOfRelease(1999);
+        movie.setRating(2.0);
+        movie.setPrice(3.99);
+
+        when(movieService.getSortingByPrice("desc")).thenReturn(Arrays.asList(movie));
+
+        mockMvc.perform(get("/v1/movie?price=desc"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("$[0].id", is(movie.getId())))
+                .andExpect(jsonPath("$[0].nameRussian", is(movie.getNameRussian())))
+                .andExpect(jsonPath("$[0].nameNative", is(movie.getNameNative())))
+                .andExpect(jsonPath("$[0].yearOfRelease", is(movie.getYearOfRelease())))
+                .andExpect(jsonPath("$[0].rating", is(movie.getRating())))
+                .andExpect(jsonPath("$[0].price", is(movie.getPrice())));
+    }
+
+    @Test
+    public void getSortingByPriceAsc() throws Exception {
+        Movie movie = new Movie();
+        movie.setId(23);
+        movie.setNameRussian("qqq");
+        movie.setNameNative("rrr");
+        movie.setYearOfRelease(1999);
+        movie.setRating(2.0);
+        movie.setPrice(3.99);
+
+        when(movieService.getSortingByPrice("asc")).thenReturn(Arrays.asList(movie));
+
+        mockMvc.perform(get("/v1/movie?price=asc"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$[0].id", is(movie.getId())))

@@ -11,22 +11,7 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>jstl</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
         <!-- Spring dependencies -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>4.3.11.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>4.3.11.RELEASE</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
@@ -37,12 +22,14 @@
             <artifactId>spring-jdbc</artifactId>
             <version>4.3.11.RELEASE</version>
         </dependency>
+
         <!--DataBase connection-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.8-dmr</version>
         </dependency>
+
         <!-- JSON dependencies-->
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
@@ -60,6 +47,7 @@
             <version>2.4.0</version>
             <scope>test</scope>
         </dependency>
+
         <!--  Testing -->
         <dependency>
             <groupId>junit</groupId>
@@ -97,6 +85,7 @@
             <version>1.4.193</version>
             <scope>test</scope>
         </dependency>
+
         <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>

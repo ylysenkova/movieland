@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+
 @Controller
 @RequestMapping(value = "/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class GenreController {
@@ -20,12 +21,15 @@ public class GenreController {
 
     @Autowired
     private GenreServiceImpl genreService;
+
     @RequestMapping(value = "/genre", method = RequestMethod.GET)
-    public @ResponseBody List<Genre> getAllGenres() {
+    public
+    @ResponseBody
+    List<Genre> getAll() {
         logger.debug("Sending request...");
         long startTime = System.currentTimeMillis();
-        List<Genre> genres = genreService.getAllGenres();
-        logger.debug("Genre {} is received.It took {} ms", genres, System.currentTimeMillis()-startTime);
+        List<Genre> genres = genreService.getAll();
+        logger.debug("Genre {} is received.It took {} ms", genres, System.currentTimeMillis() - startTime);
         return genres;
     }
 }

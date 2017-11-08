@@ -1,12 +1,13 @@
-package com.ylysenkova.movieland.dao.jdbc.impl;
+package com.ylysenkova.movieland.dao.jdbc;
 
-import com.ylysenkova.movieland.dao.DAOInterface.MovieDao;
+import com.ylysenkova.movieland.dao.MovieDao;
 import com.ylysenkova.movieland.dao.mapper.MovieCountryMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieGenreMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieMapper;
 import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
+import com.ylysenkova.movieland.model.Sorting;
 import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,12 +22,12 @@ import java.util.*;
 
 
 @Repository
-public class JdbcMovieDaoImpl implements MovieDao {
+public class JdbcMovieDao implements MovieDao {
 
-private final MovieMapper movieMapper = new MovieMapper();
-private final MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
-private final MovieGenreMapper movieGenreMapper = new MovieGenreMapper();
-private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final MovieMapper movieMapper = new MovieMapper();
+    private final MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
+    private final MovieGenreMapper movieGenreMapper = new MovieGenreMapper();
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -49,40 +50,39 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private String getSortingByPriceDesc;
     @Autowired
-    private String getSortingByPriceAcs;
+    private String getSortingByPriceAsc;
 
     @Override
-    public List<Movie> getAllMovies() {
-        logger.debug("Method getAllMovies has started");
-        List <Movie> moviesList = jdbcTemplate.query(getAllMovies,  movieMapper);
-        logger.debug("Method getAllMovies returned = {}", moviesList);
+    public List<Movie> getAll() {
+        logger.debug("Method getAll has started");
+        List<Movie> moviesList = jdbcTemplate.query(getAllMovies, movieMapper);
+        logger.debug("Method getAll returned = {}", moviesList);
         return moviesList;
     }
 
     @Override
     public Set<Integer> getThreeMovieIds() {
-    logger.debug("Method getThreeMovieIds has started");
-    Set<Integer> movieIds = new HashSet<>();
-    Random random = new Random();
+        logger.debug("Method getThreeMovieIds has started");
+        Set<Integer> movieIds = new HashSet<>();
+        Random random = new Random();
 
-    int movieCount = jdbcTemplate.queryForObject(getMovieCount, Integer.class);
-    int serchCount = 0;
+        int movieCount = jdbcTemplate.queryForObject(getMovieCount, Integer.class);
+        int serchCount = 0;
 
-    if (movieCount<3) {
-        serchCount = movieCount;
-    }
-    else {
-        serchCount = 3;
-    }
-    while (movieIds.size()<serchCount) {
-         movieIds.add(random.nextInt(movieCount)+1);
-    }
-    logger.debug("Method getThreeMovieIds returned = {}", movieIds);
+        if (movieCount < 3) {
+            serchCount = movieCount;
+        } else {
+            serchCount = 3;
+        }
+        while (movieIds.size() < serchCount) {
+            movieIds.add(random.nextInt(movieCount) + 1);
+        }
+        logger.debug("Method getThreeMovieIds returned = {}", movieIds);
 
-    return movieIds;
+        return movieIds;
     }
 
-    public List<Movie> getThreeMovies(Set<Integer> movieIds){
+    public List<Movie> getThreeMovies(Set<Integer> movieIds) {
         logger.debug("Method getThreeMovies has started");
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
@@ -96,7 +96,7 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
         for (Movie movie : movieList) {
             List<Country> countryList = new ArrayList<>();
             for (Pair<Integer, Country> movieCountryMap : countryMapList) {
-                if(movie.getId()==movieCountryMap.getKey()) {
+                if (movie.getId() == movieCountryMap.getKey()) {
                     countryList.add(movieCountryMap.getValue());
                 }
             }
@@ -107,14 +107,14 @@ private final Logger logger = LoggerFactory.getLogger(getClass());
             for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
                 if (movie.getId() == movieGenreMap.getKey()) {
                     genreList.add(movieGenreMap.getValue());
-            }
+                }
             }
             movie.setGenres(genreList);
         }
 
-logger.debug("Method getThreeMovies returned = {}", movieList);
+        logger.debug("Method getThreeMovies returned = {}", movieList);
 
-    return movieList;
+        return movieList;
     }
 
     @Override
@@ -125,6 +125,8 @@ logger.debug("Method getThreeMovies returned = {}", movieList);
         sqlParameterSource.addValue("genreId", genreId);
 
         List<Movie> movies = namedParameterJdbcTemplate.query(getMovieByGenreId, sqlParameterSource, movieMapper);
+
+        logger.debug("Method getMovieByGenreId returned = {}", movies);
         return movies;
     }
 
@@ -133,9 +135,10 @@ logger.debug("Method getThreeMovies returned = {}", movieList);
         logger.debug("Sorting movies by rating is started.");
 
         List<Movie> movieList = null;
-        if(sortByRating.equals("desc")) {
+        if (sortByRating.equals(Sorting.DESC.getValue())) {
             movieList = jdbcTemplate.query(getSortingByRating, movieMapper);
         }
+        logger.debug("Sorting by rating returned = {}", movieList);
         return movieList;
     }
 
@@ -144,12 +147,12 @@ logger.debug("Method getThreeMovies returned = {}", movieList);
         logger.debug("Sorting movies by price is started.");
 
         List<Movie> movieList = null;
-        if(sortByPrice.equals("desc")) {
+        if (sortByPrice.equals(Sorting.DESC.getValue())) {
             movieList = jdbcTemplate.query(getSortingByPriceDesc, movieMapper);
+        } else if (sortByPrice.equals(Sorting.ASC.getValue())) {
+            movieList = jdbcTemplate.query(getSortingByPriceAsc, movieMapper);
         }
-        else if (sortByPrice.equals("acs")) {
-            movieList = jdbcTemplate.query(getSortingByPriceAcs, movieMapper);
-        }
+        logger.debug("Sorting by price returned = {}", movieList);
         return movieList;
     }
 }

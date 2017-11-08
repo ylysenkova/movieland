@@ -8,19 +8,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-public class MovieGenreMapper implements RowMapper {
+public class MovieGenreMapper implements RowMapper<Pair<Integer, Genre>> {
 
-        @Override
-        public Object mapRow(ResultSet resultSet, int i) throws SQLException {
-            Genre genre = new Genre();
-            Pair<Integer, Genre> genreByMovieId;
+    @Override
+    public Pair<Integer, Genre> mapRow(ResultSet resultSet, int i) throws SQLException {
+        Genre genre = new Genre();
+        Pair<Integer, Genre> genreByMovieId;
 
-            genre.setId(resultSet.getInt("id"));
-            int movieId = resultSet.getInt("movie_id");
-            genre.setName(resultSet.getString("name"));
-            genreByMovieId  = new Pair<>(movieId, genre);
+        genre.setId(resultSet.getInt("id"));
+        int movieId = resultSet.getInt("movie_id");
+        genre.setName(resultSet.getString("name"));
+        genreByMovieId = new Pair<>(movieId, genre);
 
-            return genreByMovieId;
-        }
+        return genreByMovieId;
+    }
 }
 

@@ -40,9 +40,9 @@
                                 from movie order by price desc;"/>
     </bean>
 
-    <bean id="getSortingByPriceAcs" class="java.lang.String">
+    <bean id="getSortingByPriceAsc" class="java.lang.String">
         <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path
-                                from movie order by price acs;"/>
+                                from movie order by price asc;"/>
     </bean>
 
     <bean id ="getMovieCount" class="java.lang.String">

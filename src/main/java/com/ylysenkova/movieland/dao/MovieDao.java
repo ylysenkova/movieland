@@ -1,4 +1,4 @@
-package com.ylysenkova.movieland.dao.DAOInterface;
+package com.ylysenkova.movieland.dao;
 
 import com.ylysenkova.movieland.model.Movie;
 
@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface MovieDao {
 
-    public  List<Movie> getAllMovies();
+    public List<Movie> getAll();
 
     public Set<Integer> getThreeMovieIds();
 
