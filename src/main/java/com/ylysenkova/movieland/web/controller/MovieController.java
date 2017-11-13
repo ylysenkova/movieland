@@ -1,14 +1,19 @@
 package com.ylysenkova.movieland.web.controller;
 
 import com.ylysenkova.movieland.model.Movie;
+import com.ylysenkova.movieland.model.Sorting;
 import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
+import com.ylysenkova.movieland.service.impl.SortingValidationService;
+import com.ylysenkova.movieland.web.response.ExceptionResponse;
 import com.ylysenkova.movieland.web.response.MovieAllResponse;
 import com.ylysenkova.movieland.web.response.MovieRandomResponse;
 import com.ylysenkova.movieland.web.response.MovieResponseByGenre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,41 +28,42 @@ public class MovieController {
 
     @Autowired
     private MovieServiceImpl movieService;
+    @Autowired
+    private SortingValidationService sortingValidationService;
 
 
     @RequestMapping(value = "/movie", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<MovieAllResponse> getAll(
-            @RequestParam(value = "rating", required = false) String sortByRating,
-            @RequestParam(value = "price", required = false) String sortByPrice
+    ResponseEntity<?> getAll(
+            @RequestParam(value = "rating", required = false) String ratingSortDirection,
+            @RequestParam(value = "price", required = false) String priceSortDirection
     ) {
-        logger.debug("Sending request...");
-        long startTime = System.currentTimeMillis();
-        List<MovieAllResponse> movieAllResponses = new ArrayList<>();
-        if (sortByRating != null) {
-            List<Movie> movies = movieService.getSortingByRating(sortByRating);
+        try {
+            sortingValidationService.allowOnlyRatingOrPriceSorting(ratingSortDirection, priceSortDirection);
+
+            logger.debug("Sending response...");
+            long startTime = System.currentTimeMillis();
+            List<MovieAllResponse> movieAllResponses = new ArrayList<>();
+            List<Movie> movies;
+
+            if (ratingSortDirection != null) {
+                sortingValidationService.allowDescSortingForRating(Sorting.getSorting(ratingSortDirection));
+                movies = movieService.getAllSorted("rating", Sorting.getSorting(ratingSortDirection));
+            } else if (priceSortDirection != null) {
+                movies = movieService.getAllSorted("price", Sorting.getSorting(priceSortDirection));
+            } else {
+                movies = movieService.getAll();
+            }
 
             for (Movie movie : movies) {
                 movieAllResponses.add(new MovieAllResponse(movie));
             }
-            logger.debug("Movie {} is sorted. It took {} ms", movies, System.currentTimeMillis() - startTime);
-        } else if (sortByPrice != null) {
-            List<Movie> movies = movieService.getSortingByPrice(sortByPrice);
-            for (Movie movie : movies) {
-                movieAllResponses.add(new MovieAllResponse(movie));
-            }
-            logger.debug("Movie {} is sorted. It took {} ms", movies, System.currentTimeMillis() - startTime);
-        } else {
-            List<Movie> movies = movieService.getAll();
-
-            for (Movie movie : movies) {
-                movieAllResponses.add(new MovieAllResponse(movie));
-            }
-            logger.debug("Movie {} is received. It took {} ms", movies, System.currentTimeMillis() - startTime);
+            logger.debug("Movie {} is received. It took {} ms", movieAllResponses, System.currentTimeMillis() - startTime);
+            return new ResponseEntity<List<MovieAllResponse>>(movieAllResponses, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
-
-        return movieAllResponses;
     }
 
     @RequestMapping(value = "/movie/random", method = RequestMethod.GET)
@@ -75,19 +81,37 @@ public class MovieController {
         return movieRandomResponses;
     }
 
-    @RequestMapping(value = "/movie/{genreId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/movie/genre/{genreId}", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<MovieResponseByGenre> getMovieByGenreId(@PathVariable(value = "genreId") int genreId) {
+    ResponseEntity<?> getMovieByGenreId(
+            @PathVariable(value = "genreId") int genreId,
+            @RequestParam(value = "rating", required = false) String ratingSortDirection,
+            @RequestParam(value = "price", required = false) String priceSortDirection
+    ) {
+        try {
+            sortingValidationService.allowOnlyRatingOrPriceSorting(ratingSortDirection, priceSortDirection);
+
         logger.debug("Sending request...");
         long startTime = System.currentTimeMillis();
         List<Movie> movies = movieService.getMovieByGenreId(genreId);
         List<MovieResponseByGenre> movieResponseByGenres = new ArrayList<>();
-        for (Movie movie : movies) {
-            movieResponseByGenres.add(new MovieResponseByGenre(movie));
+        if (ratingSortDirection != null) {
+            sortingValidationService.allowDescSortingForRating(Sorting.getSorting(ratingSortDirection));
+            movies = movieService.getAllSorted("rating", Sorting.getSorting(ratingSortDirection));
+        } else if (priceSortDirection != null) {
+            movies = movieService.getAllSorted("price", Sorting.getSorting(priceSortDirection));
+        } else {
+            movies = movieService.getAll();
         }
-        logger.debug("Movie {} is received.It took {} ms ", movies, System.currentTimeMillis() - startTime);
-        return movieResponseByGenres;
+            for (Movie movie : movies) {
+                movieResponseByGenres.add(new MovieResponseByGenre(movie));
+            }
+            logger.debug("Movie {} is received.It took {} ms ", movies, System.currentTimeMillis() - startTime);
+            return new ResponseEntity<List<MovieResponseByGenre>>(movieResponseByGenres, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
+        }
     }
 
 

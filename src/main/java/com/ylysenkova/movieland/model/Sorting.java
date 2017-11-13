@@ -14,4 +14,13 @@ public enum Sorting {
     public String getValue() {
         return value;
     }
+
+    public static Sorting getSorting(String direction) {
+        for (Sorting sorting : values()) {
+            if(sorting.value.equalsIgnoreCase(direction)) {
+                return sorting;
+            }
+        }
+        throw new RuntimeException("Incorrect sorting value");
+    }
 }

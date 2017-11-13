@@ -30,21 +30,6 @@
                                 from movie m join movie_genre mg on m.id=mg.movie_id where mg.genre_id =:genreId;"/>
     </bean>
 
-    <bean id = "getSortingByRating" class="java.lang.String">
-        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path
-                                from movie order by rating desc;"/>
-    </bean>
-
-    <bean id = "getSortingByPriceDesc" class="java.lang.String">
-        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path
-                                from movie order by price desc;"/>
-    </bean>
-
-    <bean id="getSortingByPriceAsc" class="java.lang.String">
-        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, rating, price, picture_Path
-                                from movie order by price asc;"/>
-    </bean>
-
     <bean id ="getMovieCount" class="java.lang.String">
         <constructor-arg value="select count(*) from movie;"/>
     </bean>

@@ -3,7 +3,9 @@ package com.ylysenkova.movieland.web.controller;
 import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
+import com.ylysenkova.movieland.model.Sorting;
 import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
+import com.ylysenkova.movieland.service.impl.SortingValidationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +36,8 @@ public class MovieControllerTest {
 
     @Mock
     private MovieServiceImpl movieService;
+    @Mock
+    private SortingValidationService sortingValidationService;
 
     @InjectMocks
     private MovieController movieController;
@@ -122,7 +126,7 @@ public class MovieControllerTest {
 
         when(movieService.getMovieByGenreId(3)).thenReturn(Arrays.asList(movie));
 
-        mockMvc.perform(get("/v1/movie/3"))
+        mockMvc.perform(get("/v1/movie/genre/3"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$[0].id", is(movie.getId())))
@@ -143,7 +147,7 @@ public class MovieControllerTest {
         movie.setRating(2.0);
         movie.setPrice(3.99);
 
-        when(movieService.getSortingByRating("desc")).thenReturn(Arrays.asList(movie));
+        when(movieService.getAllSorted("rating",Sorting.DESC)).thenReturn(Arrays.asList(movie));
 
         mockMvc.perform(get("/v1/movie?rating=desc"))
                 .andDo(print())
@@ -167,7 +171,7 @@ public class MovieControllerTest {
         movie.setRating(2.0);
         movie.setPrice(3.99);
 
-        when(movieService.getSortingByPrice("desc")).thenReturn(Arrays.asList(movie));
+        when(movieService.getAllSorted("price",Sorting.DESC)).thenReturn(Arrays.asList(movie));
 
         mockMvc.perform(get("/v1/movie?price=desc"))
                 .andExpect(status().isOk())
@@ -190,7 +194,7 @@ public class MovieControllerTest {
         movie.setRating(2.0);
         movie.setPrice(3.99);
 
-        when(movieService.getSortingByPrice("asc")).thenReturn(Arrays.asList(movie));
+        when(movieService.getAllSorted("price",Sorting.ASC)).thenReturn(Arrays.asList(movie));
 
         mockMvc.perform(get("/v1/movie?price=asc"))
                 .andExpect(status().isOk())

@@ -1,4 +1,4 @@
-package com.ylysenkova.movieland.service.serviceInterface;
+package com.ylysenkova.movieland.service;
 
 import com.ylysenkova.movieland.model.Genre;
 

@@ -1,6 +1,7 @@
 package com.ylysenkova.movieland.dao.jdbc;
 
 import com.ylysenkova.movieland.dao.MovieDao;
+import com.ylysenkova.movieland.dao.jdbc.utils.JdbcCreateSortingSql;
 import com.ylysenkova.movieland.dao.mapper.MovieCountryMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieGenreMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieMapper;
@@ -8,7 +9,6 @@ import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
-import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,12 +45,6 @@ public class JdbcMovieDao implements MovieDao {
     private String getGenreByThreeMovieId;
     @Autowired
     private String getMovieByGenreId;
-    @Autowired
-    private String getSortingByRating;
-    @Autowired
-    private String getSortingByPriceDesc;
-    @Autowired
-    private String getSortingByPriceAsc;
 
     @Override
     public List<Movie> getAll() {
@@ -89,25 +83,28 @@ public class JdbcMovieDao implements MovieDao {
         sqlParameterSource.addValue("movieIds", movieIds);
 
         List<Movie> movieList = namedParameterJdbcTemplate.query(getThreeMovies, sqlParameterSource, movieMapper);
-        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByThreeMovieId, sqlParameterSource, movieCountryMapper);
-        List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByThreeMovieId, sqlParameterSource, movieGenreMapper);
+        List<HashMap<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByThreeMovieId, sqlParameterSource, movieCountryMapper);
+        List<HashMap<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByThreeMovieId, sqlParameterSource, movieGenreMapper);
 
 
         for (Movie movie : movieList) {
             List<Country> countryList = new ArrayList<>();
-            for (Pair<Integer, Country> movieCountryMap : countryMapList) {
-                if (movie.getId() == movieCountryMap.getKey()) {
-                    countryList.add(movieCountryMap.getValue());
-                }
+            for (HashMap<Integer, Country> movieCountryMap : countryMapList) {
+                for (Map.Entry<Integer, Country> countryMap : movieCountryMap.entrySet())
+
+                    if (movie.getId() == countryMap.getKey()) {
+                        countryList.add(countryMap.getValue());
+                    }
             }
             movie.setCountries(countryList);
 
             List<Genre> genreList = new ArrayList<>();
 
-            for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
-                if (movie.getId() == movieGenreMap.getKey()) {
-                    genreList.add(movieGenreMap.getValue());
-                }
+            for (HashMap<Integer, Genre> movieGenreMap : genreMapList) {
+                for (Map.Entry<Integer, Genre> genreMap : movieGenreMap.entrySet())
+                    if (movie.getId() == genreMap.getKey()) {
+                        genreList.add(genreMap.getValue());
+                    }
             }
             movie.setGenres(genreList);
         }
@@ -131,28 +128,22 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public List<Movie> getSortingByRating(String sortByRating) {
+    public List<Movie> getAllMoviesSorted(String field, Sorting direction) {
         logger.debug("Sorting movies by rating is started.");
-
-        List<Movie> movieList = null;
-        if (sortByRating.equals(Sorting.DESC.getValue())) {
-            movieList = jdbcTemplate.query(getSortingByRating, movieMapper);
-        }
+        List<Movie> movieList = jdbcTemplate.query(JdbcCreateSortingSql.getSortedSQL(getAllMovies, field, direction), movieMapper);
         logger.debug("Sorting by rating returned = {}", movieList);
         return movieList;
     }
 
     @Override
-    public List<Movie> getSortingByPrice(String sortByPrice) {
-        logger.debug("Sorting movies by price is started.");
-
-        List<Movie> movieList = null;
-        if (sortByPrice.equals(Sorting.DESC.getValue())) {
-            movieList = jdbcTemplate.query(getSortingByPriceDesc, movieMapper);
-        } else if (sortByPrice.equals(Sorting.ASC.getValue())) {
-            movieList = jdbcTemplate.query(getSortingByPriceAsc, movieMapper);
-        }
-        logger.debug("Sorting by price returned = {}", movieList);
+    public List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction) {
+        logger.debug("Sorting movies by rating is started.");
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("genreId", genreId);
+        List<Movie> movieList = namedParameterJdbcTemplate.query(JdbcCreateSortingSql.getSortedSQL(getMovieByGenreId, field, direction), sqlParameterSource, movieMapper);
+        logger.debug("Sorting by rating returned = {}", movieList);
         return movieList;
     }
+
+
 }

@@ -1,6 +1,6 @@
 package com.ylysenkova.movieland.dao.jdbc;
 
-import com.ylysenkova.movieland.dao.jdbc.JdbcMovieDao;
+import com.ylysenkova.movieland.dao.MovieDao;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
 import org.junit.Test;
@@ -19,31 +19,53 @@ public class JdbcMovieDaoTest {
 
 
     @Autowired
-    private JdbcMovieDao jdbcMovieDao;
+    private MovieDao movieDao;
 
     @Test
     public void getAllMovies() throws Exception {
-        List<Movie> movies = jdbcMovieDao.getAll();
+        List<Movie> movies = movieDao.getAll();
         assertEquals(25, movies.size());
     }
 
     @Test
     public void getThreeMovies() throws Exception {
-        List<Movie> threeMovies = jdbcMovieDao.getThreeMovies(jdbcMovieDao.getThreeMovieIds());
+        List<Movie> threeMovies = movieDao.getThreeMovies(movieDao.getThreeMovieIds());
         assertEquals(3, threeMovies.size());
 
     }
 
     @Test
     public void getMovieCountByGenreId() throws Exception {
-        List<Movie> movieByGenreId = jdbcMovieDao.getMovieByGenreId(2);
+        List<Movie> movieByGenreId = movieDao.getMovieByGenreId(2);
         assertEquals(7, movieByGenreId.size());
+    }
+
+    @Test
+    public void getGenreSortingByRating() throws Exception {
+
+        List<Movie> movieByGenreSortByRating = movieDao.getMoviesByGenreSorted(3, "rating", Sorting.DESC);
+        assertEquals(2, movieByGenreSortByRating.get(0).getId(), 0);
+        assertEquals(9, movieByGenreSortByRating.get(5).getId(), 0);
+    }
+
+    @Test
+    public void getGenreSortingByPrice() throws Exception {
+
+        List<Movie> movieByGenreSortByPrice = movieDao.getMoviesByGenreSorted(3, "price",Sorting.DESC);
+        assertEquals(9, movieByGenreSortByPrice.get(0).getId(), 0);
+        assertEquals(14, movieByGenreSortByPrice.get(5).getId(), 0);
+
+
+        movieByGenreSortByPrice = movieDao.getMoviesByGenreSorted(4, "price",Sorting.ASC);
+        assertEquals(6, movieByGenreSortByPrice.get(0).getId(), 0);
+        assertEquals(19, movieByGenreSortByPrice.get(2).getId(), 0);
+
     }
 
     @Test
     public void getSortingByRating() throws Exception {
 
-        List<Movie> movieSortByRating = jdbcMovieDao.getSortingByRating("desc");
+        List<Movie> movieSortByRating = movieDao.getAllMoviesSorted("rating", Sorting.DESC);
         assertEquals(8.9, movieSortByRating.get(0).getRating(), 0);
         assertEquals(7.6, movieSortByRating.get(24).getRating(), 0);
     }
@@ -51,11 +73,11 @@ public class JdbcMovieDaoTest {
     @Test
     public void getSortingByPrice() throws Exception {
 
-        List<Movie> movieSortByPrice = jdbcMovieDao.getSortingByPrice("desc");
+        List<Movie> movieSortByPrice = movieDao.getAllMoviesSorted("price",Sorting.DESC);
         assertEquals(200.6, movieSortByPrice.get(0).getPrice(), 0);
         assertEquals(100, movieSortByPrice.get(24).getPrice(), 0);
 
-        movieSortByPrice = jdbcMovieDao.getSortingByPrice("asc");
+        movieSortByPrice = movieDao.getAllMoviesSorted("price",Sorting.ASC);
         assertEquals(100, movieSortByPrice.get(0).getPrice(), 0);
         assertEquals(200.6, movieSortByPrice.get(24).getPrice(), 0);
 

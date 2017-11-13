@@ -1,8 +1,9 @@
 package com.ylysenkova.movieland.service.impl;
 
+import com.ylysenkova.movieland.dao.GenreDao;
 import com.ylysenkova.movieland.dao.jdbc.JdbcGenreDao;
 import com.ylysenkova.movieland.model.Genre;
-import com.ylysenkova.movieland.service.serviceInterface.GenreService;
+import com.ylysenkova.movieland.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,10 @@ import java.util.List;
 public class GenreServiceImpl implements GenreService {
 
     @Autowired
-    private JdbcGenreDao jdbcGenreDao;
+    private GenreDao genreDao;
 
     @Override
     public List<Genre> getAll() {
-        return jdbcGenreDao.getAll();
+        return genreDao.getAll();
     }
 }

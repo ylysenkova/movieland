@@ -1,8 +1,9 @@
 package com.ylysenkova.movieland.service.impl;
 
-import com.ylysenkova.movieland.dao.jdbc.JdbcMovieDao;
+import com.ylysenkova.movieland.dao.MovieDao;
 import com.ylysenkova.movieland.model.Movie;
-import com.ylysenkova.movieland.service.serviceInterface.MovieService;
+import com.ylysenkova.movieland.model.Sorting;
+import com.ylysenkova.movieland.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,29 +13,24 @@ import java.util.List;
 public class MovieServiceImpl implements MovieService {
 
     @Autowired
-    private JdbcMovieDao jdbcMovieDaoImpl;
+    private MovieDao movieDao;
 
     @Override
     public List<Movie> getAll() {
-        return jdbcMovieDaoImpl.getAll();
+        return movieDao.getAll();
     }
 
     @Override
     public List<Movie> getThreeMovies() {
-        return jdbcMovieDaoImpl.getThreeMovies(jdbcMovieDaoImpl.getThreeMovieIds());
+        return movieDao.getThreeMovies(movieDao.getThreeMovieIds());
     }
 
     public List<Movie> getMovieByGenreId(int genreId) {
-        return jdbcMovieDaoImpl.getMovieByGenreId(genreId);
+        return movieDao.getMovieByGenreId(genreId);
     }
 
-    public List<Movie> getSortingByRating(String sortByRating) {
-        return jdbcMovieDaoImpl.getSortingByRating(sortByRating);
+    public List<Movie> getAllSorted(String field, Sorting direction) {
+        return movieDao.getAllMoviesSorted(field, direction);
     }
-
-    public List<Movie> getSortingByPrice(String sortByPrice) {
-        return jdbcMovieDaoImpl.getSortingByPrice(sortByPrice);
-    }
-
 
 }

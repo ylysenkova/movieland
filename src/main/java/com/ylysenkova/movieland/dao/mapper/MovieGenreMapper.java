@@ -6,19 +6,21 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 
-public class MovieGenreMapper implements RowMapper<Pair<Integer, Genre>> {
+public class MovieGenreMapper implements RowMapper<HashMap<Integer, Genre>> {
 
     @Override
-    public Pair<Integer, Genre> mapRow(ResultSet resultSet, int i) throws SQLException {
+    public HashMap<Integer, Genre> mapRow(ResultSet resultSet, int i) throws SQLException {
         Genre genre = new Genre();
-        Pair<Integer, Genre> genreByMovieId;
+        HashMap<Integer, Genre> genreByMovieId;
 
         genre.setId(resultSet.getInt("id"));
         int movieId = resultSet.getInt("movie_id");
         genre.setName(resultSet.getString("name"));
-        genreByMovieId = new Pair<>(movieId, genre);
+        genreByMovieId = new HashMap<>();
+        genreByMovieId.put(movieId, genre);
 
         return genreByMovieId;
     }

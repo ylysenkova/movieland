@@ -1,6 +1,6 @@
 package com.ylysenkova.movieland.dao.jdbc;
 
-import com.ylysenkova.movieland.dao.jdbc.JdbcGenreDao;
+import com.ylysenkova.movieland.dao.GenreDao;
 import com.ylysenkova.movieland.model.Genre;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,10 +17,10 @@ import static org.junit.Assert.*;
 public class JdbcGenreDaoTest {
 
     @Autowired
-    private JdbcGenreDao jdbcGenreDao;
+    private GenreDao genreDao;
     @Test
     public void getAllGenres() throws Exception {
-        List<Genre> genresActual = jdbcGenreDao.getAll();
+        List<Genre> genresActual = genreDao.getAll();
         assertEquals(15, genresActual.size());
 
     }

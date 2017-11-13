@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -22,10 +24,12 @@ public class MovieCountryMapperTest {
         when(resultSet.getString("name")).thenReturn("USA");
 
         MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
-        Pair<Integer, Country> movieCountryActual = (Pair<Integer, Country>) movieCountryMapper.mapRow(resultSet, 0);
-        assertEquals(1, movieCountryActual.getKey(),0);
-        assertEquals(2, movieCountryActual.getValue().getId());
-        assertEquals("USA", movieCountryActual.getValue().getName());
+        Map<Integer, Country> movieCountryActual =  movieCountryMapper.mapRow(resultSet, 0);
+        for (Map.Entry<Integer, Country> countryActual : movieCountryActual.entrySet()) {
+            assertEquals(1, countryActual.getKey(), 0);
+            assertEquals(2, countryActual.getValue().getId());
+            assertEquals("USA", countryActual.getValue().getName());
+        }
 
 
 
