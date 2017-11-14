@@ -1,7 +1,7 @@
 package com.ylysenkova.movieland.dao.jdbc;
 
 import com.ylysenkova.movieland.dao.MovieDao;
-import com.ylysenkova.movieland.dao.jdbc.utils.JdbcCreateSortingSql;
+import com.ylysenkova.movieland.dao.jdbc.utils.QueryBuilder;
 import com.ylysenkova.movieland.dao.mapper.MovieCountryMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieGenreMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieMapper;
@@ -130,7 +130,7 @@ public class JdbcMovieDao implements MovieDao {
     @Override
     public List<Movie> getAllMoviesSorted(String field, Sorting direction) {
         logger.debug("Sorting movies by rating is started.");
-        List<Movie> movieList = jdbcTemplate.query(JdbcCreateSortingSql.getSortedSQL(getAllMovies, field, direction), movieMapper);
+        List<Movie> movieList = jdbcTemplate.query(QueryBuilder.getSortedSQL(getAllMovies, field, direction), movieMapper);
         logger.debug("Sorting by rating returned = {}", movieList);
         return movieList;
     }
@@ -140,7 +140,7 @@ public class JdbcMovieDao implements MovieDao {
         logger.debug("Sorting movies by rating is started.");
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("genreId", genreId);
-        List<Movie> movieList = namedParameterJdbcTemplate.query(JdbcCreateSortingSql.getSortedSQL(getMovieByGenreId, field, direction), sqlParameterSource, movieMapper);
+        List<Movie> movieList = namedParameterJdbcTemplate.query(QueryBuilder.getSortedSQL(getMovieByGenreId, field, direction), sqlParameterSource, movieMapper);
         logger.debug("Sorting by rating returned = {}", movieList);
         return movieList;
     }

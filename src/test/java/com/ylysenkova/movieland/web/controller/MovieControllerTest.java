@@ -5,7 +5,7 @@ import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
 import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
-import com.ylysenkova.movieland.service.impl.SortingValidationService;
+import com.ylysenkova.movieland.service.impl.SortingValidationServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +37,7 @@ public class MovieControllerTest {
     @Mock
     private MovieServiceImpl movieService;
     @Mock
-    private SortingValidationService sortingValidationService;
+    private SortingValidationServiceImpl sortingValidationService;
 
     @InjectMocks
     private MovieController movieController;

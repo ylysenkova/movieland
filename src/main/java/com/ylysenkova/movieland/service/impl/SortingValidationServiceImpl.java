@@ -1,10 +1,11 @@
 package com.ylysenkova.movieland.service.impl;
 
 import com.ylysenkova.movieland.model.Sorting;
+import com.ylysenkova.movieland.service.SortingValidationServise;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SortingValidationService {
+public class SortingValidationServiceImpl implements SortingValidationServise{
 
     public void allowOnlyRatingOrPriceSorting (String ratingSortDirection, String priceSortDirection) {
         if(ratingSortDirection !=null && priceSortDirection != null) {
@@ -12,7 +13,7 @@ public class SortingValidationService {
         }
     }
 
-    public void allowDescSortingForRating (Sorting direction) {
+    public void checkSortingForRating(Sorting direction) {
         if(direction == Sorting.ASC) {
             throw new RuntimeException("ASC is not allowed for Rating");
         }

@@ -3,7 +3,7 @@ package com.ylysenkova.movieland.web.controller;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
 import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
-import com.ylysenkova.movieland.service.impl.SortingValidationService;
+import com.ylysenkova.movieland.service.impl.SortingValidationServiceImpl;
 import com.ylysenkova.movieland.web.response.ExceptionResponse;
 import com.ylysenkova.movieland.web.response.MovieAllResponse;
 import com.ylysenkova.movieland.web.response.MovieRandomResponse;
@@ -29,7 +29,7 @@ public class MovieController {
     @Autowired
     private MovieServiceImpl movieService;
     @Autowired
-    private SortingValidationService sortingValidationService;
+    private SortingValidationServiceImpl sortingValidationService;
 
 
     @RequestMapping(value = "/movie", method = RequestMethod.GET)
@@ -48,7 +48,7 @@ public class MovieController {
             List<Movie> movies;
 
             if (ratingSortDirection != null) {
-                sortingValidationService.allowDescSortingForRating(Sorting.getSorting(ratingSortDirection));
+                sortingValidationService.checkSortingForRating(Sorting.getSorting(ratingSortDirection));
                 movies = movieService.getAllSorted("rating", Sorting.getSorting(ratingSortDirection));
             } else if (priceSortDirection != null) {
                 movies = movieService.getAllSorted("price", Sorting.getSorting(priceSortDirection));
@@ -97,7 +97,7 @@ public class MovieController {
         List<Movie> movies = movieService.getMovieByGenreId(genreId);
         List<MovieResponseByGenre> movieResponseByGenres = new ArrayList<>();
         if (ratingSortDirection != null) {
-            sortingValidationService.allowDescSortingForRating(Sorting.getSorting(ratingSortDirection));
+            sortingValidationService.checkSortingForRating(Sorting.getSorting(ratingSortDirection));
             movies = movieService.getAllSorted("rating", Sorting.getSorting(ratingSortDirection));
         } else if (priceSortDirection != null) {
             movies = movieService.getAllSorted("price", Sorting.getSorting(priceSortDirection));
