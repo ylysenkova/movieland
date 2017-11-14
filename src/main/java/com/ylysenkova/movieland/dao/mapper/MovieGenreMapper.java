@@ -14,12 +14,11 @@ public class MovieGenreMapper implements RowMapper<HashMap<Integer, Genre>> {
     @Override
     public HashMap<Integer, Genre> mapRow(ResultSet resultSet, int i) throws SQLException {
         Genre genre = new Genre();
-        HashMap<Integer, Genre> genreByMovieId;
+        HashMap<Integer, Genre> genreByMovieId = new HashMap<>();
 
         genre.setId(resultSet.getInt("id"));
         int movieId = resultSet.getInt("movie_id");
         genre.setName(resultSet.getString("name"));
-        genreByMovieId = new HashMap<>();
         genreByMovieId.put(movieId, genre);
 
         return genreByMovieId;

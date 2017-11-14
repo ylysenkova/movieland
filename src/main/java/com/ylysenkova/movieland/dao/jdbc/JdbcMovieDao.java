@@ -28,6 +28,7 @@ public class JdbcMovieDao implements MovieDao {
     private final MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
     private final MovieGenreMapper movieGenreMapper = new MovieGenreMapper();
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Random random = new Random();
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -58,7 +59,6 @@ public class JdbcMovieDao implements MovieDao {
     public Set<Integer> getThreeMovieIds() {
         logger.debug("Method getThreeMovieIds has started");
         Set<Integer> movieIds = new HashSet<>();
-        Random random = new Random();
 
         int movieCount = jdbcTemplate.queryForObject(getMovieCount, Integer.class);
         int serchCount = 0;
