@@ -41,9 +41,7 @@ public class GenreControllerTest {
     }
     @Test
     public void getAllGenres() throws Exception {
-        Genre genre = new Genre();
-        genre.setId(1);
-        genre.setName("USA");
+        Genre genre = new Genre(1, "USA");
 
         when(genreService.getAll()).thenReturn(Arrays.asList(genre));
 

@@ -12,10 +12,10 @@
 
 
     <bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://localhost:3306/movieland" />
-        <property name="username" value="root" />
-        <property name="password" value="root" />
+        <property name="driverClassName" value="${mysql.db.driverclassname}" />
+        <property name="url" value="${mysql.db.url}" />
+        <property name="username" value="${mysql.db.username}" />
+        <property name="password" value="${mysql.db.password}" />
     </bean>
 
     <bean name="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
@@ -24,6 +24,16 @@
 
     <bean name="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
         <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean name="genreDao" class="com.ylysenkova.movieland.dao.jdbc.CachedGenreDao">
+        <property name="cachableGenreDao" ref="jdbcGenreDao"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:property/db.properties</value>
+        </property>
     </bean>
 
 

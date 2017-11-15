@@ -1,5 +1,6 @@
 package com.ylysenkova.movieland.web.controller;
 
+import com.ylysenkova.movieland.web.converter.SortingConvertor;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
 import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -47,10 +49,10 @@ public class MovieController {
             List<MovieAllResponse> movieAllResponses = new ArrayList<>();
             List<Movie> movies;
             if (ratingSortDirection != null) {
-                sortingValidationService.checkSortingForRating(Sorting.getSorting(ratingSortDirection));
-                movies = movieService.getAllSorted("rating", Sorting.getSorting(ratingSortDirection));
+                sortingValidationService.checkSortingForRating(ratingSortDirection);
+                movies = movieService.getAllSorted("rating", ratingSortDirection);
             } else if (priceSortDirection != null) {
-                movies = movieService.getAllSorted("price", Sorting.getSorting(priceSortDirection));
+                movies = movieService.getAllSorted("price", priceSortDirection);
             } else {
                 movies = movieService.getAll();
             }
@@ -96,12 +98,12 @@ public class MovieController {
             List<Movie> movies;
             List<MovieResponseByGenre> movieResponseByGenres = new ArrayList<>();
             if (ratingSortDirection != null) {
-                sortingValidationService.checkSortingForRating(Sorting.getSorting(ratingSortDirection));
-                movies = movieService.getMoviesByGenreSorted(genreId, "rating", Sorting.getSorting(ratingSortDirection));
+                sortingValidationService.checkSortingForRating(ratingSortDirection);
+                movies = movieService.getMoviesByGenreSorted(genreId, "rating", ratingSortDirection);
             } else if (priceSortDirection != null) {
-                movies = movieService.getMoviesByGenreSorted(genreId, "price", Sorting.getSorting(priceSortDirection));
+                movies = movieService.getMoviesByGenreSorted(genreId, "price", priceSortDirection);
             } else {
-                movies = movieService.getAll();
+                movies = movieService.getMovieByGenreId(genreId);
             }
             for (Movie movie : movies) {
                 movieResponseByGenres.add(new MovieResponseByGenre(movie));
@@ -111,6 +113,11 @@ public class MovieController {
         } catch (RuntimeException e) {
             return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @InitBinder
+    public void initBinder (WebDataBinder binder) {
+        binder.registerCustomEditor(Sorting.class, new SortingConvertor());
     }
 
 

@@ -8,16 +8,16 @@ import java.util.Set;
 
 public interface MovieDao {
 
-    public List<Movie> getAll();
+    List<Movie> getAll();
 
-    public Set<Integer> getThreeMovieIds();
+    Set<Integer> getThreeMovieIds();
 
-    public List<Movie> getThreeMovies(Set<Integer> movieIds);
+    List<Movie> getThreeMovies(Set<Integer> movieIds);
 
-    public List<Movie> getMovieByGenreId(int genreId);
+    List<Movie> getMovieByGenreId(int genreId);
 
-    public List<Movie> getAllMoviesSorted(String field, Sorting direction);
+    List<Movie> getAllMoviesSorted(String field, Sorting direction);
 
-    public List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction);
+    List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction);
 
 }

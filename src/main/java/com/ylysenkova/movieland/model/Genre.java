@@ -3,13 +3,12 @@ package com.ylysenkova.movieland.model;
 
 public class Genre {
 
-    private int id;
-    private String name;
+    private final int id;
+    private final String name;
 
-    public Genre() {
-    }
 
-    public Genre(String name) {
+    public Genre(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -17,16 +16,8 @@ public class Genre {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Override
