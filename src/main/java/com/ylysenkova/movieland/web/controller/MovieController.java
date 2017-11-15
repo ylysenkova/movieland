@@ -36,8 +36,8 @@ public class MovieController {
     public
     @ResponseBody
     ResponseEntity<?> getAll(
-            @RequestParam(value = "rating", required = false) String ratingSortDirection,
-            @RequestParam(value = "price", required = false) String priceSortDirection
+            @RequestParam(value = "rating", required = false) Sorting ratingSortDirection,
+            @RequestParam(value = "price", required = false) Sorting priceSortDirection
     ) {
         try {
             sortingValidationService.allowOnlyRatingOrPriceSorting(ratingSortDirection, priceSortDirection);
@@ -46,7 +46,6 @@ public class MovieController {
             long startTime = System.currentTimeMillis();
             List<MovieAllResponse> movieAllResponses = new ArrayList<>();
             List<Movie> movies;
-
             if (ratingSortDirection != null) {
                 sortingValidationService.checkSortingForRating(Sorting.getSorting(ratingSortDirection));
                 movies = movieService.getAllSorted("rating", Sorting.getSorting(ratingSortDirection));
@@ -86,24 +85,24 @@ public class MovieController {
     @ResponseBody
     ResponseEntity<?> getMovieByGenreId(
             @PathVariable(value = "genreId") int genreId,
-            @RequestParam(value = "rating", required = false) String ratingSortDirection,
-            @RequestParam(value = "price", required = false) String priceSortDirection
+            @RequestParam(value = "rating", required = false) Sorting ratingSortDirection,
+            @RequestParam(value = "price", required = false) Sorting priceSortDirection
     ) {
         try {
             sortingValidationService.allowOnlyRatingOrPriceSorting(ratingSortDirection, priceSortDirection);
 
-        logger.debug("Sending request...");
-        long startTime = System.currentTimeMillis();
-        List<Movie> movies = movieService.getMovieByGenreId(genreId);
-        List<MovieResponseByGenre> movieResponseByGenres = new ArrayList<>();
-        if (ratingSortDirection != null) {
-            sortingValidationService.checkSortingForRating(Sorting.getSorting(ratingSortDirection));
-            movies = movieService.getAllSorted("rating", Sorting.getSorting(ratingSortDirection));
-        } else if (priceSortDirection != null) {
-            movies = movieService.getAllSorted("price", Sorting.getSorting(priceSortDirection));
-        } else {
-            movies = movieService.getAll();
-        }
+            logger.debug("Sending request...");
+            long startTime = System.currentTimeMillis();
+            List<Movie> movies;
+            List<MovieResponseByGenre> movieResponseByGenres = new ArrayList<>();
+            if (ratingSortDirection != null) {
+                sortingValidationService.checkSortingForRating(Sorting.getSorting(ratingSortDirection));
+                movies = movieService.getMoviesByGenreSorted(genreId, "rating", Sorting.getSorting(ratingSortDirection));
+            } else if (priceSortDirection != null) {
+                movies = movieService.getMoviesByGenreSorted(genreId, "price", Sorting.getSorting(priceSortDirection));
+            } else {
+                movies = movieService.getAll();
+            }
             for (Movie movie : movies) {
                 movieResponseByGenres.add(new MovieResponseByGenre(movie));
             }

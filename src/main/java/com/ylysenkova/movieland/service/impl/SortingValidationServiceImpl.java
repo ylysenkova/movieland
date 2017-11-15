@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SortingValidationServiceImpl implements SortingValidationServise{
 
-    public void allowOnlyRatingOrPriceSorting (String ratingSortDirection, String priceSortDirection) {
+    public void allowOnlyRatingOrPriceSorting (Sorting ratingSortDirection, Sorting priceSortDirection) {
         if(ratingSortDirection !=null && priceSortDirection != null) {
             throw new RuntimeException("Only one sorting parameter is allowed");
         }

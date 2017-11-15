@@ -4,6 +4,6 @@ import com.ylysenkova.movieland.model.Sorting;
 
 public interface SortingValidationServise {
 
-    void allowOnlyRatingOrPriceSorting (String ratingSortDirection, String priceSortDirection);
+    void allowOnlyRatingOrPriceSorting (Sorting ratingSortDirection, Sorting priceSortDirection);
     void checkSortingForRating(Sorting direction);
 }

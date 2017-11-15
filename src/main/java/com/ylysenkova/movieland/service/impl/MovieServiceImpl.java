@@ -33,4 +33,9 @@ public class MovieServiceImpl implements MovieService {
         return movieDao.getAllMoviesSorted(field, direction);
     }
 
+    @Override
+    public List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction) {
+        return movieDao.getMoviesByGenreSorted(genreId, field, direction);
+    }
+
 }

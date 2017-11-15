@@ -8,12 +8,14 @@ import java.util.List;
 
 public interface MovieService {
 
-    public List<Movie> getAll();
+    List<Movie> getAll();
 
-    public List<Movie> getThreeMovies();
+    List<Movie> getThreeMovies();
 
-    public List<Movie> getMovieByGenreId(int genreId);
+    List<Movie> getMovieByGenreId(int genreId);
 
-    public List<Movie> getAllSorted(String field, Sorting direction);
+    List<Movie> getAllSorted(String field, Sorting direction);
+
+    List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction);
 
 }
