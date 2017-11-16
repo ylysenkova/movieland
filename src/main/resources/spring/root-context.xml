@@ -11,7 +11,7 @@
     </context:component-scan>
 
 
-    <bean name="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+    <bean name="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <property name="driverClassName" value="${mysql.db.driverclassname}" />
         <property name="url" value="${mysql.db.url}" />
         <property name="username" value="${mysql.db.username}" />
@@ -27,7 +27,7 @@
     </bean>
 
     <bean name="genreDao" class="com.ylysenkova.movieland.dao.jdbc.CachedGenreDao">
-        <property name="cachableGenreDao" ref="jdbcGenreDao"/>
+        <property name="jdbcGenreDao" ref="jdbcGenreDao"/>
     </bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

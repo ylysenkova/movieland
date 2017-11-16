@@ -14,12 +14,12 @@ public class CachedGenreDao implements GenreDao {
     private volatile List<Genre> cacheAllGenres = new ArrayList<>();
 
 
-    private GenreDao cachableGenreDao;
+    private GenreDao jdbcGenreDao;
 
     @Scheduled(initialDelayString = "${cache.refresh.delay}", fixedDelayString = "${cache.refresh.delay}")
     @PostConstruct
     public List<Genre> invalidate() {
-        cacheAllGenres = cachableGenreDao.getAll();
+        cacheAllGenres = jdbcGenreDao.getAll();
         return cacheAllGenres;
     }
 
@@ -28,12 +28,8 @@ public class CachedGenreDao implements GenreDao {
         return cacheAllGenres;
     }
 
-    public GenreDao getCachableGenreDao() {
-        return cachableGenreDao;
-    }
-
-    public void setCachableGenreDao(GenreDao cachableGenreDao) {
-        this.cachableGenreDao = cachableGenreDao;
+    public void setJdbcGenreDao(GenreDao jdbcGenreDao) {
+        this.jdbcGenreDao = jdbcGenreDao;
     }
 
 }
