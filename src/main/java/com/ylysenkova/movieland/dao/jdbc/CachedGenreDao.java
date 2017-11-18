@@ -11,21 +11,22 @@ import java.util.List;
 
 public class CachedGenreDao implements GenreDao {
 
-    private volatile List<Genre> cacheAllGenres = new ArrayList<>();
+    private volatile List<Genre> cacheAllGenres;
 
 
     private GenreDao jdbcGenreDao;
 
     @Scheduled(initialDelayString = "${cache.refresh.delay}", fixedDelayString = "${cache.refresh.delay}")
     @PostConstruct
-    public List<Genre> invalidate() {
+    public void invalidate() {
         cacheAllGenres = jdbcGenreDao.getAll();
-        return cacheAllGenres;
     }
 
     @Override
     public List<Genre> getAll() {
-        return cacheAllGenres;
+        List<Genre> localCache = new ArrayList<>();
+        localCache.addAll(cacheAllGenres);
+        return localCache;
     }
 
     public void setJdbcGenreDao(GenreDao jdbcGenreDao) {

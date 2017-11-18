@@ -1,13 +1,11 @@
 package com.ylysenkova.movieland.dao.mapper;
 
 import com.ylysenkova.movieland.model.Country;
-import com.ylysenkova.movieland.model.Movie;
-import javafx.util.Pair;
+import com.ylysenkova.movieland.model.Pair;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -24,12 +22,10 @@ public class MovieCountryMapperTest {
         when(resultSet.getString("name")).thenReturn("USA");
 
         MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
-        Map<Integer, Country> movieCountryActual =  movieCountryMapper.mapRow(resultSet, 0);
-        for (Map.Entry<Integer, Country> countryActual : movieCountryActual.entrySet()) {
-            assertEquals(1, countryActual.getKey(), 0);
-            assertEquals(2, countryActual.getValue().getId());
-            assertEquals("USA", countryActual.getValue().getName());
-        }
+        Pair<Integer, Country> movieCountryActual =  movieCountryMapper.mapRow(resultSet, 0);
+            assertEquals(1, movieCountryActual.getKey(), 0);
+            assertEquals(2, movieCountryActual.getValue().getId());
+            assertEquals("USA", movieCountryActual.getValue().getName());
 
 
 

@@ -1,12 +1,11 @@
 package com.ylysenkova.movieland.dao.mapper;
 
 import com.ylysenkova.movieland.model.Genre;
-import javafx.util.Pair;
+import com.ylysenkova.movieland.model.Pair;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.sql.ResultSet;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -22,12 +21,11 @@ public class MovieGenreMapperTest {
         when(resultSet.getString("name")).thenReturn("Drama");
 
         MovieGenreMapper movieGenreMapper = new MovieGenreMapper();
-        Map<Integer, Genre> movieGenrePair =  movieGenreMapper.mapRow(resultSet, 0);
-        for(Map.Entry<Integer, Genre> movieGenreActual : movieGenrePair.entrySet()) {
-            assertEquals(1, movieGenreActual.getKey(), 0);
-            assertEquals(3, movieGenreActual.getValue().getId());
-            assertEquals("Drama", movieGenreActual.getValue().getName());
-        }
+        Pair<Integer, Genre> movieGenrePair =  movieGenreMapper.mapRow(resultSet, 0);
+            assertEquals(1, movieGenrePair.getKey(), 0);
+            assertEquals(3, movieGenrePair.getValue().getId());
+            assertEquals("Drama", movieGenrePair.getValue().getName());
+
 
     }
 

@@ -5,10 +5,7 @@ import com.ylysenkova.movieland.dao.jdbc.utils.QueryBuilder;
 import com.ylysenkova.movieland.dao.mapper.MovieCountryMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieGenreMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieMapper;
-import com.ylysenkova.movieland.model.Country;
-import com.ylysenkova.movieland.model.Genre;
-import com.ylysenkova.movieland.model.Movie;
-import com.ylysenkova.movieland.model.Sorting;
+import com.ylysenkova.movieland.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,27 +80,25 @@ public class JdbcMovieDao implements MovieDao {
         sqlParameterSource.addValue("movieIds", movieIds);
 
         List<Movie> movieList = namedParameterJdbcTemplate.query(getThreeMovies, sqlParameterSource, movieMapper);
-        List<HashMap<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByThreeMovieId, sqlParameterSource, movieCountryMapper);
-        List<HashMap<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByThreeMovieId, sqlParameterSource, movieGenreMapper);
+        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByThreeMovieId, sqlParameterSource, movieCountryMapper);
+        List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByThreeMovieId, sqlParameterSource, movieGenreMapper);
 
 
         for (Movie movie : movieList) {
             List<Country> countryList = new ArrayList<>();
-            for (HashMap<Integer, Country> movieCountryMap : countryMapList) {
-                for (Map.Entry<Integer, Country> countryMap : movieCountryMap.entrySet())
+            for (Pair<Integer, Country> movieCountryMap : countryMapList) {
 
-                    if (movie.getId() == countryMap.getKey()) {
-                        countryList.add(countryMap.getValue());
+                    if (movie.getId() == movieCountryMap.getKey()) {
+                        countryList.add(movieCountryMap.getValue());
                     }
             }
             movie.setCountries(countryList);
 
             List<Genre> genreList = new ArrayList<>();
 
-            for (HashMap<Integer, Genre> movieGenreMap : genreMapList) {
-                for (Map.Entry<Integer, Genre> genreMap : movieGenreMap.entrySet())
-                    if (movie.getId() == genreMap.getKey()) {
-                        genreList.add(genreMap.getValue());
+            for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
+                    if (movie.getId() == movieGenreMap.getKey()) {
+                        genreList.add(movieGenreMap.getValue());
                     }
             }
             movie.setGenres(genreList);
