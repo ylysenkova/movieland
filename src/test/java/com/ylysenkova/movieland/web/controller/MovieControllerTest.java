@@ -84,8 +84,8 @@ public class MovieControllerTest {
 
         countries.add(new Country("USD"));
         countries.add(new Country("UK"));
-        genres.add(new Genre("Drama"));
-        genres.add(new Genre("Horror"));
+        genres.add(new Genre(1, "Drama"));
+        genres.add(new Genre(2, "Horror"));
         movie.setId(2);
         movie.setNameRussian("1+1");
         movie.setNameNative("1+2");
@@ -206,6 +206,7 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[0].rating", is(movie.getRating())))
                 .andExpect(jsonPath("$[0].price", is(movie.getPrice())));
     }
+
 
 }
 

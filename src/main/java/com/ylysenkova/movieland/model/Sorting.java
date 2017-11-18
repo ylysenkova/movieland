@@ -15,9 +15,9 @@ public enum Sorting {
         return value;
     }
 
-    public static Sorting getSorting(Sorting direction) {
+    public static Sorting getSorting(String direction) {
         for (Sorting sorting : values()) {
-            if(sorting.value.equalsIgnoreCase(direction.toString())) {
+            if(sorting.value.equalsIgnoreCase(direction)) {
                 return sorting;
             }
         }
