@@ -45,7 +45,7 @@ public class GenreControllerTest {
 
         when(genreService.getAll()).thenReturn(Arrays.asList(genre));
 
-        mockMvc.perform(get("/v1/genre"))
+        mockMvc.perform(get("/genre"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(jsonPath("$[0].id", is(genre.getId())))

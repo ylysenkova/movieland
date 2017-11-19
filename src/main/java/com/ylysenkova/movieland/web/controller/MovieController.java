@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/movie", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class MovieController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -31,7 +31,7 @@ public class MovieController {
     private SortingValidationServiceImpl sortingValidationService;
 
 
-    @RequestMapping(value = "/movie", method = RequestMethod.GET)
+    @RequestMapping( method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity<?> getAll(
@@ -64,7 +64,7 @@ public class MovieController {
         }
     }
 
-    @RequestMapping(value = "/movie/random", method = RequestMethod.GET)
+    @RequestMapping(value = "/random", method = RequestMethod.GET)
     public
     @ResponseBody
     List<MovieRandomResponse> getThreeMovies() {
@@ -79,7 +79,7 @@ public class MovieController {
         return movieRandomResponses;
     }
 
-    @RequestMapping(value = "/movie/genre/{genreId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/genre/{genreId}", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity<?> getMovieByGenreId(
@@ -112,7 +112,7 @@ public class MovieController {
         }
     }
 
-    @RequestMapping(value = "/movie/{movieId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{movieId}", method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<?> getMovieById (@PathVariable(value = "movieId") int movieId) {
         logger.debug("Sending request ... ");
         long startTime = System.currentTimeMillis();

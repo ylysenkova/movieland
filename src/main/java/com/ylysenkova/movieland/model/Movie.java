@@ -1,5 +1,6 @@
 package com.ylysenkova.movieland.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Movie {
@@ -10,7 +11,7 @@ public class Movie {
     private int yearOfRelease;
     private String description;
     private double rating;
-    private double price;
+    private BigDecimal price;
     private String picturePath;
     private List<Country> countries;
     private List<Genre> genres;
@@ -69,11 +70,11 @@ public class Movie {
         this.rating = rating;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
