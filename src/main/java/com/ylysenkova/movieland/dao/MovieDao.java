@@ -16,6 +16,8 @@ public interface MovieDao {
 
     List<Movie> getMovieByGenreId(int genreId);
 
+    Movie getMovieById (int movieId);
+
     List<Movie> getAllMoviesSorted(String field, Sorting direction);
 
     List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction);

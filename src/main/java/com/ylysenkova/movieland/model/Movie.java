@@ -1,5 +1,6 @@
 package com.ylysenkova.movieland.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Movie {
@@ -10,10 +11,13 @@ public class Movie {
     private int yearOfRelease;
     private String description;
     private double rating;
-    private double price;
+    private BigDecimal price;
     private String picturePath;
     private List<Country> countries;
     private List<Genre> genres;
+    private List<Review> reviews;
+
+
 
     public Movie() {
     }
@@ -66,11 +70,11 @@ public class Movie {
         this.rating = rating;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
@@ -97,6 +101,13 @@ public class Movie {
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
 
     @Override
     public String toString() {
@@ -105,10 +116,13 @@ public class Movie {
                 ", nameRussian='" + nameRussian + '\'' +
                 ", nameNative='" + nameNative + '\'' +
                 ", yearOfRelease=" + yearOfRelease +
-                ", description=" + description +
+                ", description='" + description + '\'' +
                 ", rating=" + rating +
                 ", price=" + price +
                 ", picturePath='" + picturePath + '\'' +
+                ", countries=" + countries +
+                ", genres=" + genres +
+                ", reviews=" + reviews +
                 '}';
     }
 }

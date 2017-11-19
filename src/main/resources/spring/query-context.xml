@@ -30,6 +30,17 @@
                                 from movie m join movie_genre mg on m.id=mg.movie_id where mg.genre_id =:genreId;"/>
     </bean>
 
+    <bean id="getReviewWithUserByMovieId" class="java.lang.String">
+        <constructor-arg value="select mr.movie_id, r.id, r.text, u.id as user_id, u.user_name
+                                from movie_reviews mr join reviews r on mr.review_id=r.id
+                                join users u on r.user_id=u.id where mr.movie_id = :movieId;"/>
+    </bean>
+
+    <bean id="getMovieById" class="java.lang.String">
+        <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, description, rating, price, picture_Path
+                                from movie where id = :movieId;"/>
+    </bean>
+
     <bean id ="getMovieCount" class="java.lang.String">
         <constructor-arg value="select count(*) from movie;"/>
     </bean>

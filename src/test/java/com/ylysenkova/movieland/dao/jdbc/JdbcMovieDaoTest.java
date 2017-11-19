@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -17,7 +18,6 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath:/spring/spring-test-config.xml"})
 public class JdbcMovieDaoTest {
 
-
     @Autowired
     private MovieDao movieDao;
 
@@ -25,6 +25,12 @@ public class JdbcMovieDaoTest {
     public void getAllMovies() throws Exception {
         List<Movie> movies = movieDao.getAll();
         assertEquals(25, movies.size());
+    }
+
+    @Test
+    public void getMovieById() throws Exception {
+        Movie movieById = movieDao.getMovieById(3);
+        assertEquals(3, movieById.getId());
     }
 
     @Test
@@ -74,12 +80,12 @@ public class JdbcMovieDaoTest {
     public void getSortingByPrice() throws Exception {
 
         List<Movie> movieSortByPrice = movieDao.getAllMoviesSorted("price",Sorting.DESC);
-        assertEquals(200.6, movieSortByPrice.get(0).getPrice(), 0);
-        assertEquals(100, movieSortByPrice.get(24).getPrice(), 0);
+        assertEquals(BigDecimal.valueOf(200.6).compareTo(movieSortByPrice.get(0).getPrice()), 0);
+        assertEquals(BigDecimal.valueOf(100).compareTo(movieSortByPrice.get(24).getPrice()), 0);
 
         movieSortByPrice = movieDao.getAllMoviesSorted("price",Sorting.ASC);
-        assertEquals(100, movieSortByPrice.get(0).getPrice(), 0);
-        assertEquals(200.6, movieSortByPrice.get(24).getPrice(), 0);
+        assertEquals(BigDecimal.valueOf(100).compareTo(movieSortByPrice.get(0).getPrice()), 0);
+        assertEquals(BigDecimal.valueOf(200.6).compareTo(movieSortByPrice.get(24).getPrice()), 0);
 
     }
 

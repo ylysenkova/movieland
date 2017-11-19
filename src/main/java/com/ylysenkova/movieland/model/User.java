@@ -5,7 +5,7 @@ public class User {
     private int id;
     private String name;
     private String email;
-    private String nickname;
+    private String password;
 
     public User() {
     }
@@ -34,12 +34,12 @@ public class User {
         this.email = email;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", nickname='" + nickname + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

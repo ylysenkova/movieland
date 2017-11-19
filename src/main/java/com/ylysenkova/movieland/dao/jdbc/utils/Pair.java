@@ -1,4 +1,4 @@
-package com.ylysenkova.movieland.model;
+package com.ylysenkova.movieland.dao.jdbc.utils;
 
 public class Pair<K, V> {
     private K key;

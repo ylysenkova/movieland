@@ -5,10 +5,7 @@ import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
 import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
 import com.ylysenkova.movieland.service.impl.SortingValidationServiceImpl;
-import com.ylysenkova.movieland.web.response.ExceptionResponse;
-import com.ylysenkova.movieland.web.response.MovieAllResponse;
-import com.ylysenkova.movieland.web.response.MovieRandomResponse;
-import com.ylysenkova.movieland.web.response.MovieResponseByGenre;
+import com.ylysenkova.movieland.web.response.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/movie", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class MovieController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -34,7 +31,7 @@ public class MovieController {
     private SortingValidationServiceImpl sortingValidationService;
 
 
-    @RequestMapping(value = "/movie", method = RequestMethod.GET)
+    @RequestMapping( method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity<?> getAll(
@@ -67,7 +64,7 @@ public class MovieController {
         }
     }
 
-    @RequestMapping(value = "/movie/random", method = RequestMethod.GET)
+    @RequestMapping(value = "/random", method = RequestMethod.GET)
     public
     @ResponseBody
     List<MovieRandomResponse> getThreeMovies() {
@@ -82,7 +79,7 @@ public class MovieController {
         return movieRandomResponses;
     }
 
-    @RequestMapping(value = "/movie/genre/{genreId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/genre/{genreId}", method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity<?> getMovieByGenreId(
@@ -113,6 +110,17 @@ public class MovieController {
         } catch (RuntimeException e) {
             return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @RequestMapping(value = "/{movieId}", method = RequestMethod.GET)
+    public @ResponseBody ResponseEntity<?> getMovieById (@PathVariable(value = "movieId") int movieId) {
+        logger.debug("Sending request ... ");
+        long startTime = System.currentTimeMillis();
+        Movie movie = movieService.getMovieById(movieId);
+        MovieWithReviewResponse  movieWithReviewResponse = new MovieWithReviewResponse(movie);
+
+        logger.debug("Movie {} is received.It took {} ms", movie, System.currentTimeMillis() - startTime);
+        return new ResponseEntity<MovieWithReviewResponse>(movieWithReviewResponse, HttpStatus.OK);
     }
 
     @InitBinder

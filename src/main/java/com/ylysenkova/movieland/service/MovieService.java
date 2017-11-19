@@ -14,6 +14,8 @@ public interface MovieService {
 
     List<Movie> getMovieByGenreId(int genreId);
 
+    Movie getMovieById(int movieId);
+
     List<Movie> getAllSorted(String field, Sorting direction);
 
     List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction);

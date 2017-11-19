@@ -4,6 +4,7 @@ import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class MovieThreeResponse {
@@ -14,7 +15,7 @@ public class MovieThreeResponse {
     private int yearOfRelease;
     private String description;
     private double rating;
-    private double price;
+    private BigDecimal price;
     private String picturePath;
     private List<Country> countries;
     private List<Genre> genres;
@@ -83,11 +84,11 @@ public class MovieThreeResponse {
         this.rating = rating;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

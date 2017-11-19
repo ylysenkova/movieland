@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/v1", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = "/genre", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class GenreController {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -22,7 +22,7 @@ public class GenreController {
     @Autowired
     private GenreServiceImpl genreService;
 
-    @RequestMapping(value = "/genre", method = RequestMethod.GET)
+    @RequestMapping( method = RequestMethod.GET)
     public
     @ResponseBody
     List<Genre> getAll() {

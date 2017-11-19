@@ -4,6 +4,7 @@ import com.ylysenkova.movieland.model.Movie;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 
 import static org.junit.Assert.*;
@@ -18,7 +19,8 @@ public class MovieMapperTest{
 
         when(resultSet.getInt(any())).thenReturn(1).thenReturn(2017);
         when(resultSet.getString(any())).thenReturn("Russian").thenReturn("Native").thenReturn("Path");
-        when(resultSet.getDouble(any())).thenReturn(5.0).thenReturn(29.99);
+        when(resultSet.getDouble(any())).thenReturn(5.0);
+        when(resultSet.getBigDecimal(any())).thenReturn(BigDecimal.valueOf(29.99));
 
         MovieMapper movieMapper = new MovieMapper();
         Movie movieActual = movieMapper.mapRow(resultSet, 0);
@@ -27,7 +29,7 @@ public class MovieMapperTest{
         assertEquals("Native", movieActual.getNameNative());
         assertEquals(2017, movieActual.getYearOfRelease());
         assertEquals(5.0, movieActual.getRating(), 0);
-        assertEquals(29.99, movieActual.getPrice(), 0);
+        assertEquals(BigDecimal.valueOf(29.99).compareTo(movieActual.getPrice()), 0);
         assertEquals("Path", movieActual.getPicturePath());
 
     }

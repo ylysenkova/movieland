@@ -2,6 +2,8 @@ package com.ylysenkova.movieland.web.response;
 
 import com.ylysenkova.movieland.model.Movie;
 
+import java.math.BigDecimal;
+
 public class MovieAllResponse {
 
     private int id;
@@ -9,7 +11,7 @@ public class MovieAllResponse {
     private String nameNative;
     private int yearOfRelease;
     private double rating;
-    private double price;
+    private BigDecimal price;
     private String picturePath;
 
     public MovieAllResponse() {
@@ -65,11 +67,11 @@ public class MovieAllResponse {
         this.rating = rating;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

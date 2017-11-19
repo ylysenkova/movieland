@@ -1,7 +1,7 @@
 package com.ylysenkova.movieland.dao.mapper;
 
 import com.ylysenkova.movieland.model.Genre;
-import com.ylysenkova.movieland.model.Pair;
+import com.ylysenkova.movieland.dao.jdbc.utils.Pair;
 import org.junit.Test;
 import org.mockito.Mockito;
 
