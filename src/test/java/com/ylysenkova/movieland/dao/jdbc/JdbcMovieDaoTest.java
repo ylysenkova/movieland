@@ -17,7 +17,6 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath:/spring/spring-test-config.xml"})
 public class JdbcMovieDaoTest {
 
-
     @Autowired
     private MovieDao movieDao;
 
@@ -25,6 +24,12 @@ public class JdbcMovieDaoTest {
     public void getAllMovies() throws Exception {
         List<Movie> movies = movieDao.getAll();
         assertEquals(25, movies.size());
+    }
+
+    @Test
+    public void getMovieById() throws Exception {
+        Movie movieById = movieDao.getMovieById(3);
+        assertEquals(3, movieById.getId());
     }
 
     @Test

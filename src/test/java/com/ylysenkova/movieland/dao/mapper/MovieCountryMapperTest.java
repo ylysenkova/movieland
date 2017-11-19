@@ -1,12 +1,11 @@
 package com.ylysenkova.movieland.dao.mapper;
 
 import com.ylysenkova.movieland.model.Country;
-import com.ylysenkova.movieland.model.Pair;
+import com.ylysenkova.movieland.dao.jdbc.utils.Pair;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.sql.ResultSet;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;

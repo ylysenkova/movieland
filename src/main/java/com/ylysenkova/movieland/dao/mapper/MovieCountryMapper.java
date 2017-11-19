@@ -1,12 +1,11 @@
 package com.ylysenkova.movieland.dao.mapper;
 
 import com.ylysenkova.movieland.model.Country;
-import com.ylysenkova.movieland.model.Pair;
+import com.ylysenkova.movieland.dao.jdbc.utils.Pair;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 
 public class MovieCountryMapper implements RowMapper<Pair<Integer, Country>> {

@@ -1,8 +1,13 @@
-package com.ylysenkova.movieland.model;
+package com.ylysenkova.movieland.web.response;
+
+import com.ylysenkova.movieland.model.Country;
+import com.ylysenkova.movieland.model.Genre;
+import com.ylysenkova.movieland.model.Movie;
+import com.ylysenkova.movieland.model.Review;
 
 import java.util.List;
 
-public class Movie {
+public class MovieWithReviewResponse {
 
     private int id;
     private String nameRussian;
@@ -16,20 +21,27 @@ public class Movie {
     private List<Genre> genres;
     private List<Review> reviews;
 
-
-
-    public Movie() {
+    public MovieWithReviewResponse() {
     }
 
-    public String getDescription() {
-        return description;
+    public MovieWithReviewResponse(Movie movie) {
+        this.id = movie.getId();
+        this.nameRussian = movie.getNameRussian();
+        this.nameNative = movie.getNameNative();
+        this.yearOfRelease = movie.getYearOfRelease();
+        this.description = movie.getDescription();
+        this.rating = movie.getRating();
+        this.price = movie.getPrice();
+        this.picturePath = movie.getPicturePath();
+        this.countries = movie.getCountries();
+        this.genres = movie.getGenres();
+        this.reviews = movie.getReviews();
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public int getId() {
+
+
         return id;
     }
 
@@ -59,6 +71,14 @@ public class Movie {
 
     public void setYearOfRelease(int yearOfRelease) {
         this.yearOfRelease = yearOfRelease;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getRating() {
@@ -100,6 +120,7 @@ public class Movie {
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
+
     public List<Review> getReviews() {
         return reviews;
     }
@@ -110,7 +131,7 @@ public class Movie {
 
     @Override
     public String toString() {
-        return "Movie{" +
+        return "MovieWithReviewResponse{" +
                 "id=" + id +
                 ", nameRussian='" + nameRussian + '\'' +
                 ", nameNative='" + nameNative + '\'' +

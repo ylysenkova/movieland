@@ -2,8 +2,6 @@ package com.ylysenkova.movieland.dao.jdbc;
 
 import com.ylysenkova.movieland.dao.MovieDao;
 import com.ylysenkova.movieland.dao.jdbc.utils.QueryBuilder;
-import com.ylysenkova.movieland.dao.mapper.MovieCountryMapper;
-import com.ylysenkova.movieland.dao.mapper.MovieGenreMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieMapper;
 import com.ylysenkova.movieland.model.*;
 import org.slf4j.Logger;
@@ -22,8 +20,6 @@ import java.util.*;
 public class JdbcMovieDao implements MovieDao {
 
     private final MovieMapper movieMapper = new MovieMapper();
-    private final MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
-    private final MovieGenreMapper movieGenreMapper = new MovieGenreMapper();
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final Random random = new Random();
 
@@ -38,11 +34,9 @@ public class JdbcMovieDao implements MovieDao {
     @Autowired
     private String getMovieCount;
     @Autowired
-    private String getCountryByThreeMovieId;
-    @Autowired
-    private String getGenreByThreeMovieId;
-    @Autowired
     private String getMovieByGenreId;
+    @Autowired
+    private String getMovieById;
 
     @Override
     public List<Movie> getAll() {
@@ -51,7 +45,6 @@ public class JdbcMovieDao implements MovieDao {
         logger.debug("Method getAll returned = {}", moviesList);
         return moviesList;
     }
-
     @Override
     public Set<Integer> getThreeMovieIds() {
         logger.debug("Method getThreeMovieIds has started");
@@ -80,29 +73,6 @@ public class JdbcMovieDao implements MovieDao {
         sqlParameterSource.addValue("movieIds", movieIds);
 
         List<Movie> movieList = namedParameterJdbcTemplate.query(getThreeMovies, sqlParameterSource, movieMapper);
-        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByThreeMovieId, sqlParameterSource, movieCountryMapper);
-        List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByThreeMovieId, sqlParameterSource, movieGenreMapper);
-
-
-        for (Movie movie : movieList) {
-            List<Country> countryList = new ArrayList<>();
-            for (Pair<Integer, Country> movieCountryMap : countryMapList) {
-
-                    if (movie.getId() == movieCountryMap.getKey()) {
-                        countryList.add(movieCountryMap.getValue());
-                    }
-            }
-            movie.setCountries(countryList);
-
-            List<Genre> genreList = new ArrayList<>();
-
-            for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
-                    if (movie.getId() == movieGenreMap.getKey()) {
-                        genreList.add(movieGenreMap.getValue());
-                    }
-            }
-            movie.setGenres(genreList);
-        }
 
         logger.debug("Method getThreeMovies returned = {}", movieList);
 
@@ -121,6 +91,20 @@ public class JdbcMovieDao implements MovieDao {
         logger.debug("Method getMovieByGenreId returned = {}", movies);
         return movies;
     }
+
+    @Override
+    public Movie getMovieById(int movieId) {
+        logger.debug("Method getMovieById is started.");
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("movieId", movieId);
+
+        Movie movie = namedParameterJdbcTemplate.queryForObject(getMovieById, sqlParameterSource, movieMapper);
+
+        logger.debug("Method getMovieById returns = {}", movie);
+        return movie;
+    }
+
 
     @Override
     public List<Movie> getAllMoviesSorted(String field, Sorting direction) {

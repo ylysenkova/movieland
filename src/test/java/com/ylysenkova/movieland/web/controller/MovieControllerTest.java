@@ -1,9 +1,6 @@
 package com.ylysenkova.movieland.web.controller;
 
-import com.ylysenkova.movieland.model.Country;
-import com.ylysenkova.movieland.model.Genre;
-import com.ylysenkova.movieland.model.Movie;
-import com.ylysenkova.movieland.model.Sorting;
+import com.ylysenkova.movieland.model.*;
 import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
 import com.ylysenkova.movieland.service.impl.SortingValidationServiceImpl;
 import org.junit.Before;
@@ -32,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(locations = {"classpath:/spring/root-context.xml"})
 @WebAppConfiguration
 public class MovieControllerTest {
+
     private MockMvc mockMvc;
 
     @Mock
@@ -135,6 +133,43 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[0].yearOfRelease", is(movie.getYearOfRelease())))
                 .andExpect(jsonPath("$[0].rating", is(movie.getRating())))
                 .andExpect(jsonPath("$[0].price", is(movie.getPrice())));
+    }
+
+    @Test
+    public void getMovieById() throws Exception {
+
+        Movie movie = new Movie();
+        List<Country> countries = new ArrayList<>();
+        List<Genre> genres = new ArrayList<>();
+        List<Review> reviews = new ArrayList<>();
+        countries.add(new Country("USA"));
+        genres.add(new Genre(2,"Horror"));
+        reviews.add(new Review(4, "tttt"));
+        movie.setId(9);
+        movie.setNameRussian("ggg");
+        movie.setNameNative("roro");
+        movie.setYearOfRelease(2000);
+        movie.setRating(2.2);
+        movie.setPrice(7.99);
+        movie.setCountries(countries);
+        movie.setGenres(genres);
+        movie.setReviews(reviews);
+
+        when(movieService.getMovieById(anyInt())).thenReturn(movie);
+
+        mockMvc.perform(get("/v1/movie/3"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("id", is(movie.getId())))
+                .andExpect(jsonPath("nameRussian", is(movie.getNameRussian())))
+                .andExpect(jsonPath("nameNative", is(movie.getNameNative())))
+                .andExpect(jsonPath("yearOfRelease", is(movie.getYearOfRelease())))
+                .andExpect(jsonPath("rating", is(movie.getRating())))
+                .andExpect(jsonPath("price", is(movie.getPrice())))
+                .andExpect(jsonPath("countries[0].name", is(movie.getCountries().get(0).getName())))
+                .andExpect(jsonPath("genres[0].name", is(movie.getGenres().get(0).getName())))
+                .andExpect(jsonPath("reviews[0].text", is(movie.getReviews().get(0).getText())));
+
     }
 
     @Test
