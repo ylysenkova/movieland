@@ -14,7 +14,12 @@ public class CountryServiceImpl implements CountryService{
     @Autowired
     private CountryDao countryDao;
     @Override
-    public void enrichMovieWithCountries(List<Movie> movieList) {
-        countryDao.enrichMovieWithCountries(movieList);
+    public void enrichMoviesWithCountries(List<Movie> movieList) {
+        countryDao.enrichMoviesWithCountries(movieList);
+    }
+
+    @Override
+    public void enrichMovieWithCountries(Movie movie) {
+        countryDao.enrichMovieWithCountries(movie);
     }
 }

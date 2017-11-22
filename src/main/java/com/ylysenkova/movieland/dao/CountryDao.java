@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface CountryDao {
 
-    void enrichMovieWithCountries(List<Movie> movieList);
+    void enrichMoviesWithCountries(List<Movie> movieList);
+
+    void enrichMovieWithCountries(Movie movie);
 }

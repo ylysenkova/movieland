@@ -27,9 +27,11 @@ public class JdbcCountryDao implements CountryDao{
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Autowired
     private String getCountryByThreeMovieId;
+    @Autowired
+    private String getCountryByMovieId;
 
     @Override
-    public void enrichMovieWithCountries(List<Movie> movieList) {
+    public void enrichMoviesWithCountries(List<Movie> movieList) {
         logger.debug("Enrichment Movies with Countries is started.");
         Set<Integer> movieIds = new HashSet<>();
 
@@ -49,6 +51,25 @@ public class JdbcCountryDao implements CountryDao{
             movies.setCountries(countries);
             }
         }
+
+    }
+
+    @Override
+    public void enrichMovieWithCountries(Movie movie) {
+        logger.debug("Enrichment Movies with Countries is started.");
+        int movieId = movie.getId();
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("movieId", movieId);
+        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByMovieId, sqlParameterSource,movieCountryMapper);
+            List<Country> countries = new ArrayList<>();
+            for (Pair<Integer, Country> movieCountryPair : countryMapList) {
+                if (movie.getId() == movieCountryPair.getKey()) {
+                    countries.add(movieCountryPair.getValue());
+                }
+                movie.setCountries(countries);
+            }
+
 
     }
 

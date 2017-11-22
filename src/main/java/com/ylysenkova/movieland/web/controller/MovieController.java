@@ -119,7 +119,7 @@ public class MovieController {
             @RequestParam(value = "currency", required = false) Currency currency) {
         logger.debug("Sending request ... ");
         long startTime = System.currentTimeMillis();
-        Movie movie = movieService.getMovieById(movieId);;
+        Movie movie = movieService.getMovieById(movieId);
         MovieWithReviewResponse  movieWithReviewResponse;
             if (currency != null) {
                 exchangeRate.exchangeCurrency(currency, movie);

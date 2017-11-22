@@ -1,7 +1,6 @@
 package com.ylysenkova.movieland.service.impl;
 
 import com.ylysenkova.movieland.dao.GenreDao;
-import com.ylysenkova.movieland.dao.jdbc.JdbcGenreDao;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.service.GenreService;
@@ -22,7 +21,14 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void enrichMovieWithGenres(List<Movie> movieList) {
-        genreDao.enrichMovieWithGenres(movieList);
+    public void enrichMoviesWithGenres(List<Movie> movieList) {
+        genreDao.enrichMoviesWithGenres(movieList);
     }
+
+    @Override
+    public void enrichMovieWithGenres(Movie movie) { genreDao.enrichMovieWithGenres(movie);
+
+    }
+
+
 }
