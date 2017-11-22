@@ -1,10 +1,13 @@
 package com.ylysenkova.movieland.web.controller;
 
+import com.ylysenkova.movieland.model.Currency;
+import com.ylysenkova.movieland.service.ExchangeRateService;
+import com.ylysenkova.movieland.service.MovieService;
+import com.ylysenkova.movieland.service.SortingValidationService;
+import com.ylysenkova.movieland.web.converter.CurrencyConvertot;
 import com.ylysenkova.movieland.web.converter.SortingConvertor;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
-import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
-import com.ylysenkova.movieland.service.impl.SortingValidationServiceImpl;
 import com.ylysenkova.movieland.web.response.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +29,11 @@ public class MovieController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private MovieServiceImpl movieService;
+    private MovieService movieService;
     @Autowired
-    private SortingValidationServiceImpl sortingValidationService;
+    private SortingValidationService sortingValidationService;
+    @Autowired
+    private ExchangeRateService exchangeRate;
 
 
     @RequestMapping( method = RequestMethod.GET)
@@ -87,7 +92,6 @@ public class MovieController {
             @RequestParam(value = "rating", required = false) Sorting ratingSortDirection,
             @RequestParam(value = "price", required = false) Sorting priceSortDirection
     ) {
-        try {
             sortingValidationService.allowOnlyRatingOrPriceSorting(ratingSortDirection, priceSortDirection);
 
             logger.debug("Sending request...");
@@ -107,25 +111,30 @@ public class MovieController {
             }
             logger.debug("Movie {} is received.It took {} ms ", movies, System.currentTimeMillis() - startTime);
             return new ResponseEntity<List<MovieResponseByGenre>>(movieResponseByGenres, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<ExceptionResponse>(new ExceptionResponse(e.getMessage()), HttpStatus.BAD_REQUEST);
-        }
     }
 
     @RequestMapping(value = "/{movieId}", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<?> getMovieById (@PathVariable(value = "movieId") int movieId) {
+    public @ResponseBody ResponseEntity<?> getMovieById (
+            @PathVariable(value = "movieId") int movieId,
+            @RequestParam(value = "currency", required = false) Currency currency) {
         logger.debug("Sending request ... ");
         long startTime = System.currentTimeMillis();
-        Movie movie = movieService.getMovieById(movieId);
-        MovieWithReviewResponse  movieWithReviewResponse = new MovieWithReviewResponse(movie);
+        Movie movie = movieService.getMovieById(movieId);;
+        MovieWithReviewResponse  movieWithReviewResponse;
+            if (currency != null) {
+                exchangeRate.exchangeCurrency(currency, movie);
+            }
+            movieWithReviewResponse = new MovieWithReviewResponse(movie);
 
-        logger.debug("Movie {} is received.It took {} ms", movie, System.currentTimeMillis() - startTime);
-        return new ResponseEntity<MovieWithReviewResponse>(movieWithReviewResponse, HttpStatus.OK);
+            logger.debug("Movie {} is received.It took {} ms", movieWithReviewResponse, System.currentTimeMillis() - startTime);
+            return new ResponseEntity<MovieWithReviewResponse>(movieWithReviewResponse, HttpStatus.OK);
+
     }
 
     @InitBinder
     public void initBinder (WebDataBinder binder) {
         binder.registerCustomEditor(Sorting.class, new SortingConvertor());
+        binder.registerCustomEditor(Currency.class, new CurrencyConvertot());
     }
 
 

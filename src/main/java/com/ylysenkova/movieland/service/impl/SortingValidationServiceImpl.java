@@ -1,11 +1,11 @@
 package com.ylysenkova.movieland.service.impl;
 
 import com.ylysenkova.movieland.model.Sorting;
-import com.ylysenkova.movieland.service.SortingValidationServise;
+import com.ylysenkova.movieland.service.SortingValidationService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SortingValidationServiceImpl implements SortingValidationServise{
+public class SortingValidationServiceImpl implements SortingValidationService {
 
     public void allowOnlyRatingOrPriceSorting (Sorting ratingSortDirection, Sorting priceSortDirection) {
         if(ratingSortDirection !=null && priceSortDirection != null) {

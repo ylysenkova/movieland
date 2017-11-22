@@ -1,6 +1,7 @@
 package com.ylysenkova.movieland.web.controller;
 
 import com.ylysenkova.movieland.model.*;
+import com.ylysenkova.movieland.service.impl.ExchangeRateServiceImpl;
 import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
 import com.ylysenkova.movieland.service.impl.SortingValidationServiceImpl;
 import org.junit.Before;
@@ -37,6 +38,8 @@ public class MovieControllerTest {
     private MovieServiceImpl movieService;
     @Mock
     private SortingValidationServiceImpl sortingValidationService;
+    @Mock
+    private ExchangeRateServiceImpl exchangeRateService;
 
     @InjectMocks
     private MovieController movieController;
@@ -54,7 +57,7 @@ public class MovieControllerTest {
         movie.setNameNative("The Shawshank Redemption");
         movie.setYearOfRelease(1994);
         movie.setRating(8.89);
-        movie.setPrice(BigDecimal.valueOf(123.45));
+        movie.setPrice(123.45);
         movie.setPicturePath("url");
         List<Movie> movieList = new ArrayList<>();
         movieList.add(movie);
@@ -91,7 +94,7 @@ public class MovieControllerTest {
         movie.setYearOfRelease(2000);
         movie.setDescription("bla");
         movie.setRating(5.0);
-        movie.setPrice(BigDecimal.valueOf(3.3));
+        movie.setPrice(3.3);
         movie.setCountries(countries);
         movie.setGenres(genres);
 
@@ -121,7 +124,7 @@ public class MovieControllerTest {
         movie.setNameNative("roro");
         movie.setYearOfRelease(2000);
         movie.setRating(2.2);
-        movie.setPrice(BigDecimal.valueOf(7.99));
+        movie.setPrice(7.99);
 
         when(movieService.getMovieByGenreId(3)).thenReturn(Arrays.asList(movie));
 
@@ -151,7 +154,7 @@ public class MovieControllerTest {
         movie.setNameNative("roro");
         movie.setYearOfRelease(2000);
         movie.setRating(2.2);
-        movie.setPrice(BigDecimal.valueOf(7.99));
+        movie.setPrice(7.99);
         movie.setCountries(countries);
         movie.setGenres(genres);
         movie.setReviews(reviews);
@@ -174,6 +177,43 @@ public class MovieControllerTest {
     }
 
     @Test
+    public void getMovieByIdWithCurrency() throws Exception {
+
+        Movie movie = new Movie();
+        List<Country> countries = new ArrayList<>();
+        List<Genre> genres = new ArrayList<>();
+        List<Review> reviews = new ArrayList<>();
+        countries.add(new Country("USA"));
+        genres.add(new Genre(2,"Horror"));
+        reviews.add(new Review(4, "tttt"));
+        movie.setId(9);
+        movie.setNameRussian("ggg");
+        movie.setNameNative("roro");
+        movie.setYearOfRelease(2000);
+        movie.setRating(2.2);
+        movie.setPrice(7.99);
+        movie.setCountries(countries);
+        movie.setGenres(genres);
+        movie.setReviews(reviews);
+
+        when(movieService.getMovieById(anyInt())).thenReturn(movie);
+
+        mockMvc.perform(get("/movie/3?currency=usd"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(jsonPath("id", is(movie.getId())))
+                .andExpect(jsonPath("nameRussian", is(movie.getNameRussian())))
+                .andExpect(jsonPath("nameNative", is(movie.getNameNative())))
+                .andExpect(jsonPath("yearOfRelease", is(movie.getYearOfRelease())))
+                .andExpect(jsonPath("rating", is(movie.getRating())))
+                .andExpect(jsonPath("price", is(movie.getPrice())))
+                .andExpect(jsonPath("countries[0].name", is(movie.getCountries().get(0).getName())))
+                .andExpect(jsonPath("genres[0].name", is(movie.getGenres().get(0).getName())))
+                .andExpect(jsonPath("reviews[0].text", is(movie.getReviews().get(0).getText())));
+
+    }
+
+    @Test
     public void getSortingByRatingDesc() throws Exception {
         Movie movie = new Movie();
         movie.setId(23);
@@ -181,7 +221,7 @@ public class MovieControllerTest {
         movie.setNameNative("rrr");
         movie.setYearOfRelease(1999);
         movie.setRating(2.0);
-        movie.setPrice(BigDecimal.valueOf(3.99));
+        movie.setPrice(3.99);
 
         when(movieService.getAllSorted("rating",Sorting.DESC)).thenReturn(Arrays.asList(movie));
 
@@ -205,7 +245,7 @@ public class MovieControllerTest {
         movie.setNameNative("rrr");
         movie.setYearOfRelease(1999);
         movie.setRating(2.0);
-        movie.setPrice(BigDecimal.valueOf(3.99));
+        movie.setPrice(3.99);
 
         when(movieService.getAllSorted("price",Sorting.DESC)).thenReturn(Arrays.asList(movie));
 
@@ -228,7 +268,7 @@ public class MovieControllerTest {
         movie.setNameNative("rrr");
         movie.setYearOfRelease(1999);
         movie.setRating(2.0);
-        movie.setPrice(BigDecimal.valueOf(3.99));
+        movie.setPrice(3.99);
 
         when(movieService.getAllSorted("price",Sorting.ASC)).thenReturn(Arrays.asList(movie));
 
