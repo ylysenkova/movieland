@@ -3,6 +3,7 @@ package com.ylysenkova.movieland.service.impl;
 import com.ylysenkova.movieland.config.RateConfig;
 import com.ylysenkova.movieland.model.Currency;
 import com.ylysenkova.movieland.model.Movie;
+import com.ylysenkova.movieland.service.ExchangeRateService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import static org.junit.Assert.*;
 public class ExchangeRateTest {
 
     @Autowired
-    ExchangeRateServiceImpl exchangeRate;
+    private ExchangeRateService exchangeRate;
     @Test
     public void exchangeCurrency() throws Exception {
         Movie movie = new Movie();

@@ -28,9 +28,7 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     private SimpleDateFormat format;
     private final BouncyCastleProvider bouncyCastleProvider = new BouncyCastleProvider();
     private Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private RestTemplate template;
+    private RestTemplate template = new RestTemplate();
 
     public void exchangeCurrency (Currency currencyTo, Movie movie) {
         Date date  = new Date();

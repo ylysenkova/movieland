@@ -15,8 +15,4 @@ public class RateConfig {
         return new ExchangeRateServiceImpl();
     }
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
     }
-}

@@ -1,9 +1,9 @@
 package com.ylysenkova.movieland.web.controller;
 
 import com.ylysenkova.movieland.model.*;
-import com.ylysenkova.movieland.service.impl.ExchangeRateServiceImpl;
-import com.ylysenkova.movieland.service.impl.MovieServiceImpl;
-import com.ylysenkova.movieland.service.impl.SortingValidationServiceImpl;
+import com.ylysenkova.movieland.service.ExchangeRateService;
+import com.ylysenkova.movieland.service.MovieService;
+import com.ylysenkova.movieland.service.SortingValidationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,11 +35,11 @@ public class MovieControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private MovieServiceImpl movieService;
+    private MovieService movieService;
     @Mock
-    private SortingValidationServiceImpl sortingValidationService;
+    private SortingValidationService sortingValidationService;
     @Mock
-    private ExchangeRateServiceImpl exchangeRateService;
+    private ExchangeRateService exchangeRateService;
 
     @InjectMocks
     private MovieController movieController;
