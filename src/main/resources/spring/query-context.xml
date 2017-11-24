@@ -61,4 +61,8 @@
         <constructor-arg value="select id, name from genre;"/>
     </bean>
 
+    <bean id="getUserByEmail" class="java.lang.String">
+        <constructor-arg value="select user_name, user_email, password from users where user_email = :email and password = :password;"/>
+    </bean>
+
 </beans>
