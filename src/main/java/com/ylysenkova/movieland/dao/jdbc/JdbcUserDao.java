@@ -4,6 +4,7 @@ package com.ylysenkova.movieland.dao.jdbc;
 import com.ylysenkova.movieland.dao.UserDao;
 import com.ylysenkova.movieland.dao.mapper.UserMapper;
 import com.ylysenkova.movieland.model.User;
+import com.ylysenkova.movieland.web.exceptions.AuthentificationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,13 @@ public class JdbcUserDao implements UserDao{
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("email", email);
-
-        User user = namedParameterJdbcTemplate.queryForObject(getUserByEmail, sqlParameterSource, userMapper);
-
+        sqlParameterSource.addValue("password", password);
+        User user;
+        try {
+            user = namedParameterJdbcTemplate.queryForObject(getUserByEmail, sqlParameterSource, userMapper);
+        } catch (RuntimeException e) {
+            throw new AuthentificationException("Invalid username or password.");
+        }
         logger.info("Method getUser returns = {} ", user);
         return user;
     }

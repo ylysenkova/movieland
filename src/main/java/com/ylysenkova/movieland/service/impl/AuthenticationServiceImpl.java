@@ -33,9 +33,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         LocalDateTime expiredTime = LocalDateTime.now().plusHours(2);
         User user = userDao.getUser(email, password);
 
-        if(user == null) {
-            throw new AuthentificationException("Invalid username or password.");
-        }
         UUID uuid = UUID.randomUUID();
         Token token = new Token(user,  expiredTime);
         tokenCache.put(uuid, token);
