@@ -39,12 +39,6 @@ public class Interceptor extends HandlerInterceptorAdapter {
         return true;
     }
 
-//    @Override
-//    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-//        logger.info("Post handle");
-//        MDC.clear();
-//
-//    }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
