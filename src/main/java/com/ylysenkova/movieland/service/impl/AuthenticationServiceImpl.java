@@ -41,6 +41,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         uuidTokenPair.setValue(token);
         return uuidTokenPair;
     }
+    @Override
+    public String getUserMailByUuid(UUID uuid) {
+        String mail = tokenCache.get(uuid).getUser().getEmail();
+        return mail;
+    }
 
     @Override
     public void logout(UUID uuid) {
