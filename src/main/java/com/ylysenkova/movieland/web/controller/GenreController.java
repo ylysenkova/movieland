@@ -1,6 +1,7 @@
 package com.ylysenkova.movieland.web.controller;
 
 import com.ylysenkova.movieland.model.Genre;
+import com.ylysenkova.movieland.service.GenreService;
 import com.ylysenkova.movieland.service.impl.GenreServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ public class GenreController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private GenreServiceImpl genreService;
+    private GenreService genreService;
 
     @RequestMapping( method = RequestMethod.GET)
     public

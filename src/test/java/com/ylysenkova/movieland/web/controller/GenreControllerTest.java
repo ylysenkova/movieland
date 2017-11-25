@@ -1,7 +1,7 @@
 package com.ylysenkova.movieland.web.controller;
 
 import com.ylysenkova.movieland.model.Genre;
-import com.ylysenkova.movieland.service.impl.GenreServiceImpl;
+import com.ylysenkova.movieland.service.GenreService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class GenreControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private GenreServiceImpl genreService;
+    private GenreService genreService;
 
     @InjectMocks
     private GenreController genreController;

@@ -15,4 +15,10 @@
 
     <mvc:annotation-driven/>
 
+    <mvc:interceptors>
+
+        <bean class="com.ylysenkova.movieland.web.controller.Interceptor" />
+
+    </mvc:interceptors>
+
 </beans>

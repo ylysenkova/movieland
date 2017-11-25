@@ -80,12 +80,12 @@ public class JdbcMovieDaoTest {
     public void getSortingByPrice() throws Exception {
 
         List<Movie> movieSortByPrice = movieDao.getAllMoviesSorted("price",Sorting.DESC);
-        assertEquals(BigDecimal.valueOf(200.6).compareTo(movieSortByPrice.get(0).getPrice()), 0);
-        assertEquals(BigDecimal.valueOf(100).compareTo(movieSortByPrice.get(24).getPrice()), 0);
+        assertEquals(200.6, movieSortByPrice.get(0).getPrice(), 0);
+        assertEquals(100, movieSortByPrice.get(24).getPrice(), 0);
 
         movieSortByPrice = movieDao.getAllMoviesSorted("price",Sorting.ASC);
-        assertEquals(BigDecimal.valueOf(100).compareTo(movieSortByPrice.get(0).getPrice()), 0);
-        assertEquals(BigDecimal.valueOf(200.6).compareTo(movieSortByPrice.get(24).getPrice()), 0);
+        assertEquals(100, movieSortByPrice.get(0).getPrice(), 0);
+        assertEquals(200.6, movieSortByPrice.get(24).getPrice(), 0);
 
     }
 

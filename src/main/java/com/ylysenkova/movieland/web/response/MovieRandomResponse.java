@@ -15,7 +15,7 @@ public class MovieRandomResponse {
     private int yearOfRelease;
     private String description;
     private double rating;
-    private BigDecimal price;
+    private double price;
     private String picturePath;
     private List<Country> countries;
     private List<Genre> genres;
@@ -84,11 +84,11 @@ public class MovieRandomResponse {
         this.rating = rating;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
