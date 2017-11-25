@@ -10,5 +10,9 @@ public interface AuthenticationService {
 
     Pair<UUID, Token> authenticationUser(String email, String password);
 
+    String getUserMailByUuid(UUID uuid);
+
+    boolean isAlive (UUID uuid);
+
     void logout(UUID uuid);
 }
