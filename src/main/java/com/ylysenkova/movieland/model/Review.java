@@ -3,7 +3,7 @@ package com.ylysenkova.movieland.model;
 public class Review {
 
     private int id;
-    private User users;
+    private User user;
     private String text;
 
     public Review() {
@@ -22,12 +22,12 @@ public class Review {
         this.id = id;
     }
 
-    public User getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(User users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getText() {
@@ -42,7 +42,7 @@ public class Review {
     public String toString() {
         return "Review{" +
                 "id=" + id +
-                ", users=" + users +
+                ", user=" + user +
                 ", text='" + text + '\'' +
                 '}';
     }

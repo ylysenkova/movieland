@@ -1,8 +1,6 @@
-package com.ylysenkova.movieland.web.response;
+package com.ylysenkova.movieland.web.dto.response;
 
 import com.ylysenkova.movieland.model.Movie;
-
-import java.math.BigDecimal;
 
 public class MovieResponseByGenre {
 

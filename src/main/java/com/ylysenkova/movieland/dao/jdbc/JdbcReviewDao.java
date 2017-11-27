@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -26,6 +28,10 @@ public class JdbcReviewDao implements ReviewDao{
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Autowired
     private String getReviewWithUserByMovieId;
+    @Autowired
+    private String addReview;
+    @Autowired
+    private String bindReviewMovie;
 
     @Override
     public void enrichMovieWithReviews(Movie movie) {
@@ -45,5 +51,29 @@ public class JdbcReviewDao implements ReviewDao{
             movie.setReviews(reviewWithUser);
         }
 
+    }
+
+    @Override
+    public void addReview(int movieId, String text, int userId) {
+        logger.info("Inserting review is starting...");
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("text", text);
+        sqlParameterSource.addValue("userId", userId);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        namedParameterJdbcTemplate.update(addReview, sqlParameterSource, keyHolder);
+
+        sqlParameterSource.addValue("movieId", movieId);
+        sqlParameterSource.addValue("reviewId", keyHolder.getKey());
+
+        namedParameterJdbcTemplate.update(bindReviewMovie, sqlParameterSource);
+    }
+
+    @Override
+    public User getUserByReview(Review review) {
+        User user = review.getUser();
+        return user;
     }
 }

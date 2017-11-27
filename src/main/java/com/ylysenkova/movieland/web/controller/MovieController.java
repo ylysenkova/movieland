@@ -8,7 +8,7 @@ import com.ylysenkova.movieland.web.converter.CurrencyConvertot;
 import com.ylysenkova.movieland.web.converter.SortingConvertor;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
-import com.ylysenkova.movieland.web.response.*;
+import com.ylysenkova.movieland.web.dto.response.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

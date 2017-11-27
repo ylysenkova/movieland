@@ -1,6 +1,6 @@
 package com.ylysenkova.movieland.web.controller;
 
-import com.ylysenkova.movieland.web.response.ExceptionResponse;
+import com.ylysenkova.movieland.web.dto.response.ExceptionResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

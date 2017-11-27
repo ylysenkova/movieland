@@ -1,4 +1,4 @@
-package com.ylysenkova.movieland.web.response;
+package com.ylysenkova.movieland.web.dto.response;
 
 public class ExceptionResponse {
     private final String error;

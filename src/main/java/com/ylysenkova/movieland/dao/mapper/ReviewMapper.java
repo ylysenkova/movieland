@@ -20,7 +20,7 @@ public class ReviewMapper implements RowMapper<Pair<Integer, Review>> {
         review.setText(resultSet.getString("text"));
         user.setId(resultSet.getInt("user_id"));
         user.setName(resultSet.getString("user_name"));
-        review.setUsers(user);
+        review.setUser(user);
         int movieId = resultSet.getInt("movie_id");
         movieReviewMapper.setKey(movieId);
         movieReviewMapper.setValue(review);
