@@ -1,39 +1,28 @@
-package com.ylysenkova.movieland.web.response;
+package com.ylysenkova.movieland.web.dto.response;
 
-import com.ylysenkova.movieland.model.Country;
-import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 
-import java.math.BigDecimal;
-import java.util.List;
-
-public class MovieThreeResponse {
+public class MovieAllResponse {
 
     private int id;
     private String nameRussian;
     private String nameNative;
     private int yearOfRelease;
-    private String description;
     private double rating;
     private double price;
     private String picturePath;
-    private List<Country> countries;
-    private List<Genre> genres;
 
-    public MovieThreeResponse() {
+    public MovieAllResponse() {
     }
 
-    public MovieThreeResponse(Movie movie) {
-        id = movie.getId();
+    public MovieAllResponse(Movie movie) {
+        this.id = movie.getId();
         this.nameRussian = movie.getNameRussian();
         this.nameNative = movie.getNameNative();
         this.yearOfRelease = movie.getYearOfRelease();
-        this.description = movie.getDescription();
         this.rating = movie.getRating();
         this.price = movie.getPrice();
         this.picturePath = movie.getPicturePath();
-        this.countries = movie.getCountries();
-        this.genres = movie.getGenres();
     }
 
     public int getId() {
@@ -68,14 +57,6 @@ public class MovieThreeResponse {
         this.yearOfRelease = yearOfRelease;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public double getRating() {
         return rating;
     }
@@ -100,35 +81,16 @@ public class MovieThreeResponse {
         this.picturePath = picturePath;
     }
 
-    public List<Country> getCountries() {
-        return countries;
-    }
-
-    public void setCountries(List<Country> countries) {
-        this.countries = countries;
-    }
-
-    public List<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
-    }
-
     @Override
     public String toString() {
-        return "MovieThreeResponse{" +
-                "id=" + id +
+        return "MovieAllResponse{" +
+                "Id=" + id +
                 ", nameRussian='" + nameRussian + '\'' +
                 ", nameNative='" + nameNative + '\'' +
                 ", yearOfRelease=" + yearOfRelease +
-                ", description='" + description + '\'' +
                 ", rating=" + rating +
                 ", price=" + price +
                 ", picturePath='" + picturePath + '\'' +
-                ", countries=" + countries +
-                ", genres=" + genres +
                 '}';
     }
 }

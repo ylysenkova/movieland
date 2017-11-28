@@ -62,7 +62,15 @@
     </bean>
 
     <bean id="getUserByEmail" class="java.lang.String">
-        <constructor-arg value="select user_name, user_email, password from users where user_email = :email and password = :password;"/>
+        <constructor-arg value="select id, user_name, user_email, password from users where user_email = :email and password = :password;"/>
+    </bean>
+
+    <bean id="addReview" class="java.lang.String">
+        <constructor-arg value="insert into reviews (text, user_id, movie_id) values (:text, :userId, :movieId);"/>
+    </bean>
+
+    <bean id="getRoleByUserId" class="java.lang.String">
+        <constructor-arg value="select ur.user_id, r.id, r.role from user_roles ur join roles r on ur.role_id=r.id where ur.user_id = :userId;"/>
     </bean>
 
 </beans>

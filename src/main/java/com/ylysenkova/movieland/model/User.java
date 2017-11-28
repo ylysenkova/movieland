@@ -1,11 +1,14 @@
 package com.ylysenkova.movieland.model;
 
+import java.util.List;
+
 public class User {
 
     private int id;
     private String name;
     private String email;
     private String password;
+    private List<Role> roles;
 
     public User() {
     }
@@ -42,6 +45,12 @@ public class User {
         this.password = password;
     }
 
+    public List<Role> getRole() {return roles;}
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -49,6 +58,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", roles='" + roles + '\'' +
                 '}';
     }
 }

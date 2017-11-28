@@ -1,4 +1,4 @@
-package com.ylysenkova.movieland.web.response;
+package com.ylysenkova.movieland.web.dto.response;
 
 
 import com.ylysenkova.movieland.dao.jdbc.utils.Pair;

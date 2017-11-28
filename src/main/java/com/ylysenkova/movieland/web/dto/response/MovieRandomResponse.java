@@ -1,14 +1,12 @@
-package com.ylysenkova.movieland.web.response;
+package com.ylysenkova.movieland.web.dto.response;
 
 import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
-import com.ylysenkova.movieland.model.Review;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-public class MovieWithReviewResponse {
+public class MovieRandomResponse {
 
     private int id;
     private String nameRussian;
@@ -20,12 +18,11 @@ public class MovieWithReviewResponse {
     private String picturePath;
     private List<Country> countries;
     private List<Genre> genres;
-    private List<Review> reviews;
 
-    public MovieWithReviewResponse() {
+    public MovieRandomResponse() {
     }
 
-    public MovieWithReviewResponse(Movie movie) {
+    public MovieRandomResponse(Movie movie) {
         this.id = movie.getId();
         this.nameRussian = movie.getNameRussian();
         this.nameNative = movie.getNameNative();
@@ -36,13 +33,9 @@ public class MovieWithReviewResponse {
         this.picturePath = movie.getPicturePath();
         this.countries = movie.getCountries();
         this.genres = movie.getGenres();
-        this.reviews = movie.getReviews();
     }
 
-
     public int getId() {
-
-
         return id;
     }
 
@@ -120,30 +113,5 @@ public class MovieWithReviewResponse {
 
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    @Override
-    public String toString() {
-        return "MovieWithReviewResponse{" +
-                "id=" + id +
-                ", nameRussian='" + nameRussian + '\'' +
-                ", nameNative='" + nameNative + '\'' +
-                ", yearOfRelease=" + yearOfRelease +
-                ", description='" + description + '\'' +
-                ", rating=" + rating +
-                ", price=" + price +
-                ", picturePath='" + picturePath + '\'' +
-                ", countries=" + countries +
-                ", genres=" + genres +
-                ", reviews=" + reviews +
-                '}';
     }
 }

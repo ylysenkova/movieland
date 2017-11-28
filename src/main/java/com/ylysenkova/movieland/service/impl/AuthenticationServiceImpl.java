@@ -2,10 +2,11 @@ package com.ylysenkova.movieland.service.impl;
 
 import com.ylysenkova.movieland.dao.UserDao;
 import com.ylysenkova.movieland.dao.jdbc.utils.Pair;
+import com.ylysenkova.movieland.model.Review;
 import com.ylysenkova.movieland.model.Token;
 import com.ylysenkova.movieland.model.User;
 import com.ylysenkova.movieland.service.AuthenticationService;
-import com.ylysenkova.movieland.web.exceptions.AuthentificationException;
+import com.ylysenkova.movieland.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,7 +25,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private Map<UUID, Token> tokenCache= new ConcurrentHashMap<>();
 
     @Autowired
-    private UserDao userDao;
+    private UserService userService;
 
 
     @Override
@@ -31,7 +33,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         logger.debug("Token is creating...");
 
         LocalDateTime expiredTime = LocalDateTime.now().plusHours(2);
-        User user = userDao.getUser(email, password);
+        User user = userService.getUserWithRole(email, password);
+        logger.info("User " + user + " has " + user.getRole() + " role.");
 
         UUID uuid = UUID.randomUUID();
         Token token = new Token(user,  expiredTime);
@@ -45,6 +48,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public String getUserMailByUuid(UUID uuid) {
         String mail = tokenCache.get(uuid).getUser().getEmail();
         return mail;
+    }
+
+
+    @Override
+    public User getUserByUuid (UUID uuid) {
+        User user = tokenCache.get(uuid).getUser();
+        return user;
     }
 
     @Override
@@ -67,8 +77,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Scheduled(fixedRateString = "${cache.user.remove}")
     public void removeExpiredToken () {
-        for(Map.Entry<UUID, Token> serchExpired : tokenCache.entrySet()) {
-            isAlive(serchExpired.getKey());
+        for(Map.Entry<UUID, Token> searchExpired : tokenCache.entrySet()) {
+            isAlive(searchExpired.getKey());
         }
     }
 }
