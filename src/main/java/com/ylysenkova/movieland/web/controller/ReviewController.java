@@ -33,14 +33,15 @@ public class ReviewController {
 
         User user =principal.getUser();
 
-        Review review = new Review();
-        review.setUser(user);
-        review.setText(saveReviewRequest.getText());
-
         Movie movie = new Movie();
         movie.setId(saveReviewRequest.getMovieId());
 
-        reviewService.addReview(movie, review);
+        Review review = new Review();
+        review.setUser(user);
+        review.setText(saveReviewRequest.getText());
+        review.setMovie(movie);
+
+        reviewService.addReview(review);
 
     }
 }

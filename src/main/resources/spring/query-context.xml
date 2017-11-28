@@ -66,11 +66,7 @@
     </bean>
 
     <bean id="addReview" class="java.lang.String">
-        <constructor-arg value="insert into reviews (text, user_id) values (:text, :userId);"/>
-    </bean>
-
-    <bean id="bindReviewMovie" class="java.lang.String">
-        <constructor-arg value="insert into movie_reviews (movie_id, review_id) values(:movieId, :reviewId);"/>
+        <constructor-arg value="insert into reviews (text, user_id, movie_id) values (:text, :userId, :movieId);"/>
     </bean>
 
     <bean id="getRoleByUserId" class="java.lang.String">

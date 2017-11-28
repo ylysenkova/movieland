@@ -30,8 +30,6 @@ public class JdbcReviewDao implements ReviewDao{
     private String getReviewWithUserByMovieId;
     @Autowired
     private String addReview;
-    @Autowired
-    private String bindReviewMovie;
 
     @Override
     public void enrichMovieWithReviews(Movie movie) {
@@ -60,15 +58,10 @@ public class JdbcReviewDao implements ReviewDao{
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("text", text);
         sqlParameterSource.addValue("userId", userId);
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-
-        namedParameterJdbcTemplate.update(addReview, sqlParameterSource, keyHolder);
-
         sqlParameterSource.addValue("movieId", movieId);
-        sqlParameterSource.addValue("reviewId", keyHolder.getKey());
 
-        namedParameterJdbcTemplate.update(bindReviewMovie, sqlParameterSource);
+        namedParameterJdbcTemplate.update(addReview, sqlParameterSource);
+
     }
 
     @Override

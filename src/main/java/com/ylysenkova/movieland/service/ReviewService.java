@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface ReviewService {
     void enrichMovieWithReview(Movie movie);
 
-    void addReview(Movie movie, Review review);
+    void addReview(Review review);
 }
