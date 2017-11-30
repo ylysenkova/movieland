@@ -10,4 +10,6 @@ public interface CountryDao {
     void enrichMoviesWithCountries(List<Movie> movieList);
 
     void enrichMovieWithCountries(Movie movie);
+
+    List<Country> getAll();
 }

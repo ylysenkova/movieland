@@ -83,8 +83,8 @@ public class MovieControllerTest {
         List<Country> countries = new ArrayList<>();
         List<Genre> genres = new ArrayList<>();
 
-        countries.add(new Country("USD"));
-        countries.add(new Country("UK"));
+        countries.add(new Country(1,"USD"));
+        countries.add(new Country(2,"UK"));
         genres.add(new Genre(1, "Drama"));
         genres.add(new Genre(2, "Horror"));
         movie.setId(2);
@@ -145,7 +145,7 @@ public class MovieControllerTest {
         List<Country> countries = new ArrayList<>();
         List<Genre> genres = new ArrayList<>();
         List<Review> reviews = new ArrayList<>();
-        countries.add(new Country("USA"));
+        countries.add(new Country(1,"USA"));
         genres.add(new Genre(2,"Horror"));
         reviews.add(new Review(4, "tttt"));
         movie.setId(9);
@@ -182,7 +182,7 @@ public class MovieControllerTest {
         List<Country> countries = new ArrayList<>();
         List<Genre> genres = new ArrayList<>();
         List<Review> reviews = new ArrayList<>();
-        countries.add(new Country("USA"));
+        countries.add(new Country(1,"USA"));
         genres.add(new Genre(2,"Horror"));
         reviews.add(new Review(4, "tttt"));
         movie.setId(9);
