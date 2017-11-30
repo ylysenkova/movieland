@@ -20,8 +20,6 @@ public class ReviewServiceImpl implements ReviewService{
 
     @Autowired
     private ReviewDao reviewDao;
-    @Autowired
-    private AuthenticationService authenticationService;
 
     @Override
     public void enrichMovieWithReview(Movie movie) {
@@ -34,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService{
         int userId;
             userId = reviewDao.getUserByReview(review).getId();
             reviewDao.addReview(review.getMovie().getId(), review.getText(), userId);
-            logger.info("Method addReview Gets movieId ={} " + review.getMovie().getId() + " review text ={}" + review.getText()+ " user is ={}" + userId);
+            logger.info("Method addReview Gets movieId ={}, review text ={}, review text ={}" ,  review.getMovie().getId(),  review.getText(), userId);
 
     }
 }

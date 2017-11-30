@@ -2,12 +2,14 @@ package com.ylysenkova.movieland.dao.jdbc;
 
 import com.ylysenkova.movieland.dao.CountryDao;
 import com.ylysenkova.movieland.dao.jdbc.utils.Pair;
+import com.ylysenkova.movieland.dao.mapper.CountryMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieCountryMapper;
 import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,13 +24,18 @@ public class JdbcCountryDao implements CountryDao{
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
+    private final CountryMapper countryMapper = new CountryMapper();
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Autowired
     private String getCountryByThreeMovieId;
     @Autowired
     private String getCountryByMovieId;
+    @Autowired
+    private String getAllCountries;
 
     @Override
     public void enrichMoviesWithCountries(List<Movie> movieList) {
@@ -69,8 +76,16 @@ public class JdbcCountryDao implements CountryDao{
                 }
                 movie.setCountries(countries);
             }
+    }
 
+    @Override
+    public List<Country> getAll() {
+        logger.debug("Getting all countries from data base is starting");
 
+        List<Country> countries = jdbcTemplate.query(getAllCountries, countryMapper);
+
+        logger.info("There are countries are gotten from data base={} ", countries);
+        return countries;
     }
 
 }

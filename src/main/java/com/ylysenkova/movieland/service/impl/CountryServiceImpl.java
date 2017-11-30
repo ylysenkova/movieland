@@ -1,6 +1,7 @@
 package com.ylysenkova.movieland.service.impl;
 
 import com.ylysenkova.movieland.dao.CountryDao;
+import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,10 @@ public class CountryServiceImpl implements CountryService{
     @Override
     public void enrichMovieWithCountries(Movie movie) {
         countryDao.enrichMovieWithCountries(movie);
+    }
+
+    @Override
+    public List<Country> getAll() {
+        return countryDao.getAll();
     }
 }
