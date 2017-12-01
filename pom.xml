@@ -23,6 +23,13 @@
             <version>4.3.11.RELEASE</version>
         </dependency>
 
+        <!--google ConcurrentLinkedHashMap dependency-->
+        <dependency>
+            <groupId>com.googlecode.concurrentlinkedhashmap</groupId>
+            <artifactId>concurrentlinkedhashmap-lru</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+
         <!--DataBase connection-->
         <dependency>
             <groupId>mysql</groupId>

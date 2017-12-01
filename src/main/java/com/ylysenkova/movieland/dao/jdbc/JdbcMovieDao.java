@@ -51,14 +51,14 @@ public class JdbcMovieDao implements MovieDao {
         Set<Integer> movieIds = new HashSet<>();
 
         int movieCount = jdbcTemplate.queryForObject(getMovieCount, Integer.class);
-        int serchCount = 0;
+        int searchCount = 0;
 
         if (movieCount < 3) {
-            serchCount = movieCount;
+            searchCount = movieCount;
         } else {
-            serchCount = 3;
+            searchCount = 3;
         }
-        while (movieIds.size() < serchCount) {
+        while (movieIds.size() < searchCount) {
             movieIds.add(random.nextInt(movieCount) + 1);
         }
         logger.debug("Method getThreeMovieIds returned = {}", movieIds);
@@ -102,6 +102,7 @@ public class JdbcMovieDao implements MovieDao {
         Movie movie = namedParameterJdbcTemplate.queryForObject(getMovieById, sqlParameterSource, movieMapper);
 
         logger.debug("Method getMovieById returns = {}", movie);
+
         return movie;
     }
 

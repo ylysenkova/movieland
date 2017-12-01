@@ -7,14 +7,19 @@ import com.ylysenkova.movieland.service.CountryService;
 import com.ylysenkova.movieland.service.GenreService;
 import com.ylysenkova.movieland.service.MovieService;
 import com.ylysenkova.movieland.service.ReviewService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MovieServiceImpl implements MovieService {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private MovieDao movieDao;
@@ -32,8 +37,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> getThreeMovies() {
+        logger.info("Service method GetThreeMovie is started.");
         List<Movie> enrichedMovie = new ArrayList<>();
-        enrichedMovie.addAll(movieDao.getThreeMovies(movieDao.getThreeMovieIds()));
+        Set<Integer> threeMovieIds = movieDao.getThreeMovieIds();
+        List<Movie> threeMovies = movieDao.getThreeMovies(threeMovieIds);
+        enrichedMovie.addAll(threeMovies);
         genreService.enrichMoviesWithGenres(enrichedMovie);
         countryService.enrichMoviesWithCountries(enrichedMovie);
         return enrichedMovie;

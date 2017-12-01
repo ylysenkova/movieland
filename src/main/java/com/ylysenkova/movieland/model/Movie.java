@@ -22,6 +22,10 @@ public class Movie {
     public Movie() {
     }
 
+    public Movie(int id) {
+        this.id = id;
+    }
+
     public String getDescription() {
         return description;
     }
