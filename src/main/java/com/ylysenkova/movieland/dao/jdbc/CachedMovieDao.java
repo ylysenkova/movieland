@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -75,5 +76,20 @@ public class CachedMovieDao implements MovieDao {
     @Override
     public List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction) {
         return movieDao.getMoviesByGenreSorted(genreId, field, direction);
+    }
+
+    @Transactional
+    @Override
+    public void addMovie(Movie movie) {
+        movieDao.addMovie(movie);
+        cacheMap.put(movie.getId(), movie);
+    }
+
+    @Transactional
+    @Override
+    public void editMovie(Movie movie) {
+        logger.debug("Cache get movie={}",movie);
+        movieDao.editMovie(movie);
+        cacheMap.put(movie.getId(), movie);
     }
 }

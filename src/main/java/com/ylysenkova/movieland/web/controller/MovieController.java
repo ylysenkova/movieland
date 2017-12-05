@@ -1,14 +1,15 @@
 package com.ylysenkova.movieland.web.controller;
 
-import com.ylysenkova.movieland.model.Currency;
+import com.ylysenkova.movieland.model.*;
+import com.ylysenkova.movieland.security.Protected;
 import com.ylysenkova.movieland.service.ExchangeRateService;
 import com.ylysenkova.movieland.service.MovieService;
 import com.ylysenkova.movieland.service.SortingValidationService;
 import com.ylysenkova.movieland.web.converter.CurrencyConvertot;
 import com.ylysenkova.movieland.web.converter.SortingConvertor;
-import com.ylysenkova.movieland.model.Movie;
-import com.ylysenkova.movieland.model.Sorting;
+import com.ylysenkova.movieland.web.dto.request.SaveMovieRequest;
 import com.ylysenkova.movieland.web.dto.response.*;
+import com.ylysenkova.movieland.web.util.MovieBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +130,29 @@ public class MovieController {
             logger.debug("Movie {} is received.It took {} ms", movieWithReviewResponse, System.currentTimeMillis() - startTime);
             return new ResponseEntity<MovieWithReviewResponse>(movieWithReviewResponse, HttpStatus.OK);
 
+    }
+    @Protected(value = Role.ADMIN)
+    @RequestMapping(method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void addMovie (@RequestBody SaveMovieRequest saveMovieRequest) {
+        logger.info("Administrator is adding movie ={}", saveMovieRequest.getNameNative());
+
+        Movie movie = MovieBuilder.fromMovieRequest(saveMovieRequest).getMovie().build();
+
+        movieService.addMovie(movie);
+    }
+
+    @Protected(value = Role.ADMIN)
+    @RequestMapping(value = "/{movieId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public void editMovie (
+            @RequestBody SaveMovieRequest saveMovieRequest) {
+        logger.info("User with role ={} starts edit movie={}", Role.ADMIN, saveMovieRequest);
+
+        Movie movie = MovieBuilder.fromMovieRequest(saveMovieRequest).getMovie().build();
+
+        logger.info("Movie with id ={} is processing", movie.getId());
+        movieService.editMovie(movie);
     }
 
     @InitBinder
