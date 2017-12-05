@@ -30,6 +30,8 @@ public class MovieServiceImpl implements MovieService {
     private CountryService countryService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private ParallelEnrichmentService parallelEnrichmentService;
 
     @Override
     public List<Movie> getAll() {
@@ -55,10 +57,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie getMovieById(int movieId) {
         Movie movieForEnrichment = movieDao.getMovieById(movieId);
-        reviewService.enrichMovieWithReview(movieForEnrichment);
-        genreService.enrichMovieWithGenres(movieForEnrichment);
-        countryService.enrichMovieWithCountries(movieForEnrichment);
-
+        parallelEnrichmentService.parallelEnrichment(movieForEnrichment);
         return movieForEnrichment;
     }
 
