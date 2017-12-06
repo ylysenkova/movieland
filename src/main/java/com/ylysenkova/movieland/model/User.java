@@ -45,7 +45,9 @@ public class User {
         this.password = password;
     }
 
-    public List<Role> getRole() {return roles;}
+    public List<Role> getRole() {
+        return roles;
+    }
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;

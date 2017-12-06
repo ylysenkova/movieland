@@ -43,8 +43,7 @@ public class Interceptor extends HandlerInterceptorAdapter {
             UUID requestId = UUID.randomUUID();
             MDC.put("requestId", String.valueOf(requestId));
             MDC.put("login", authenticationService.getUserMailByUuid(UUID.fromString(header)));
-        }
-        else {
+        } else {
             isGuest = true;
             user = new User();
             user.setName("guest");
@@ -54,18 +53,18 @@ public class Interceptor extends HandlerInterceptorAdapter {
 
         }
         logger.debug("Getting token.");
-try {
-    validateUserRole(user, handler, isGuest);
-    UserPrincipal principal = new UserPrincipal(user);
-    logger.debug("Principal {} is received", principal);
-    ((SecurityHttpServletRequestWrapper) request).setPrincipal(principal);
-} catch (RestException e) {
-    response.setStatus(e.getHttpStatus().value());
-    response.setContentType("application/json");
-    response.setCharacterEncoding("UTF-8");
-    response.getWriter().write(objectMapper.writeValueAsString(new ExceptionResponse(e.getMessage())));
-    return false;
-}
+        try {
+            validateUserRole(user, handler, isGuest);
+            UserPrincipal principal = new UserPrincipal(user);
+            logger.debug("Principal {} is received", principal);
+            ((SecurityHttpServletRequestWrapper) request).setPrincipal(principal);
+        } catch (RestException e) {
+            response.setStatus(e.getHttpStatus().value());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(objectMapper.writeValueAsString(new ExceptionResponse(e.getMessage())));
+            return false;
+        }
 
         return true;
     }
@@ -75,10 +74,9 @@ try {
         logger.info("Validating token for user {} " + user + " handler {} " + handler + " is Guest {} " + isGuest);
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         if (handlerMethod.hasMethodAnnotation(Protected.class)) {
-            if(isGuest) {
+            if (isGuest) {
                 throw new AuthenticationException("Only logged in users can add review.");
-            }
-            else {
+            } else {
                 Protected annotation = handlerMethod.getMethodAnnotation(Protected.class);
                 if (!user.getRole().contains(annotation.value())) {
                     throw new PermissionException("Permission denied.");

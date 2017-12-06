@@ -30,8 +30,8 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private RestTemplate template = new RestTemplate();
 
-    public void exchangeCurrency (Currency currencyTo, Movie movie) {
-        Date date  = new Date();
+    public void exchangeCurrency(Currency currencyTo, Movie movie) {
+        Date date = new Date();
         format = new SimpleDateFormat("yyyyMMdd");
         String formattedDate = format.format(date);
         Security.insertProviderAt(bouncyCastleProvider, 1);
@@ -41,14 +41,12 @@ public class ExchangeRateServiceImpl implements ExchangeRateService {
                 .queryParam("json")
                 .build();
         Rate[] rate = template.getForObject(buildedUri.toUri(), Rate[].class);
-            if (rate.length!=0) {
-                movie.setPrice((BigDecimal.valueOf(movie.getPrice()).divide(rate[0].getRate(), BigDecimal.ROUND_HALF_UP)).doubleValue());
-            }
-            else {
-                logger.error("The error occurs during the executing exchangeRate method");
-                throw new RuntimeException("There is no rate for currency " + currencyTo);
-            }
-
+        if (rate.length != 0) {
+            movie.setPrice((BigDecimal.valueOf(movie.getPrice()).divide(rate[0].getRate(), BigDecimal.ROUND_HALF_UP)).doubleValue());
+        } else {
+            logger.error("The error occurs during the executing exchangeRate method");
+            throw new RuntimeException("There is no rate for currency " + currencyTo);
+        }
 
 
     }

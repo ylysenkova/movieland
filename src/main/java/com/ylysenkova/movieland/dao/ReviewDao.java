@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ReviewDao {
 
-    void enrichMovieWithReviews (Movie movieList);
+    void enrichMovieWithReviews(Movie movieList);
 
     void addReview(int movieId, String text, int userId);
 

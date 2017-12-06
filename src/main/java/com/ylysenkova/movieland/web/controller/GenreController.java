@@ -23,7 +23,7 @@ public class GenreController {
     @Autowired
     private GenreService genreService;
 
-    @RequestMapping( method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
     List<Genre> getAll() {

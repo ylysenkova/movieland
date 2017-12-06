@@ -8,19 +8,19 @@ import java.security.Principal;
 public class SecurityHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
 
-        private Principal principal;
+    private Principal principal;
 
-        public SecurityHttpServletRequestWrapper(HttpServletRequest request) {
-            super(request);
-        }
+    public SecurityHttpServletRequestWrapper(HttpServletRequest request) {
+        super(request);
+    }
 
-        @Override
-        public Principal getUserPrincipal() {
-            return principal;
-        }
+    @Override
+    public Principal getUserPrincipal() {
+        return principal;
+    }
 
-        public void setPrincipal(Principal principal) {
-            this.principal = principal;
-        }
+    public void setPrincipal(Principal principal) {
+        this.principal = principal;
+    }
 
 }

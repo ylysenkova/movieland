@@ -83,13 +83,13 @@ public class JdbcGenreDao implements GenreDao {
 
         List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByMovieId, sqlParameterSource, movieGenreMapper);
 
-            List<Genre> genreList = new ArrayList<>();
+        List<Genre> genreList = new ArrayList<>();
 
-            for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
-                if (movie.getId() == movieGenreMap.getKey()) {
-                    genreList.add(movieGenreMap.getValue());
-                }
+        for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
+            if (movie.getId() == movieGenreMap.getKey()) {
+                genreList.add(movieGenreMap.getValue());
             }
-            movie.setGenres(genreList);
+        }
+        movie.setGenres(genreList);
     }
 }

@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CountryServiceImpl implements CountryService{
+public class CountryServiceImpl implements CountryService {
 
     @Autowired
     private CountryDao countryDao;
+
     @Override
     public void enrichMoviesWithCountries(List<Movie> movieList) {
         countryDao.enrichMoviesWithCountries(movieList);

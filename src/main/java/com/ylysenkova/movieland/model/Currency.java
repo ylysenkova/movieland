@@ -15,9 +15,9 @@ public enum Currency {
         return value;
     }
 
-    public static Currency getCurrency(String currency){
+    public static Currency getCurrency(String currency) {
         for (Currency currencies : values()) {
-            if(currencies.value.equalsIgnoreCase(currency)) {
+            if (currencies.value.equalsIgnoreCase(currency)) {
                 return currencies;
             }
         }

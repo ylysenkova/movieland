@@ -52,7 +52,7 @@ public class MovieBuilder {
     }
 
 
-    public Movie build () {
+    public Movie build() {
         return movie;
     }
 

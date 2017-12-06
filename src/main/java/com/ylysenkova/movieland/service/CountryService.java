@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface CountryService {
 
-    void enrichMoviesWithCountries (List<Movie> movieList);
+    void enrichMoviesWithCountries(List<Movie> movieList);
 
-    void enrichMovieWithCountries (Movie movie);
+    void enrichMovieWithCountries(Movie movie);
 
     List<Country> getAll();
 }

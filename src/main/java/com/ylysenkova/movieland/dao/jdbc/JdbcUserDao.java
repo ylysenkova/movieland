@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class JdbcUserDao implements UserDao{
+public class JdbcUserDao implements UserDao {
     private Logger logger = LoggerFactory.getLogger(getClass());
     private UserMapper userMapper = new UserMapper();
     private UserRoleMapper userRoleMapper = new UserRoleMapper();
@@ -48,7 +48,7 @@ public class JdbcUserDao implements UserDao{
         return user;
     }
 
-    public void enrichUserWithRoles (User user) {
+    public void enrichUserWithRoles(User user) {
         logger.info("Enrichment Users with Roles are started...");
 
         int userId = user.getId();
@@ -58,14 +58,14 @@ public class JdbcUserDao implements UserDao{
         List<Pair<Integer, Role>> roleList = namedParameterJdbcTemplate.query(getRoleByUserId, sqlParameterSource, userRoleMapper);
 
 
-            List<Role> roles = new ArrayList<>();
+        List<Role> roles = new ArrayList<>();
 
-            for (Pair<Integer, Role> rolePair : roleList) {
-                if(user.getId() == rolePair.getKey()) {
-                    roles.add(rolePair.getValue());
-                }
+        for (Pair<Integer, Role> rolePair : roleList) {
+            if (user.getId() == rolePair.getKey()) {
+                roles.add(rolePair.getValue());
             }
-            user.setRoles(roles);
+        }
+        user.setRoles(roles);
 
     }
 }

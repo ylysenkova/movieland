@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
     private Logger logger = LoggerFactory.getLogger(getClass());
-    private Map<UUID, Token> tokenCache= new ConcurrentHashMap<>();
+    private Map<UUID, Token> tokenCache = new ConcurrentHashMap<>();
 
     @Autowired
     private UserService userService;
@@ -37,13 +37,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         logger.info("User " + user + " has " + user.getRole() + " role.");
 
         UUID uuid = UUID.randomUUID();
-        Token token = new Token(user,  expiredTime);
+        Token token = new Token(user, expiredTime);
         tokenCache.put(uuid, token);
         Pair<UUID, Token> uuidTokenPair = new Pair<>();
         uuidTokenPair.setKey(uuid);
         uuidTokenPair.setValue(token);
         return uuidTokenPair;
     }
+
     @Override
     public String getUserMailByUuid(UUID uuid) {
         String mail = tokenCache.get(uuid).getUser().getEmail();
@@ -52,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
-    public User getUserByUuid (UUID uuid) {
+    public User getUserByUuid(UUID uuid) {
         User user = tokenCache.get(uuid).getUser();
         return user;
     }
@@ -63,12 +64,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
-    public boolean isAlive (UUID uuid) {
-        if(tokenCache.containsKey(uuid)) {
+    public boolean isAlive(UUID uuid) {
+        if (tokenCache.containsKey(uuid)) {
             Token token = tokenCache.get(uuid);
             if (token.getExpiredTime().isBefore(LocalDateTime.now())) {
-            tokenCache.remove(uuid);
-            return false;
+                tokenCache.remove(uuid);
+                return false;
             }
             return true;
         }
@@ -76,8 +77,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Scheduled(fixedRateString = "${cache.user.remove}")
-    public void removeExpiredToken () {
-        for(Map.Entry<UUID, Token> searchExpired : tokenCache.entrySet()) {
+    public void removeExpiredToken() {
+        for (Map.Entry<UUID, Token> searchExpired : tokenCache.entrySet()) {
             isAlive(searchExpired.getKey());
         }
     }

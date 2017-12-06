@@ -31,7 +31,7 @@ public class ReviewController {
     public void addReview(UserPrincipal principal, @RequestBody SaveReviewRequest saveReviewRequest) {
         logger.info("User={} " + principal + " is adding review.");
 
-        User user =principal.getUser();
+        User user = principal.getUser();
 
         Movie movie = new Movie();
         movie.setId(saveReviewRequest.getMovieId());

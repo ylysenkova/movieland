@@ -11,20 +11,20 @@ import java.io.IOException;
 @WebFilter("/v1/*")
 public class ReviewSecurityFilter implements Filter {
 
-        @Override
-        public void init(FilterConfig filterConfig) throws ServletException {
-        }
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
-        @Override
-        public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-            HttpServletRequestWrapper requestWrapper = new SecurityHttpServletRequestWrapper((HttpServletRequest) servletRequest);
-            filterChain.doFilter(requestWrapper, servletResponse);
-        }
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+        HttpServletRequestWrapper requestWrapper = new SecurityHttpServletRequestWrapper((HttpServletRequest) servletRequest);
+        filterChain.doFilter(requestWrapper, servletResponse);
+    }
 
-        @Override
-        public void destroy() {
+    @Override
+    public void destroy() {
 
-        }
+    }
 
 
 }

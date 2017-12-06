@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository(value = "jdbcReviewDao")
-public class JdbcReviewDao implements ReviewDao{
+public class JdbcReviewDao implements ReviewDao {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final ReviewMapper reviewMapper = new ReviewMapper();
@@ -41,11 +41,11 @@ public class JdbcReviewDao implements ReviewDao{
         sqlParameterSource.addValue("movieId", movieId);
 
         List<Pair<Integer, Review>> reviewMapList = namedParameterJdbcTemplate.query(getReviewWithUserByMovieId, sqlParameterSource, reviewMapper);
-            List<Review> reviewWithUser = new ArrayList<>();
-            for (Pair<Integer, Review> movieReviewPair : reviewMapList) {
-                if(movieId == movieReviewPair.getKey()) {
-                    reviewWithUser.add(movieReviewPair.getValue());
-                }
+        List<Review> reviewWithUser = new ArrayList<>();
+        for (Pair<Integer, Review> movieReviewPair : reviewMapList) {
+            if (movieId == movieReviewPair.getKey()) {
+                reviewWithUser.add(movieReviewPair.getValue());
+            }
             movie.setReviews(reviewWithUser);
         }
 
