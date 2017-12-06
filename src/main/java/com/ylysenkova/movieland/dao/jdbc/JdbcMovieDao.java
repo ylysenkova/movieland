@@ -55,6 +55,7 @@ public class JdbcMovieDao implements MovieDao {
         logger.debug("Method getAll returned = {}", moviesList);
         return moviesList;
     }
+
     @Override
     public Set<Integer> getThreeMovieIds() {
         logger.debug("Method getThreeMovieIds has started");

@@ -37,7 +37,7 @@ public class MovieController {
     private ExchangeRateService exchangeRate;
 
 
-    @RequestMapping( method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
     ResponseEntity<?> getAll(
@@ -93,48 +93,51 @@ public class MovieController {
             @RequestParam(value = "rating", required = false) Sorting ratingSortDirection,
             @RequestParam(value = "price", required = false) Sorting priceSortDirection
     ) {
-            sortingValidationService.allowOnlyRatingOrPriceSorting(ratingSortDirection, priceSortDirection);
+        sortingValidationService.allowOnlyRatingOrPriceSorting(ratingSortDirection, priceSortDirection);
 
-            logger.debug("Sending request...");
-            long startTime = System.currentTimeMillis();
-            List<Movie> movies;
-            List<MovieResponseByGenre> movieResponseByGenres = new ArrayList<>();
-            if (ratingSortDirection != null) {
-                sortingValidationService.checkSortingForRating(ratingSortDirection);
-                movies = movieService.getMoviesByGenreSorted(genreId, "rating", ratingSortDirection);
-            } else if (priceSortDirection != null) {
-                movies = movieService.getMoviesByGenreSorted(genreId, "price", priceSortDirection);
-            } else {
-                movies = movieService.getMovieByGenreId(genreId);
-            }
-            for (Movie movie : movies) {
-                movieResponseByGenres.add(new MovieResponseByGenre(movie));
-            }
-            logger.debug("Movie {} is received.It took {} ms ", movies, System.currentTimeMillis() - startTime);
-            return new ResponseEntity<List<MovieResponseByGenre>>(movieResponseByGenres, HttpStatus.OK);
+        logger.debug("Sending request...");
+        long startTime = System.currentTimeMillis();
+        List<Movie> movies;
+        List<MovieResponseByGenre> movieResponseByGenres = new ArrayList<>();
+        if (ratingSortDirection != null) {
+            sortingValidationService.checkSortingForRating(ratingSortDirection);
+            movies = movieService.getMoviesByGenreSorted(genreId, "rating", ratingSortDirection);
+        } else if (priceSortDirection != null) {
+            movies = movieService.getMoviesByGenreSorted(genreId, "price", priceSortDirection);
+        } else {
+            movies = movieService.getMovieByGenreId(genreId);
+        }
+        for (Movie movie : movies) {
+            movieResponseByGenres.add(new MovieResponseByGenre(movie));
+        }
+        logger.debug("Movie {} is received.It took {} ms ", movies, System.currentTimeMillis() - startTime);
+        return new ResponseEntity<List<MovieResponseByGenre>>(movieResponseByGenres, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{movieId}", method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<?> getMovieById (
+    public
+    @ResponseBody
+    ResponseEntity<?> getMovieById(
             @PathVariable(value = "movieId") int movieId,
             @RequestParam(value = "currency", required = false) Currency currency) {
         logger.debug("Sending request ... ");
         long startTime = System.currentTimeMillis();
         Movie movie = movieService.getMovieById(movieId);
-        MovieWithReviewResponse  movieWithReviewResponse;
-            if (currency != null) {
-                exchangeRate.exchangeCurrency(currency, movie);
-            }
-            movieWithReviewResponse = new MovieWithReviewResponse(movie);
+        MovieWithReviewResponse movieWithReviewResponse;
+        if (currency != null) {
+            exchangeRate.exchangeCurrency(currency, movie);
+        }
+        movieWithReviewResponse = new MovieWithReviewResponse(movie);
 
-            logger.debug("Movie {} is received.It took {} ms", movieWithReviewResponse, System.currentTimeMillis() - startTime);
-            return new ResponseEntity<MovieWithReviewResponse>(movieWithReviewResponse, HttpStatus.OK);
+        logger.debug("Movie {} is received.It took {} ms", movieWithReviewResponse, System.currentTimeMillis() - startTime);
+        return new ResponseEntity<MovieWithReviewResponse>(movieWithReviewResponse, HttpStatus.OK);
 
     }
+
     @Protected(value = Role.ADMIN)
     @RequestMapping(method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
-    public void addMovie (@RequestBody SaveMovieRequest saveMovieRequest) {
+    public void addMovie(@RequestBody SaveMovieRequest saveMovieRequest) {
         logger.info("Administrator is adding movie ={}", saveMovieRequest.getNameNative());
 
         Movie movie = MovieBuilder.fromMovieRequest(saveMovieRequest).getMovie().build();
@@ -145,7 +148,7 @@ public class MovieController {
     @Protected(value = Role.ADMIN)
     @RequestMapping(value = "/{movieId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void editMovie (
+    public void editMovie(
             @RequestBody SaveMovieRequest saveMovieRequest) {
         logger.info("User with role ={} starts edit movie={}", Role.ADMIN, saveMovieRequest);
 
@@ -156,7 +159,7 @@ public class MovieController {
     }
 
     @InitBinder
-    public void initBinder (WebDataBinder binder) {
+    public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Sorting.class, new SortingConvertor());
         binder.registerCustomEditor(Currency.class, new CurrencyConvertot());
     }

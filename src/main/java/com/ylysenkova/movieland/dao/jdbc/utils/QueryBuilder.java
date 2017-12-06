@@ -5,7 +5,7 @@ import com.ylysenkova.movieland.model.Sorting;
 public class QueryBuilder {
 
 
-    public static String getSortedSQL(String query,  String field, Sorting direction) {
+    public static String getSortedSQL(String query, String field, Sorting direction) {
         StringBuilder sortingBuilder = new StringBuilder(query);
         sortingBuilder.deleteCharAt(sortingBuilder.indexOf(";"));
         sortingBuilder.append(" ");

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class ReviewServiceImpl implements ReviewService{
+public class ReviewServiceImpl implements ReviewService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -30,9 +30,9 @@ public class ReviewServiceImpl implements ReviewService{
     @Override
     public void addReview(Review review) {
         int userId;
-            userId = reviewDao.getUserByReview(review).getId();
-            reviewDao.addReview(review.getMovie().getId(), review.getText(), userId);
-            logger.info("Method addReview Gets movieId ={}, review text ={}, review text ={}" ,  review.getMovie().getId(),  review.getText(), userId);
+        userId = reviewDao.getUserByReview(review).getId();
+        reviewDao.addReview(review.getMovie().getId(), review.getText(), userId);
+        logger.info("Method addReview Gets movieId ={}, review text ={}, review text ={}", review.getMovie().getId(), review.getText(), userId);
 
     }
 }

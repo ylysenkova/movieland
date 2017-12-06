@@ -6,5 +6,5 @@ public interface UserDao {
 
     User getUser(String email, String password);
 
-    void enrichUserWithRoles (User user);
+    void enrichUserWithRoles(User user);
 }

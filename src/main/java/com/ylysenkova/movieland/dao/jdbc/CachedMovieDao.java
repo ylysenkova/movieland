@@ -29,12 +29,11 @@ public class CachedMovieDao implements MovieDao {
     public Movie concurrentCache(int movieId) {
 
         Movie movie = new Movie();
-        if(cacheMap.containsKey(movieId)) {
+        if (cacheMap.containsKey(movieId)) {
             movie = cacheMap.get(movieId);
             logger.debug("Movie  ={} was taken from cache", movie);
             return movie;
-        }
-        else {
+        } else {
             movie = movieDao.getMovieById(movieId);
             cacheMap.put(movieId, movie);
             logger.debug("Movie ={} was taken from database", movie);
@@ -88,7 +87,7 @@ public class CachedMovieDao implements MovieDao {
     @Transactional
     @Override
     public void editMovie(Movie movie) {
-        logger.debug("Cache get movie={}",movie);
+        logger.debug("Cache get movie={}", movie);
         movieDao.editMovie(movie);
         cacheMap.put(movie.getId(), movie);
     }

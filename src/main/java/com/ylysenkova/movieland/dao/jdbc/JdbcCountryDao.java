@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 @Repository(value = "jdbcCountryDao")
-public class JdbcCountryDao implements CountryDao{
+public class JdbcCountryDao implements CountryDao {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final MovieCountryMapper movieCountryMapper = new MovieCountryMapper();
@@ -48,14 +48,14 @@ public class JdbcCountryDao implements CountryDao{
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieIds", movieIds);
-        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByThreeMovieId, sqlParameterSource,movieCountryMapper);
+        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByThreeMovieId, sqlParameterSource, movieCountryMapper);
         for (Movie movies : movieList) {
             List<Country> countries = new ArrayList<>();
             for (Pair<Integer, Country> movieCountryPair : countryMapList) {
                 if (movies.getId() == movieCountryPair.getKey()) {
                     countries.add(movieCountryPair.getValue());
                 }
-            movies.setCountries(countries);
+                movies.setCountries(countries);
             }
         }
 
@@ -68,14 +68,14 @@ public class JdbcCountryDao implements CountryDao{
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movieId);
-        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByMovieId, sqlParameterSource,movieCountryMapper);
-            List<Country> countries = new ArrayList<>();
-            for (Pair<Integer, Country> movieCountryPair : countryMapList) {
-                if (movie.getId() == movieCountryPair.getKey()) {
-                    countries.add(movieCountryPair.getValue());
-                }
-                movie.setCountries(countries);
+        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByMovieId, sqlParameterSource, movieCountryMapper);
+        List<Country> countries = new ArrayList<>();
+        for (Pair<Integer, Country> movieCountryPair : countryMapList) {
+            if (movie.getId() == movieCountryPair.getKey()) {
+                countries.add(movieCountryPair.getValue());
             }
+            movie.setCountries(countries);
+        }
     }
 
     @Override

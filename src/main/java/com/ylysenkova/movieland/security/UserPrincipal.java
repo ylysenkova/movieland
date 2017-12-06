@@ -7,7 +7,7 @@ import com.ylysenkova.movieland.model.User;
 import java.security.Principal;
 import java.util.Optional;
 
-public class UserPrincipal implements Principal{
+public class UserPrincipal implements Principal {
     private User user;
 
     public UserPrincipal(User user) {

@@ -28,7 +28,9 @@ public class CountryController {
     private CountryService countryService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<?> getAll() {
+    public
+    @ResponseBody
+    ResponseEntity<?> getAll() {
         logger.debug("Method getAll in CountryController is started.");
         long startTime = System.currentTimeMillis();
 
@@ -39,7 +41,7 @@ public class CountryController {
             countryAllResponses.add(new CountryAllResponse(country));
         }
 
-        logger.info("Countries {} are returned. It took {} ms", countryAllResponses, System.currentTimeMillis()-startTime);
-        return new ResponseEntity<List<CountryAllResponse>>(countryAllResponses,HttpStatus.OK);
+        logger.info("Countries {} are returned. It took {} ms", countryAllResponses, System.currentTimeMillis() - startTime);
+        return new ResponseEntity<List<CountryAllResponse>>(countryAllResponses, HttpStatus.OK);
     }
 }

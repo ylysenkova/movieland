@@ -18,7 +18,6 @@ public class Movie {
     private List<Review> reviews;
 
 
-
     public Movie() {
     }
 
@@ -105,6 +104,7 @@ public class Movie {
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
+
     public List<Review> getReviews() {
         return reviews;
     }

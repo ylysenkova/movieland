@@ -27,7 +27,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void enrichMovieWithGenres(Movie movie) { genreDao.enrichMovieWithGenres(movie);
+    public void enrichMovieWithGenres(Movie movie) {
+        genreDao.enrichMovieWithGenres(movie);
 
     }
 

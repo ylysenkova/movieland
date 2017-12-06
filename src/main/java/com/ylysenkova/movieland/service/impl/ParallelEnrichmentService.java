@@ -28,30 +28,28 @@ public class ParallelEnrichmentService {
     private CountryService countryService;
     @Autowired
     private ReviewService reviewService;
-    
+
     public void parallelEnrichment(Movie movie) {
 
 
         long currentTimeMillSec = timeOutMillSec + System.currentTimeMillis();
         List<Future<?>> futureList = new ArrayList<>();
-        Future<?> genreTask = executorService.submit(()->genreService.enrichMovieWithGenres(movie));
-        Future<?> countryTask = executorService.submit(()->countryService.enrichMovieWithCountries(movie));
-        Future<?> reviewTask = executorService.submit(()->reviewService.enrichMovieWithReview(movie));
+        Future<?> genreTask = executorService.submit(() -> genreService.enrichMovieWithGenres(movie));
+        Future<?> countryTask = executorService.submit(() -> countryService.enrichMovieWithCountries(movie));
+        Future<?> reviewTask = executorService.submit(() -> reviewService.enrichMovieWithReview(movie));
         futureList.add(genreTask);
-        timeOutMillSec -=  System.currentTimeMillis();
+        timeOutMillSec -= System.currentTimeMillis();
         futureList.add(countryTask);
         timeOutMillSec -= System.currentTimeMillis();
         futureList.add(reviewTask);
         for (Future<?> future : futureList) {
             long timeLeft;
             try {
-                if ((timeLeft = currentTimeMillSec - System.currentTimeMillis()) < 0)
-                {
+                if ((timeLeft = currentTimeMillSec - System.currentTimeMillis()) < 0) {
                     timeLeft = 0;
                 }
                 future.get(timeLeft, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 logger.warn("Enrichment was interrupted.");
             } catch (ExecutionException e) {
                 logger.warn("Something wrong with execution.");
