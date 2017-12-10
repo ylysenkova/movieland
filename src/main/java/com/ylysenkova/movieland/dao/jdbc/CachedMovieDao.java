@@ -4,6 +4,7 @@ import com.googlecode.concurrentlinkedhashmap.ConcurrentLinkedHashMap;
 import com.ylysenkova.movieland.dao.MovieDao;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
+import com.ylysenkova.movieland.utils.builders.MovieCopierBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +28,18 @@ public class CachedMovieDao implements MovieDao {
 
     public Movie concurrentCache(int movieId) {
 
-        Movie movie = new Movie();
-        if(cacheMap.containsKey(movieId)) {
-            movie = cacheMap.get(movieId);
+        Movie movie;
+        Movie copyMovie;
+        if ((movie = cacheMap.get(movieId)) != null) {
             logger.debug("Movie  ={} was taken from cache", movie);
-            return movie;
-        }
-        else {
+        } else {
             movie = movieDao.getMovieById(movieId);
             cacheMap.put(movieId, movie);
             logger.debug("Movie ={} was taken from database", movie);
         }
+        copyMovie = MovieCopierBuilder.fromMovie(movie).getMovie().build();
 
-        return movie;
+        return copyMovie;
     }
 
     @Override

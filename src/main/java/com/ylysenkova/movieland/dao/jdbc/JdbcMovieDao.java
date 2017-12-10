@@ -51,7 +51,7 @@ public class JdbcMovieDao implements MovieDao {
         Set<Integer> movieIds = new HashSet<>();
 
         int movieCount = jdbcTemplate.queryForObject(getMovieCount, Integer.class);
-        int searchCount = 0;
+        int searchCount;
 
         if (movieCount < 3) {
             searchCount = movieCount;
