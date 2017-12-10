@@ -8,6 +8,7 @@ import com.ylysenkova.movieland.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +18,10 @@ import java.util.concurrent.*;
 
 @Service
 public class ParallelEnrichmentService {
-
-    private long timeOutMillSec = 5000;
+    @Value("${parallel.enrichment.timeout.milliseconds}")
+    private long timeOutMillSec;
     private Logger logger = LoggerFactory.getLogger(getClass());
-    ExecutorService executorService = Executors.newCachedThreadPool();
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     @Autowired
     private GenreService genreService;
