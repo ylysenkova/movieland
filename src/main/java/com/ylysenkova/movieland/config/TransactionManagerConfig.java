@@ -14,8 +14,17 @@ public class TransactionManagerConfig {
 
     @Autowired
     private DataSource dataSource;
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager(){
+=======
+=======
+>>>>>>> Stashed changes
+
+    @Bean()
+    public PlatformTransactionManager transactionManager() {
+>>>>>>> Stashed changes
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
         transactionManager.setDataSource(dataSource);
         return transactionManager;

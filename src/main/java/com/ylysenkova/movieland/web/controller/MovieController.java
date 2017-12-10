@@ -145,8 +145,16 @@ public class MovieController {
     @Protected(value = Role.ADMIN)
     @RequestMapping(value = "/{movieId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     public void editMovie (
             @RequestBody SaveMovieRequest saveMovieRequest) {
+=======
+    public void editMovie(@RequestBody SaveMovieRequest saveMovieRequest) {
+>>>>>>> Stashed changes
+=======
+    public void editMovie(@RequestBody SaveMovieRequest saveMovieRequest) {
+>>>>>>> Stashed changes
         logger.info("User with role ={} starts edit movie={}", Role.ADMIN, saveMovieRequest);
 
         Movie movie = MovieBuilder.fromMovieRequest(saveMovieRequest).getMovie().build();

@@ -4,7 +4,6 @@ import com.ylysenkova.movieland.dao.GenreDao;
 import com.ylysenkova.movieland.dao.jdbc.utils.Pair;
 import com.ylysenkova.movieland.dao.mapper.GenreMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieGenreMapper;
-import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -38,6 +36,8 @@ public class JdbcGenreDao implements GenreDao {
     private String getGenreByThreeMovieId;
     @Autowired
     private String getGenreByMovieId;
+    @Autowired
+    private String removeLinkGenreMovie;
 
     @Override
     public List<Genre> getAll() {
@@ -62,7 +62,6 @@ public class JdbcGenreDao implements GenreDao {
         List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByThreeMovieId, sqlParameterSource, movieGenreMapper);
 
         for (Movie movie : movieList) {
-
             List<Genre> genreList = new ArrayList<>();
 
             for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
@@ -82,8 +81,19 @@ public class JdbcGenreDao implements GenreDao {
         sqlParameterSource.addValue("movieId", movieId);
 
         List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByMovieId, sqlParameterSource, movieGenreMapper);
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 
             List<Genre> genreList = new ArrayList<>();
+=======
+=======
+>>>>>>> Stashed changes
+        if(Thread.currentThread().isInterrupted()) {
+            logger.info("Enrichment movie={} with Genre was interrupted due to timeout", movie);
+            return;
+        }
+        List<Genre> genreList = new ArrayList<>();
+>>>>>>> Stashed changes
 
             for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
                 if (movie.getId() == movieGenreMap.getKey()) {
@@ -91,5 +101,27 @@ public class JdbcGenreDao implements GenreDao {
                 }
             }
             movie.setGenres(genreList);
+    }
+
+    @Override
+    public void removeGenreMovieLink(Movie movie) {
+        logger.info("Removing Genre linked to Movie is started.");
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("movieId", movie.getId());
+        namedParameterJdbcTemplate.update(removeLinkGenreMovie, sqlParameterSource);
+
+        logger.info("Link genre-movie is removed.");
+    }
+
+    @Override
+    public void removeGenreMovieLink(Movie movie) {
+        logger.info("Removing Genre linked to Movie is started.");
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("movieId", movie.getId());
+        namedParameterJdbcTemplate.update(removeLinkGenreMovie, sqlParameterSource);
+
+        logger.info("Link genre-movie is removed.");
     }
 }

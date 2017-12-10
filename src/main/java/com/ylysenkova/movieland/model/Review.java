@@ -4,15 +4,15 @@ public class Review {
 
     private int id;
     private User user;
-    private Movie movie;
+    private int movieId;
     private String text;
 
     public Review() {
     }
 
-    public Review(int id, String reviewText) {
-        this.id = id;
-        this.text = reviewText;
+    public Review(Review review) {
+        id = review.id;
+        text = review.text;
     }
 
     public int getId() {
@@ -39,12 +39,12 @@ public class Review {
         this.text = text;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class Review {
         return "Review{" +
                 "id=" + id +
                 ", user=" + user +
-                ", movie=" + movie +
+                ", movieId=" + movieId +
                 ", text='" + text + '\'' +
                 '}';
     }

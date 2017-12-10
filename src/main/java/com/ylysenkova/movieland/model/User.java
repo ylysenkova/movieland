@@ -3,7 +3,6 @@ package com.ylysenkova.movieland.model;
 import java.util.List;
 
 public class User {
-
     private int id;
     private String name;
     private String email;
@@ -11,6 +10,11 @@ public class User {
     private List<Role> roles;
 
     public User() {
+    }
+
+    public User(User user) {
+        id = user.id;
+        email = user.email;
     }
 
     public int getId() {

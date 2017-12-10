@@ -36,6 +36,9 @@ public class JdbcCountryDao implements CountryDao{
     private String getCountryByMovieId;
     @Autowired
     private String getAllCountries;
+    @Autowired
+    private String removeLinkCountryMovie;
+
 
     @Override
     public void enrichMoviesWithCountries(List<Movie> movieList) {
@@ -68,6 +71,7 @@ public class JdbcCountryDao implements CountryDao{
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movieId);
+<<<<<<< Updated upstream
         List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByMovieId, sqlParameterSource,movieCountryMapper);
             List<Country> countries = new ArrayList<>();
             for (Pair<Integer, Country> movieCountryPair : countryMapList) {
@@ -75,6 +79,17 @@ public class JdbcCountryDao implements CountryDao{
                     countries.add(movieCountryPair.getValue());
                 }
                 movie.setCountries(countries);
+=======
+        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByMovieId, sqlParameterSource, movieCountryMapper);
+        if(Thread.currentThread().isInterrupted()) {
+            logger.info("Enrichment movie={} with Country was interrupted due to timeout", movie);
+            return;
+        }
+        List<Country> countries = new ArrayList<>();
+        for (Pair<Integer, Country> movieCountryPair : countryMapList) {
+            if (movie.getId() == movieCountryPair.getKey()) {
+                countries.add(movieCountryPair.getValue());
+>>>>>>> Stashed changes
             }
     }
 
@@ -86,6 +101,17 @@ public class JdbcCountryDao implements CountryDao{
 
         logger.info("There are countries are gotten from data base={} ", countries);
         return countries;
+    }
+
+    @Override
+    public void removeCountryMovieLink(Movie movie) {
+        logger.info("Removing link between Country and Movie is started.");
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("movieId", movie.getId());
+        namedParameterJdbcTemplate.update(removeLinkCountryMovie, sqlParameterSource);
+
+        logger.info("Link between Country and Movie was removed.");
     }
 
 }

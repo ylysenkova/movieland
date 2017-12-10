@@ -39,7 +39,7 @@ public class ReviewController {
         Review review = new Review();
         review.setUser(user);
         review.setText(saveReviewRequest.getText());
-        review.setMovie(movie);
+        review.setMovieId(movie.getId());
 
         reviewService.addReview(review);
 

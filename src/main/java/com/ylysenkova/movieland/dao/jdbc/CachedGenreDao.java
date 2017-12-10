@@ -44,6 +44,11 @@ public class CachedGenreDao implements GenreDao {
         genreDao.enrichMovieWithGenres(movie);
     }
 
+    @Override
+    public void removeGenreMovieLink(Movie movie) {
+        genreDao.removeGenreMovieLink(movie);
+    }
+
     public void setGenreDao(GenreDao genreDao) {
         this.genreDao = genreDao;
     }
