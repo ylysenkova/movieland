@@ -31,13 +31,13 @@ public class JdbcCountryDao implements CountryDao{
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Autowired
-    private String getCountryByThreeMovieId;
+    private String getCountryByThreeMovieIdSQL;
     @Autowired
-    private String getCountryByMovieId;
+    private String getCountryByMovieIdSQL;
     @Autowired
-    private String getAllCountries;
+    private String getAllCountriesSQL;
     @Autowired
-    private String removeLinkCountryMovie;
+    private String removeLinkCountryMovieSQL;
 
 
     @Override
@@ -51,7 +51,7 @@ public class JdbcCountryDao implements CountryDao{
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieIds", movieIds);
-        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByThreeMovieId, sqlParameterSource,movieCountryMapper);
+        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByThreeMovieIdSQL, sqlParameterSource,movieCountryMapper);
         for (Movie movies : movieList) {
             List<Country> countries = new ArrayList<>();
             for (Pair<Integer, Country> movieCountryPair : countryMapList) {
@@ -72,7 +72,7 @@ public class JdbcCountryDao implements CountryDao{
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movieId);
 
-        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByMovieId, sqlParameterSource, movieCountryMapper);
+        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByMovieIdSQL, sqlParameterSource, movieCountryMapper);
         if(Thread.currentThread().isInterrupted()) {
             logger.info("Enrichment movie={} with Country was interrupted due to timeout", movie);
             return;
@@ -90,7 +90,7 @@ public class JdbcCountryDao implements CountryDao{
     public List<Country> getAll() {
         logger.debug("Getting all countries from data base is starting");
 
-        List<Country> countries = jdbcTemplate.query(getAllCountries, countryMapper);
+        List<Country> countries = jdbcTemplate.query(getAllCountriesSQL, countryMapper);
 
         logger.info("There are countries are gotten from data base={} ", countries);
         return countries;
@@ -102,7 +102,7 @@ public class JdbcCountryDao implements CountryDao{
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movie.getId());
-        namedParameterJdbcTemplate.update(removeLinkCountryMovie, sqlParameterSource);
+        namedParameterJdbcTemplate.update(removeLinkCountryMovieSQL, sqlParameterSource);
 
         logger.info("Link between Country and Movie was removed.");
     }

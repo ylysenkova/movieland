@@ -32,7 +32,7 @@ public class ReviewServiceImpl implements ReviewService{
         int userId;
         userId = reviewDao.getUserByReview(review).getId();
         reviewDao.addReview(review.getMovieId(), review.getText(), userId);
-        logger.info("Method addReview Gets movieId ={}, review text ={}, review text ={}", review.getMovieId(), review.getText(), userId);
+        logger.debug("Method addReview Gets movieId ={}, review text ={}, review text ={}", review.getMovieId(), review.getText(), userId);
 
     }
 }

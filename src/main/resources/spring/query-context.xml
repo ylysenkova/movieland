@@ -4,99 +4,99 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="getAllMovies" class="java.lang.String">
+    <bean id="getAllMoviesSQL" class="java.lang.String">
         <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, description, rating, price, picture_Path from movie;"/>
     </bean>
 
-    <bean id="getThreeMovies" class="java.lang.String">
+    <bean id="getThreeMoviesSQL" class="java.lang.String">
         <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, description, rating, price, picture_Path
                                 from movie where id in (:movieIds);"/>
     </bean>
 
-    <bean id="getCountryByThreeMovieId" class="java.lang.String">
+    <bean id="getCountryByThreeMovieIdSQL" class="java.lang.String">
         <constructor-arg value= "select mc.movie_id, c.id, c.name from movie_country mc
                                  join country c on mc.country_id=c.id
                                  where mc.movie_id in (:movieIds);"/>
     </bean>
 
-    <bean id ="getGenreByThreeMovieId" class="java.lang.String">
+    <bean id ="getGenreByThreeMovieIdSQL" class="java.lang.String">
         <constructor-arg value="select mg.movie_id, g.id, g.name from movie_genre mg
                                join genre g on mg.genre_id=g.id
                                where mg.movie_id in (:movieIds);"/>
     </bean>
 
-    <bean id = "getMovieByGenreId" class="java.lang.String">
+    <bean id = "getMovieByGenreIdSQL" class="java.lang.String">
         <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, description, rating, price, picture_Path
                                 from movie m join movie_genre mg on m.id=mg.movie_id where mg.genre_id =:genreId;"/>
     </bean>
 
-    <bean id="getReviewWithUserByMovieId" class="java.lang.String">
+    <bean id="getReviewWithUserByMovieIdSQL" class="java.lang.String">
         <constructor-arg value="select r.movie_id, r.id, r.text, u.id as user_id, u.user_name
                                 from reviews r join users u on r.user_id=u.id where r.movie_id = :movieId;"/>
     </bean>
 
-    <bean id="getMovieById" class="java.lang.String">
+    <bean id="getMovieByIdSQL" class="java.lang.String">
         <constructor-arg value="select id, name_Russian, name_Native, year_Of_Release, description, rating, price, picture_Path
                                 from movie where id = :movieId;"/>
     </bean>
 
-    <bean id="getCountryByMovieId" class="java.lang.String">
+    <bean id="getCountryByMovieIdSQL" class="java.lang.String">
         <constructor-arg value= "select mc.movie_id, c.id, c.name from movie_country mc
                                  join country c on mc.country_id=c.id
                                  where mc.movie_id = :movieId;"/>
     </bean>
 
-    <bean id ="getGenreByMovieId" class="java.lang.String">
+    <bean id ="getGenreByMovieIdSQL" class="java.lang.String">
         <constructor-arg value="select mg.movie_id, g.id, g.name from movie_genre mg
                                join genre g on mg.genre_id=g.id
                                where mg.movie_id = :movieId;"/>
     </bean>
 
-    <bean id ="getMovieCount" class="java.lang.String">
+    <bean id ="getMovieCountSQL" class="java.lang.String">
         <constructor-arg value="select count(*) from movie;"/>
     </bean>
 
-    <bean id = "getAllGenres" class="java.lang.String">
+    <bean id = "getAllGenresSQL" class="java.lang.String">
         <constructor-arg value="select id, name from genre;"/>
     </bean>
 
-    <bean id="getUserByEmail" class="java.lang.String">
+    <bean id="getUserByEmailSQL" class="java.lang.String">
         <constructor-arg value="select id, user_name, user_email, password from users where user_email = :email and password = :password;"/>
     </bean>
 
-    <bean id="addReview" class="java.lang.String">
+    <bean id="addReviewSQL" class="java.lang.String">
         <constructor-arg value="insert into reviews (text, user_id, movie_id) values (:text, :userId, :movieId);"/>
     </bean>
 
-    <bean id="getRoleByUserId" class="java.lang.String">
+    <bean id="getRoleByUserIdSQL" class="java.lang.String">
         <constructor-arg value="select ur.user_id, r.id, r.role from user_roles ur join roles r on ur.role_id=r.id where ur.user_id = :userId;"/>
     </bean>
 
-    <bean id="getAllCountries" class="java.lang.String">
+    <bean id="getAllCountriesSQL" class="java.lang.String">
         <constructor-arg value="select id, name from country;"/>
     </bean>
 
-    <bean id="insertMovie" class="java.lang.String">
+    <bean id="insertMovieSQL" class="java.lang.String">
         <constructor-arg value="insert into movie (name_russian, name_native, year_of_release, description, rating, price, picture_path) values (:nameRussian, :nameNative, :yearOfRelease, :description, :rating, :price, :picturePath);"/>
     </bean>
 
-    <bean id="insertMovieCountry" class="java.lang.String">
+    <bean id="insertMovieCountrySQL" class="java.lang.String">
         <constructor-arg value="insert into movie_country(movie_id, country_id) values(:movieId, :countryId);"/>
     </bean>
 
-    <bean id="insertMovieGenre" class="java.lang.String">
+    <bean id="insertMovieGenreSQL" class="java.lang.String">
         <constructor-arg value="insert into movie_genre (movie_id, genre_id) values (:movieId, :genreId);"/>
     </bean>
 
-    <bean id="updateMovie" class="java.lang.String">
+    <bean id="updateMovieSQL" class="java.lang.String">
         <constructor-arg value="update movie set name_russian =:nameRussian, name_native =:nameNative, year_of_release =:yearOfRelease, description=:description, rating=:rating, price=:price, picture_path=:picturePath where id =:movieId;"/>
     </bean>
 
-    <bean id="removeLinkGenreMovie" class="java.lang.String">
+    <bean id="removeLinkGenreMovieSQL" class="java.lang.String">
         <constructor-arg value="delete from movie_genre where movie_id = :movieId;"/>
     </bean>
 
-    <bean id="removeLinkCountryMovie" class="java.lang.String">
+    <bean id="removeLinkCountryMovieSQL" class="java.lang.String">
         <constructor-arg value="delete from movie_country where movie_id = :movieId;"/>
     </bean>
 
