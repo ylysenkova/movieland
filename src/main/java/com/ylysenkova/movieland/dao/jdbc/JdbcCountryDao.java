@@ -72,14 +72,6 @@ public class JdbcCountryDao implements CountryDao{
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movieId);
 
-        List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByMovieId, sqlParameterSource,movieCountryMapper);
-            List<Country> countries = new ArrayList<>();
-            for (Pair<Integer, Country> movieCountryPair : countryMapList) {
-                if (movie.getId() == movieCountryPair.getKey()) {
-                    countries.add(movieCountryPair.getValue());
-                }
-                movie.setCountries(countries);
-=======
         List<Pair<Integer, Country>> countryMapList = namedParameterJdbcTemplate.query(getCountryByMovieId, sqlParameterSource, movieCountryMapper);
         if(Thread.currentThread().isInterrupted()) {
             logger.info("Enrichment movie={} with Country was interrupted due to timeout", movie);
@@ -89,8 +81,9 @@ public class JdbcCountryDao implements CountryDao{
         for (Pair<Integer, Country> movieCountryPair : countryMapList) {
             if (movie.getId() == movieCountryPair.getKey()) {
                 countries.add(movieCountryPair.getValue());
->>>>>>> Stashed changes
             }
+        }
+        movie.setCountries(countries);
     }
 
     @Override

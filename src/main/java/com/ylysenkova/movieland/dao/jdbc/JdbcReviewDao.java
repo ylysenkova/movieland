@@ -40,17 +40,6 @@ public class JdbcReviewDao implements ReviewDao{
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movieId);
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        List<Pair<Integer, Review>> reviewMapList = namedParameterJdbcTemplate.query(getReviewWithUserByMovieId, sqlParameterSource, reviewMapper);
-            List<Review> reviewWithUser = new ArrayList<>();
-            for (Pair<Integer, Review> movieReviewPair : reviewMapList) {
-                if(movieId == movieReviewPair.getKey()) {
-                    reviewWithUser.add(movieReviewPair.getValue());
-                }
-=======
-=======
->>>>>>> Stashed changes
         List<Review> reviewMapList = namedParameterJdbcTemplate.query(getReviewWithUserByMovieId, sqlParameterSource, reviewMapper);
         if(Thread.currentThread().isInterrupted()) {
             logger.info("Enrichment movie={} with Review was interrupted due to timeout", movie);
@@ -61,9 +50,8 @@ public class JdbcReviewDao implements ReviewDao{
             if (movieId == movie.getId()) {
                 reviewWithUser.add(movieReview);
             }
->>>>>>> Stashed changes
-            movie.setReviews(reviewWithUser);
         }
+        movie.setReviews(reviewWithUser);
     }
 
     @Override
