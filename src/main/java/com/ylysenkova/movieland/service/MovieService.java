@@ -20,4 +20,7 @@ public interface MovieService {
 
     List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction);
 
+    void addMovie(Movie movie);
+
+    void editMovie(Movie movie);
 }

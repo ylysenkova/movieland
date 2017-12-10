@@ -4,7 +4,6 @@ import com.ylysenkova.movieland.dao.GenreDao;
 import com.ylysenkova.movieland.dao.jdbc.utils.Pair;
 import com.ylysenkova.movieland.dao.mapper.GenreMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieGenreMapper;
-import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import org.slf4j.Logger;
@@ -37,6 +36,8 @@ public class JdbcGenreDao implements GenreDao {
     private String getGenreByThreeMovieId;
     @Autowired
     private String getGenreByMovieId;
+    @Autowired
+    private String removeLinkGenreMovie;
 
     @Override
     public List<Genre> getAll() {
@@ -45,6 +46,7 @@ public class JdbcGenreDao implements GenreDao {
         logger.debug("Method getAll returned = {}", genres);
         return genres;
     }
+
 
     @Override
     public void enrichMoviesWithGenres(List<Movie> movieList) {
@@ -60,7 +62,6 @@ public class JdbcGenreDao implements GenreDao {
         List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByThreeMovieId, sqlParameterSource, movieGenreMapper);
 
         for (Movie movie : movieList) {
-
             List<Genre> genreList = new ArrayList<>();
 
             for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
@@ -80,14 +81,28 @@ public class JdbcGenreDao implements GenreDao {
         sqlParameterSource.addValue("movieId", movieId);
 
         List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByMovieId, sqlParameterSource, movieGenreMapper);
-
-            List<Genre> genreList = new ArrayList<>();
-
+        if(Thread.currentThread().isInterrupted()) {
+            logger.info("Enrichment movie={} with Genre was interrupted due to timeout", movie);
+            return;
+        }
+        List<Genre> genreList = new ArrayList<>();
             for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
                 if (movie.getId() == movieGenreMap.getKey()) {
                     genreList.add(movieGenreMap.getValue());
                 }
             }
             movie.setGenres(genreList);
+    }
+
+
+    @Override
+    public void removeGenreMovieLink(Movie movie) {
+        logger.info("Removing Genre linked to Movie is started.");
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("movieId", movie.getId());
+        namedParameterJdbcTemplate.update(removeLinkGenreMovie, sqlParameterSource);
+
+        logger.info("Link genre-movie is removed.");
     }
 }

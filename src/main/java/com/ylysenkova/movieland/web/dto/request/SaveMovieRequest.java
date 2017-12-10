@@ -1,17 +1,14 @@
-package com.ylysenkova.movieland.web.dto.response;
+package com.ylysenkova.movieland.web.dto.request;
+
 
 import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
-import com.ylysenkova.movieland.model.Review;
-import com.ylysenkova.movieland.web.dto.CountryDto;
-import com.ylysenkova.movieland.web.dto.GenreDto;
-import com.ylysenkova.movieland.web.dto.ReviewDto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieWithReviewResponse {
+public class SaveMovieRequest {
 
     private int id;
     private String nameRussian;
@@ -21,14 +18,13 @@ public class MovieWithReviewResponse {
     private double rating;
     private double price;
     private String picturePath;
-    private List<CountryDto> countries = new ArrayList<>();
-    private List<GenreDto> genres = new ArrayList<>();
-    private List<ReviewDto> reviews = new ArrayList<>();
+    private List<Integer> countries;
+    private List<Integer> genres;
 
-    public MovieWithReviewResponse() {
+    public SaveMovieRequest() {
     }
 
-    public MovieWithReviewResponse(Movie movie) {
+    public SaveMovieRequest(Movie movie) {
         this.id = movie.getId();
         this.nameRussian = movie.getNameRussian();
         this.nameNative = movie.getNameNative();
@@ -37,28 +33,16 @@ public class MovieWithReviewResponse {
         this.rating = movie.getRating();
         this.price = movie.getPrice();
         this.picturePath = movie.getPicturePath();
-        List<Country> countryList = movie.getCountries();
-        if(null != countryList) {
-            for (Country country : countryList) {
-                this.countries.add(new CountryDto(country));
-            }
+        for (Country country : movie.getCountries()) {
+            this.countries.add(country.getId());
         }
-        List<Genre> genreList = movie.getGenres();
-        if(null != genreList) {
-            for (Genre genre : genreList) {
-                this.genres.add(new GenreDto(genre));
-            }
-        }
-        List<Review> reviewList = movie.getReviews();
-        if(null != reviewList) {
-            for (Review review : reviewList) {
-                this.reviews.add(new ReviewDto(review));
-            }
+        for (Genre genre : movie.getGenres()) {
+            this.genres.add(genre.getId());
         }
     }
 
     public int getId() {
-         return id;
+        return id;
     }
 
     public void setId(int id) {
@@ -121,35 +105,27 @@ public class MovieWithReviewResponse {
         this.picturePath = picturePath;
     }
 
-    public List<CountryDto> getCountries() {
+    public List<Integer> getCountries() {
         return countries;
     }
 
-    public void setCountries(List<CountryDto> countries) {
+    public void setCountries(List<Integer> countries) {
         this.countries = countries;
     }
 
-    public List<GenreDto> getGenres() {
+    public List<Integer> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<GenreDto> genres) {
+    public void setGenres(List<Integer> genres) {
         this.genres = genres;
-    }
-
-    public List<ReviewDto> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<ReviewDto> reviews) {
-        this.reviews = reviews;
     }
 
     @Override
     public String toString() {
-        return "MovieWithReviewResponse{" +
-                "id=" + id +
-                ", nameRussian='" + nameRussian + '\'' +
+        return "SaveMovieRequest{" +
+                "id='" + id + '\'' +
+                "nameRussian='" + nameRussian + '\'' +
                 ", nameNative='" + nameNative + '\'' +
                 ", yearOfRelease=" + yearOfRelease +
                 ", description='" + description + '\'' +
@@ -158,7 +134,6 @@ public class MovieWithReviewResponse {
                 ", picturePath='" + picturePath + '\'' +
                 ", countries=" + countries +
                 ", genres=" + genres +
-                ", reviews=" + reviews +
                 '}';
     }
 }

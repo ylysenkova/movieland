@@ -1,20 +1,15 @@
-package com.ylysenkova.movieland.model;
+package com.ylysenkova.movieland.web.dto;
 
-public class Country {
 
+import com.ylysenkova.movieland.model.Genre;
+
+public class GenreDto {
     private int id;
     private String name;
 
-    public Country() {
-    }
-
-    public Country(int id) {
-        this.id = id;
-    }
-
-    public Country(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public GenreDto(Genre genre) {
+        this.id = genre.getId();
+        this.name = genre.getName();
     }
 
     public int getId() {
@@ -35,7 +30,7 @@ public class Country {
 
     @Override
     public String toString() {
-        return "Country{" +
+        return "GenreDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
