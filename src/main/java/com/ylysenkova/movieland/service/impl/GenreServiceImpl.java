@@ -33,5 +33,18 @@ public class GenreServiceImpl implements GenreService {
         genreDao.removeGenreMovieLink(movie);
     }
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+=======
+>>>>>>> Stashed changes
+    @Override
+    public void removeGenreMovieLink(Movie movie) {
+        genreDao.removeGenreMovieLink(movie);
+    }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
 }
