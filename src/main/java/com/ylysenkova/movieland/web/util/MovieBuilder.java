@@ -24,7 +24,6 @@ public class MovieBuilder {
 
 
     public MovieBuilder getMovie() {
-
         movie = new Movie();
         movie.setId(saveMovieRequest.getId());
         movie.setNameRussian(saveMovieRequest.getNameRussian());
@@ -33,20 +32,18 @@ public class MovieBuilder {
         movie.setRating(saveMovieRequest.getRating());
         movie.setPrice(saveMovieRequest.getPrice());
         movie.setDescription(saveMovieRequest.getDescription());
-        if (movie.getGenres() == null) {
-            return this;
+        if (movie.getGenres() != null) {
+            for (Integer genreId : this.saveMovieRequest.getGenres()) {
+                this.genreList.add(new Genre(genreId));
+            }
+            movie.setGenres(genreList);
         }
-        for (Integer genreId : this.saveMovieRequest.getGenres()) {
-            this.genreList.add(new Genre(genreId));
+        if (movie.getCountries() != null) {
+            for (Integer countryId : this.saveMovieRequest.getCountries()) {
+                this.countryList.add(new Country(countryId));
+            }
+            movie.setCountries(countryList);
         }
-        movie.setGenres(genreList);
-        if (movie.getCountries() == null) {
-            return this;
-        }
-        for (Integer countryId : this.saveMovieRequest.getCountries()) {
-            this.countryList.add(new Country(countryId));
-        }
-        movie.setCountries(countryList);
         movie.setPicturePath(saveMovieRequest.getPicturePath());
         return this;
     }

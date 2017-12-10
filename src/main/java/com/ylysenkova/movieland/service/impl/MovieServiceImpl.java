@@ -83,6 +83,9 @@ public class MovieServiceImpl implements MovieService {
     public void editMovie(Movie movie) {
         logger.info("Service editMovie is started");
         movieDao.editMovie(movie);
+        genreService.removeGenreMovieLink(movie);
+        countryService.removeCountryMovieLink(movie);
+        logger.info("Service editMovie finished work.");
     }
 
 }
