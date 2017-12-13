@@ -3,6 +3,7 @@ package com.ylysenkova.movieland.service;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
+import com.ylysenkova.movieland.model.User;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface MovieService {
     void addMovie(Movie movie);
 
     void editMovie(Movie movie);
+
+    void rateMovie(int movieId, double rating, User user);
 }

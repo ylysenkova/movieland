@@ -1,4 +1,4 @@
-package com.ylysenkova.movieland.web.controller;
+package com.ylysenkova.movieland.web;
 
 import com.ylysenkova.movieland.web.dto.response.ExceptionResponse;
 import org.slf4j.Logger;

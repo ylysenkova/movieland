@@ -20,7 +20,7 @@ public class ParallelEnrichmentService {
 
     private long timeOutMillSec = 5000;
     private Logger logger = LoggerFactory.getLogger(getClass());
-    ExecutorService executorService = Executors.newCachedThreadPool();
+    private ExecutorService executorService = Executors.newCachedThreadPool();
 
     @Autowired
     private GenreService genreService;
@@ -32,7 +32,7 @@ public class ParallelEnrichmentService {
     public void parallelEnrichment(Movie movie) {
 
 
-        long currentTimeMillSec = timeOutMillSec + System.currentTimeMillis();
+        long timeMillSec = timeOutMillSec + System.currentTimeMillis();
         List<Future<?>> futureList = new ArrayList<>();
         Future<?> genreTask = executorService.submit(() -> genreService.enrichMovieWithGenres(movie));
         Future<?> countryTask = executorService.submit(() -> countryService.enrichMovieWithCountries(movie));
@@ -43,7 +43,7 @@ public class ParallelEnrichmentService {
         for (Future<?> future : futureList) {
             long timeLeft;
             try {
-                if ((timeLeft = currentTimeMillSec - System.currentTimeMillis()) < 0) {
+                if ((timeLeft = timeMillSec - System.currentTimeMillis()) < 0) {
                     timeLeft = 0;
                 }
                 future.get(timeLeft, TimeUnit.MILLISECONDS);

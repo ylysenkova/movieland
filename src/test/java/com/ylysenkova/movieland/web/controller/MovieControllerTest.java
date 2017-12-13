@@ -1,14 +1,12 @@
 package com.ylysenkova.movieland.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.org.apache.xml.internal.utils.URI;
 import com.ylysenkova.movieland.model.*;
 import com.ylysenkova.movieland.service.ExchangeRateService;
 import com.ylysenkova.movieland.service.MovieService;
 import com.ylysenkova.movieland.service.SortingValidationService;
 import com.ylysenkova.movieland.service.impl.AuthenticationServiceImpl;
 import com.ylysenkova.movieland.web.dto.request.SaveMovieRequest;
-import com.ylysenkova.movieland.web.util.MovieBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +18,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import javax.print.attribute.standard.Media;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

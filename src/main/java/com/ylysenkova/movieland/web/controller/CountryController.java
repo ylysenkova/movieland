@@ -1,6 +1,5 @@
 package com.ylysenkova.movieland.web.controller;
 
-import com.mysql.cj.x.protobuf.Mysqlx;
 import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.service.CountryService;
 import com.ylysenkova.movieland.web.dto.response.CountryAllResponse;
@@ -28,7 +27,7 @@ public class CountryController {
     private CountryService countryService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<?> getAll() {
+    @ResponseBody public ResponseEntity<?> getAll() {
         logger.debug("Method getAll in CountryController is started.");
         long startTime = System.currentTimeMillis();
 

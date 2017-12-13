@@ -9,21 +9,21 @@ import com.ylysenkova.movieland.web.dto.request.SaveMovieRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieBuilder {
+public class SaveMovieRequestTransformer {
 
     private SaveMovieRequest saveMovieRequest;
     private Movie movie;
     private List<Country> countryList = new ArrayList<>();
     private List<Genre> genreList = new ArrayList<>();
 
-    public static MovieBuilder fromMovieRequest(SaveMovieRequest saveMovieRequest) {
-        MovieBuilder movieBuilder = new MovieBuilder();
+    public static SaveMovieRequestTransformer fromMovieRequest(SaveMovieRequest saveMovieRequest) {
+        SaveMovieRequestTransformer movieBuilder = new SaveMovieRequestTransformer();
         movieBuilder.saveMovieRequest = saveMovieRequest;
         return movieBuilder;
     }
 
 
-    public MovieBuilder getMovie() {
+    public SaveMovieRequestTransformer getMovie() {
         movie = new Movie();
         movie.setId(saveMovieRequest.getId());
         movie.setNameRussian(saveMovieRequest.getNameRussian());
@@ -32,13 +32,13 @@ public class MovieBuilder {
         movie.setRating(saveMovieRequest.getRating());
         movie.setPrice(saveMovieRequest.getPrice());
         movie.setDescription(saveMovieRequest.getDescription());
-        if (movie.getGenres() != null) {
+        if (saveMovieRequest.getGenres() != null) {
             for (Integer genreId : this.saveMovieRequest.getGenres()) {
                 this.genreList.add(new Genre(genreId));
             }
             movie.setGenres(genreList);
         }
-        if (movie.getCountries() != null) {
+        if (saveMovieRequest.getCountries() != null) {
             for (Integer countryId : this.saveMovieRequest.getCountries()) {
                 this.countryList.add(new Country(countryId));
             }

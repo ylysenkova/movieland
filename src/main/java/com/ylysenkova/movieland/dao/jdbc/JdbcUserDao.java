@@ -7,7 +7,7 @@ import com.ylysenkova.movieland.dao.mapper.UserMapper;
 import com.ylysenkova.movieland.dao.mapper.UserRoleMapper;
 import com.ylysenkova.movieland.model.Role;
 import com.ylysenkova.movieland.model.User;
-import com.ylysenkova.movieland.web.exceptions.AuthenticationException;
+import com.ylysenkova.movieland.web.exception.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

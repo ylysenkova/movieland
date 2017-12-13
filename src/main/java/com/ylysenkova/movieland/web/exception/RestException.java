@@ -1,4 +1,4 @@
-package com.ylysenkova.movieland.web.exceptions;
+package com.ylysenkova.movieland.web.exception;
 
 
 import org.springframework.http.HttpStatus;

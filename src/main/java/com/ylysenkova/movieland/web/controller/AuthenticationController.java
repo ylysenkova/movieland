@@ -24,7 +24,7 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public @ResponseBody ResponseEntity<?> authenticateUser(
+    @ResponseBody public ResponseEntity<?> authenticateUser(
             @RequestParam(value = "mail")String mail,
             @RequestParam(value = "password") String password) {
         logger.debug("User " + mail + "trying to login");
@@ -38,7 +38,7 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
-    public @ResponseBody ResponseEntity<?> logout (@RequestHeader("x-auth-token") String uuid) {
+    @ResponseBody public ResponseEntity<?> logout (@RequestHeader("x-auth-token") String uuid) {
         logger.debug("User " + uuid + " is logged out.");
 
         authenticationService.logout(UUID.fromString(uuid));
