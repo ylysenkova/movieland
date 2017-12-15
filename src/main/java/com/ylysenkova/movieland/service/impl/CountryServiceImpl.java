@@ -29,4 +29,14 @@ public class CountryServiceImpl implements CountryService {
     public List<Country> getAll() {
         return countryDao.getAll();
     }
+
+    @Override
+    public void removeCountryMovieLink(Movie movie) {
+        countryDao.removeCountryMovieLink(movie);
+    }
+
+    @Override
+    public void editAddCountry(Movie movie) {
+        countryDao.editAddCountry(movie);
+    }
 }

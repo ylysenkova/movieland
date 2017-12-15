@@ -1,7 +1,6 @@
 package com.ylysenkova.movieland.dao.jdbc;
 
 import com.ylysenkova.movieland.dao.ReviewDao;
-import com.ylysenkova.movieland.dao.jdbc.utils.Pair;
 import com.ylysenkova.movieland.dao.mapper.ReviewMapper;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Review;
@@ -11,15 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository(value = "jdbcReviewDao")
-public class JdbcReviewDao implements ReviewDao {
+public class JdbcReviewDao implements ReviewDao{
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final ReviewMapper reviewMapper = new ReviewMapper();
@@ -27,9 +24,9 @@ public class JdbcReviewDao implements ReviewDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Autowired
-    private String getReviewWithUserByMovieId;
+    private String getReviewWithUserByMovieIdSQL;
     @Autowired
-    private String addReview;
+    private String addReviewSQL;
 
     @Override
     public void enrichMovieWithReviews(Movie movie) {
@@ -40,15 +37,18 @@ public class JdbcReviewDao implements ReviewDao {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movieId);
 
-        List<Pair<Integer, Review>> reviewMapList = namedParameterJdbcTemplate.query(getReviewWithUserByMovieId, sqlParameterSource, reviewMapper);
-        List<Review> reviewWithUser = new ArrayList<>();
-        for (Pair<Integer, Review> movieReviewPair : reviewMapList) {
-            if (movieId == movieReviewPair.getKey()) {
-                reviewWithUser.add(movieReviewPair.getValue());
-            }
-            movie.setReviews(reviewWithUser);
+        List<Review> reviewMapList = namedParameterJdbcTemplate.query(getReviewWithUserByMovieIdSQL, sqlParameterSource, reviewMapper);
+        if(Thread.currentThread().isInterrupted()) {
+            logger.info("Enrichment movie={} with Review was interrupted due to timeout", movie);
+            return;
         }
-
+        List<Review> reviewWithUser = new ArrayList<>();
+        for (Review movieReview : reviewMapList) {
+            if (movieId == movie.getId()) {
+                reviewWithUser.add(movieReview);
+            }
+        }
+        movie.setReviews(reviewWithUser);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class JdbcReviewDao implements ReviewDao {
         sqlParameterSource.addValue("userId", userId);
         sqlParameterSource.addValue("movieId", movieId);
 
-        namedParameterJdbcTemplate.update(addReview, sqlParameterSource);
+        namedParameterJdbcTemplate.update(addReviewSQL, sqlParameterSource);
 
     }
 

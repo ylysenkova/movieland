@@ -4,7 +4,6 @@ import com.ylysenkova.movieland.dao.GenreDao;
 import com.ylysenkova.movieland.dao.jdbc.utils.Pair;
 import com.ylysenkova.movieland.dao.mapper.GenreMapper;
 import com.ylysenkova.movieland.dao.mapper.MovieGenreMapper;
-import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import org.slf4j.Logger;
@@ -13,13 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Repository(value = "jdbcGenreDao")
 public class JdbcGenreDao implements GenreDao {
@@ -33,16 +30,20 @@ public class JdbcGenreDao implements GenreDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Autowired
-    private String getAllGenres;
+    private String getAllGenresSQL;
     @Autowired
-    private String getGenreByThreeMovieId;
+    private String getGenreByThreeMovieIdSQL;
     @Autowired
-    private String getGenreByMovieId;
+    private String getGenreByMovieIdSQL;
+    @Autowired
+    private String removeLinkGenreMovieSQL;
+    @Autowired
+    private String insertMovieGenreSQL;
 
     @Override
     public List<Genre> getAll() {
         logger.debug("Method getAll is started.");
-        List<Genre> genres = jdbcTemplate.query(getAllGenres, genreMapper);
+        List<Genre> genres = jdbcTemplate.query(getAllGenresSQL, genreMapper);
         logger.debug("Method getAll returned = {}", genres);
         return genres;
     }
@@ -59,10 +60,9 @@ public class JdbcGenreDao implements GenreDao {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieIds", movieIds);
 
-        List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByThreeMovieId, sqlParameterSource, movieGenreMapper);
+        List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByThreeMovieIdSQL, sqlParameterSource, movieGenreMapper);
 
         for (Movie movie : movieList) {
-
             List<Genre> genreList = new ArrayList<>();
 
             for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
@@ -81,15 +81,45 @@ public class JdbcGenreDao implements GenreDao {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movieId);
 
-        List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByMovieId, sqlParameterSource, movieGenreMapper);
-
-        List<Genre> genreList = new ArrayList<>();
-
-        for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
-            if (movie.getId() == movieGenreMap.getKey()) {
-                genreList.add(movieGenreMap.getValue());
-            }
+        List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByMovieIdSQL, sqlParameterSource, movieGenreMapper);
+        if(Thread.currentThread().isInterrupted()) {
+            logger.info("Enrichment movie={} with Genre was interrupted due to timeout", movie);
+            return;
         }
-        movie.setGenres(genreList);
+        List<Genre> genreList = new ArrayList<>();
+            for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
+                if (movie.getId() == movieGenreMap.getKey()) {
+                    genreList.add(movieGenreMap.getValue());
+                }
+            }
+            movie.setGenres(genreList);
     }
+
+
+    @Override
+    public void removeGenreMovieLink(Movie movie) {
+        logger.info("Removing Genre linked to Movie is started.");
+
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("movieId", movie.getId());
+        namedParameterJdbcTemplate.update(removeLinkGenreMovieSQL, sqlParameterSource);
+
+        logger.info("Link genre-movie is removed.");
+    }
+
+    @Override
+    public void editAddGenre(Movie movie) {
+        removeGenreMovieLink(movie);
+        List<Map<String, Integer>> sqlParametersMap = new ArrayList<>();
+        Map<String, Integer> fillSqlParameters = new HashMap<>();
+        for (Genre genre : movie.getGenres()) {
+            fillSqlParameters.put("movieId", movie.getId());
+            sqlParametersMap.add(fillSqlParameters);
+            fillSqlParameters.put("genreId", genre.getId());
+            sqlParametersMap.add(fillSqlParameters);
+        }
+        SqlParameterSource[] sqlParameters = SqlParameterSourceUtils.createBatch(sqlParametersMap.toArray());
+        namedParameterJdbcTemplate.batchUpdate(insertMovieGenreSQL, sqlParameters);
+    }
+
 }

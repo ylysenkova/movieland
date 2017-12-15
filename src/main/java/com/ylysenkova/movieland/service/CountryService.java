@@ -12,4 +12,8 @@ public interface CountryService {
     void enrichMovieWithCountries(Movie movie);
 
     List<Country> getAll();
+
+    void removeCountryMovieLink(Movie movie);
+
+    void editAddCountry(Movie movie);
 }

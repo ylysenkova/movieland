@@ -10,11 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 
+import java.sql.PreparedStatement;
 import java.util.*;
 
 
@@ -30,39 +33,34 @@ public class JdbcMovieDao implements MovieDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Autowired
-    private String getAllMovies;
+    private String getAllMoviesSQL;
     @Autowired
-    private String getThreeMovies;
+    private String getThreeMoviesSQL;
     @Autowired
-    private String getMovieCount;
+    private String getMovieCountSQL;
     @Autowired
-    private String getMovieByGenreId;
+    private String getMovieByGenreIdSQL;
     @Autowired
-    private String getMovieById;
+    private String getMovieByIdSQL;
     @Autowired
-    private String insertMovie;
+    private String insertMovieSQL;
     @Autowired
-    private String insertMovieGenre;
-    @Autowired
-    private String insertMovieCountry;
-    @Autowired
-    private String updateMovie;
+    private String updateMovieSQL;
 
     @Override
     public List<Movie> getAll() {
         logger.debug("Method getAll has started");
-        List<Movie> moviesList = jdbcTemplate.query(getAllMovies, movieMapper);
+        List<Movie> moviesList = jdbcTemplate.query(getAllMoviesSQL, movieMapper);
         logger.debug("Method getAll returned = {}", moviesList);
         return moviesList;
     }
-
     @Override
     public Set<Integer> getThreeMovieIds() {
         logger.debug("Method getThreeMovieIds has started");
         Set<Integer> movieIds = new HashSet<>();
 
-        int movieCount = jdbcTemplate.queryForObject(getMovieCount, Integer.class);
-        int searchCount;
+        int movieCount = jdbcTemplate.queryForObject(getMovieCountSQL, Integer.class);
+        int searchCount = 0;
 
         if (movieCount < 3) {
             searchCount = movieCount;
@@ -78,41 +76,41 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     public List<Movie> getThreeMovies(Set<Integer> movieIds) {
-        logger.debug("Method getThreeMovies has started");
+        logger.debug("Method getThreeMoviesSQL has started");
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieIds", movieIds);
 
-        List<Movie> movieList = namedParameterJdbcTemplate.query(getThreeMovies, sqlParameterSource, movieMapper);
+        List<Movie> movieList = namedParameterJdbcTemplate.query(getThreeMoviesSQL, sqlParameterSource, movieMapper);
 
-        logger.debug("Method getThreeMovies returned = {}", movieList);
+        logger.debug("Method getThreeMoviesSQL returned = {}", movieList);
 
         return movieList;
     }
 
     @Override
     public List<Movie> getMovieByGenreId(int genreId) {
-        logger.debug("Method getMovieByGenreId is started.");
+        logger.debug("Method getMovieByGenreIdSQL is started.");
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("genreId", genreId);
 
-        List<Movie> movies = namedParameterJdbcTemplate.query(getMovieByGenreId, sqlParameterSource, movieMapper);
+        List<Movie> movies = namedParameterJdbcTemplate.query(getMovieByGenreIdSQL, sqlParameterSource, movieMapper);
 
-        logger.debug("Method getMovieByGenreId returned = {}", movies);
+        logger.debug("Method getMovieByGenreIdSQL returned = {}", movies);
         return movies;
     }
 
     @Override
     public Movie getMovieById(int movieId) {
-        logger.debug("Method getMovieById is started.");
+        logger.debug("Method getMovieByIdSQL is started.");
 
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movieId);
 
-        Movie movie = namedParameterJdbcTemplate.queryForObject(getMovieById, sqlParameterSource, movieMapper);
+        Movie movie = namedParameterJdbcTemplate.queryForObject(getMovieByIdSQL, sqlParameterSource, movieMapper);
 
-        logger.debug("Method getMovieById returns = {}", movie);
+        logger.debug("Method getMovieByIdSQL returns = {}", movie);
 
         return movie;
     }
@@ -121,7 +119,7 @@ public class JdbcMovieDao implements MovieDao {
     @Override
     public List<Movie> getAllMoviesSorted(String field, Sorting direction) {
         logger.debug("Sorting movies by rating is started.");
-        List<Movie> movieList = jdbcTemplate.query(QueryBuilder.getSortedSQL(getAllMovies, field, direction), movieMapper);
+        List<Movie> movieList = jdbcTemplate.query(QueryBuilder.getSortedSQL(getAllMoviesSQL, field, direction), movieMapper);
         logger.debug("Sorting by rating returned = {}", movieList);
         return movieList;
     }
@@ -131,7 +129,7 @@ public class JdbcMovieDao implements MovieDao {
         logger.debug("Sorting movies by rating is started.");
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("genreId", genreId);
-        List<Movie> movieList = namedParameterJdbcTemplate.query(QueryBuilder.getSortedSQL(getMovieByGenreId, field, direction), sqlParameterSource, movieMapper);
+        List<Movie> movieList = namedParameterJdbcTemplate.query(QueryBuilder.getSortedSQL(getMovieByGenreIdSQL, field, direction), sqlParameterSource, movieMapper);
         logger.debug("Sorting by rating returned = {}", movieList);
         return movieList;
     }
@@ -150,21 +148,13 @@ public class JdbcMovieDao implements MovieDao {
         sqlParameterSource.addValue("rating", movie.getRating());
         sqlParameterSource.addValue("price", movie.getPrice());
         sqlParameterSource.addValue("picturePath", movie.getPicturePath());
-        namedParameterJdbcTemplate.update(insertMovie, sqlParameterSource, generatedMovieId);
-        for (Genre genre : movie.getGenres()) {
-            sqlParameterSource.addValue("movieId", generatedMovieId.getKey());
-            sqlParameterSource.addValue("genreId", genre.getId());
-            namedParameterJdbcTemplate.update(insertMovieGenre, sqlParameterSource);
-        }
-        for (Country country : movie.getCountries()) {
-            sqlParameterSource.addValue("movieId", generatedMovieId.getKey());
-            sqlParameterSource.addValue("countryId", country.getId());
-            namedParameterJdbcTemplate.update(insertMovieCountry, sqlParameterSource);
-        }
+        namedParameterJdbcTemplate.update(insertMovieSQL, sqlParameterSource, generatedMovieId);
+        movie.setId(Integer.valueOf(generatedMovieId.getKey().toString()));
     }
 
     @Override
     public void editMovie(Movie movie) {
+        KeyHolder generatedMovieId = new GeneratedKeyHolder();
         logger.info("Movie with movie id ={} is updating", movie.getId());
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("movieId", movie.getId());
@@ -175,7 +165,7 @@ public class JdbcMovieDao implements MovieDao {
         sqlParameterSource.addValue("rating", movie.getRating());
         sqlParameterSource.addValue("price", movie.getPrice());
         sqlParameterSource.addValue("picturePath", movie.getPicturePath());
-        namedParameterJdbcTemplate.update(updateMovie, sqlParameterSource);
+        namedParameterJdbcTemplate.update(updateMovieSQL, sqlParameterSource);
     }
 
 

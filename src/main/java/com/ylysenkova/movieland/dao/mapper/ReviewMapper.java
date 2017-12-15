@@ -8,23 +8,21 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ReviewMapper implements RowMapper<Pair<Integer, Review>> {
+public class ReviewMapper implements RowMapper<Review> {
 
 
     @Override
-    public Pair<Integer, Review> mapRow(ResultSet resultSet, int i) throws SQLException {
+    public Review mapRow(ResultSet resultSet, int i) throws SQLException {
         Review review = new Review();
         User user = new User();
-        Pair<Integer, Review> movieReviewMapper = new Pair<>();
+        review.setMovieId(resultSet.getInt("movie_id"));
         review.setId(resultSet.getInt("id"));
         review.setText(resultSet.getString("text"));
         user.setId(resultSet.getInt("user_id"));
         user.setName(resultSet.getString("user_name"));
         review.setUser(user);
-        int movieId = resultSet.getInt("movie_id");
-        movieReviewMapper.setKey(movieId);
-        movieReviewMapper.setValue(review);
-        return movieReviewMapper;
+
+        return review;
     }
 
 }

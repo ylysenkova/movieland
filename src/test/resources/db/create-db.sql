@@ -35,13 +35,6 @@ CREATE TABLE movie_genre (
   genre_id integer DEFAULT NULL
 );
 
-drop TABLE IF EXISTS movie_reviews;
-CREATE TABLE movie_reviews (
-  movie_id integer DEFAULT NULL,
-  review_id integer DEFAULT NULL
-);
-
-
 
 
 drop TABLE IF EXISTS reviews;
@@ -49,6 +42,7 @@ CREATE TABLE reviews (
   id integer NOT NULL ,
   text varchar(5000) NOT NULL,
   user_id integer NOT NULL,
+  movie_id integer NOT NULL,
   PRIMARY KEY (id)
 );
 

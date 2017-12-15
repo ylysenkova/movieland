@@ -6,6 +6,7 @@ import com.ylysenkova.movieland.security.ReviewSecurityFilter;
 import com.ylysenkova.movieland.security.UserPrincipal;
 import com.ylysenkova.movieland.service.impl.AuthenticationServiceImpl;
 import com.ylysenkova.movieland.service.impl.ReviewServiceImpl;
+import com.ylysenkova.movieland.web.Interceptor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

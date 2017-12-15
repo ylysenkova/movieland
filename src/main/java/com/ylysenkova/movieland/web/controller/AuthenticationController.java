@@ -24,10 +24,8 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public
-    @ResponseBody
-    ResponseEntity<?> authenticateUser(
-            @RequestParam(value = "mail") String mail,
+    @ResponseBody public ResponseEntity<?> authenticateUser(
+            @RequestParam(value = "mail")String mail,
             @RequestParam(value = "password") String password) {
         logger.debug("User " + mail + "trying to login");
 
@@ -35,14 +33,12 @@ public class AuthenticationController {
         Pair<UUID, Token> uuidTokenPair = authenticationService.authenticationUser(mail, password);
         authenticationResponse = new AuthenticationResponse(uuidTokenPair);
 
-        return new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.OK);
+        return new ResponseEntity <AuthenticationResponse> (authenticationResponse,HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
-    public
-    @ResponseBody
-    ResponseEntity<?> logout(@RequestHeader("x-auth-token") String uuid) {
+    @ResponseBody public ResponseEntity<?> logout (@RequestHeader("x-auth-token") String uuid) {
         logger.debug("User " + uuid + " is logged out.");
 
         authenticationService.logout(UUID.fromString(uuid));

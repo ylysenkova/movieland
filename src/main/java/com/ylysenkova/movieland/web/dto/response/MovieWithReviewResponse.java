@@ -4,7 +4,11 @@ import com.ylysenkova.movieland.model.Country;
 import com.ylysenkova.movieland.model.Genre;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Review;
+import com.ylysenkova.movieland.web.dto.CountryDto;
+import com.ylysenkova.movieland.web.dto.GenreDto;
+import com.ylysenkova.movieland.web.dto.ReviewDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MovieWithReviewResponse {
@@ -17,9 +21,9 @@ public class MovieWithReviewResponse {
     private double rating;
     private double price;
     private String picturePath;
-    private List<Country> countries;
-    private List<Genre> genres;
-    private List<Review> reviews;
+    private List<CountryDto> countries = new ArrayList<>();
+    private List<GenreDto> genres = new ArrayList<>();
+    private List<ReviewDto> reviews = new ArrayList<>();
 
     public MovieWithReviewResponse() {
     }
@@ -33,16 +37,28 @@ public class MovieWithReviewResponse {
         this.rating = movie.getRating();
         this.price = movie.getPrice();
         this.picturePath = movie.getPicturePath();
-        this.countries = movie.getCountries();
-        this.genres = movie.getGenres();
-        this.reviews = movie.getReviews();
+        List<Country> countryList = movie.getCountries();
+        if(null != countryList) {
+            for (Country country : countryList) {
+                this.countries.add(new CountryDto(country));
+            }
+        }
+        List<Genre> genreList = movie.getGenres();
+        if(null != genreList) {
+            for (Genre genre : genreList) {
+                this.genres.add(new GenreDto(genre));
+            }
+        }
+        List<Review> reviewList = movie.getReviews();
+        if(null != reviewList) {
+            for (Review review : reviewList) {
+                this.reviews.add(new ReviewDto(review));
+            }
+        }
     }
 
-
     public int getId() {
-
-
-        return id;
+         return id;
     }
 
     public void setId(int id) {
@@ -105,27 +121,27 @@ public class MovieWithReviewResponse {
         this.picturePath = picturePath;
     }
 
-    public List<Country> getCountries() {
+    public List<CountryDto> getCountries() {
         return countries;
     }
 
-    public void setCountries(List<Country> countries) {
+    public void setCountries(List<CountryDto> countries) {
         this.countries = countries;
     }
 
-    public List<Genre> getGenres() {
+    public List<GenreDto> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(List<GenreDto> genres) {
         this.genres = genres;
     }
 
-    public List<Review> getReviews() {
+    public List<ReviewDto> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(List<ReviewDto> reviews) {
         this.reviews = reviews;
     }
 

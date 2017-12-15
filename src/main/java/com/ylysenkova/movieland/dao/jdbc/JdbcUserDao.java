@@ -7,7 +7,7 @@ import com.ylysenkova.movieland.dao.mapper.UserMapper;
 import com.ylysenkova.movieland.dao.mapper.UserRoleMapper;
 import com.ylysenkova.movieland.model.Role;
 import com.ylysenkova.movieland.model.User;
-import com.ylysenkova.movieland.web.exceptions.AuthenticationException;
+import com.ylysenkova.movieland.web.exception.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +27,9 @@ public class JdbcUserDao implements UserDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     @Autowired
-    private String getUserByEmail;
+    private String getUserByEmailSQL;
     @Autowired
-    private String getRoleByUserId;
+    private String getRoleByUserIdSQL;
 
     @Override
     public User getUser(String email, String password) {
@@ -40,7 +40,7 @@ public class JdbcUserDao implements UserDao {
         sqlParameterSource.addValue("password", password);
         User user;
         try {
-            user = namedParameterJdbcTemplate.queryForObject(getUserByEmail, sqlParameterSource, userMapper);
+            user = namedParameterJdbcTemplate.queryForObject(getUserByEmailSQL, sqlParameterSource, userMapper);
         } catch (RuntimeException e) {
             throw new AuthenticationException("Invalid username or password.");
         }
@@ -55,7 +55,7 @@ public class JdbcUserDao implements UserDao {
         MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
         sqlParameterSource.addValue("userId", userId);
 
-        List<Pair<Integer, Role>> roleList = namedParameterJdbcTemplate.query(getRoleByUserId, sqlParameterSource, userRoleMapper);
+        List<Pair<Integer, Role>> roleList = namedParameterJdbcTemplate.query(getRoleByUserIdSQL, sqlParameterSource, userRoleMapper);
 
 
         List<Role> roles = new ArrayList<>();

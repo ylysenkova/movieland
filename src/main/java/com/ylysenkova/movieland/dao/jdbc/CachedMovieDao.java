@@ -21,8 +21,9 @@ import java.util.concurrent.ConcurrentMap;
 public class CachedMovieDao implements MovieDao {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     private final int CACHE_SIZE = 4;
-    ConcurrentMap<Integer, Movie> cacheMap = new ConcurrentLinkedHashMap.Builder<Integer, Movie>().maximumWeightedCapacity(CACHE_SIZE).build();
-
+    private ConcurrentMap<Integer, Movie> cacheMap = new ConcurrentLinkedHashMap.Builder<Integer, Movie>()
+            .maximumWeightedCapacity(CACHE_SIZE)
+            .build();
 
     @Autowired
     private MovieDao movieDao;

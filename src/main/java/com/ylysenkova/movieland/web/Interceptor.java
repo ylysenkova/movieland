@@ -1,4 +1,4 @@
-package com.ylysenkova.movieland.web.controller;
+package com.ylysenkova.movieland.web;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,9 +8,9 @@ import com.ylysenkova.movieland.security.SecurityHttpServletRequestWrapper;
 import com.ylysenkova.movieland.security.UserPrincipal;
 import com.ylysenkova.movieland.service.AuthenticationService;
 import com.ylysenkova.movieland.web.dto.response.ExceptionResponse;
-import com.ylysenkova.movieland.web.exceptions.AuthenticationException;
-import com.ylysenkova.movieland.web.exceptions.PermissionException;
-import com.ylysenkova.movieland.web.exceptions.RestException;
+import com.ylysenkova.movieland.web.exception.AuthenticationException;
+import com.ylysenkova.movieland.web.exception.PermissionException;
+import com.ylysenkova.movieland.web.exception.RestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -27,9 +26,16 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void enrichMovieWithGenres(Movie movie) {
-        genreDao.enrichMovieWithGenres(movie);
+    public void enrichMovieWithGenres(Movie movie) { genreDao.enrichMovieWithGenres(movie);}
 
+    @Override
+    public void removeGenreMovieLink(Movie movie) {
+        genreDao.removeGenreMovieLink(movie);
+    }
+
+    @Override
+    public void editAddGenre(Movie movie) {
+        genreDao.editAddGenre(movie);
     }
 
 }

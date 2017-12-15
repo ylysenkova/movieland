@@ -15,7 +15,7 @@ public class TransactionManagerConfig {
     @Autowired
     private DataSource dataSource;
 
-    @Bean(name = "transactionManager")
+    @Bean()
     public PlatformTransactionManager transactionManager() {
         DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
         transactionManager.setDataSource(dataSource);

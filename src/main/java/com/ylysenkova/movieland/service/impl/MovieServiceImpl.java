@@ -3,6 +3,7 @@ package com.ylysenkova.movieland.service.impl;
 import com.ylysenkova.movieland.dao.MovieDao;
 import com.ylysenkova.movieland.model.Movie;
 import com.ylysenkova.movieland.model.Sorting;
+import com.ylysenkova.movieland.model.User;
 import com.ylysenkova.movieland.service.CountryService;
 import com.ylysenkova.movieland.service.GenreService;
 import com.ylysenkova.movieland.service.MovieService;
@@ -74,14 +75,26 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void addMovie(Movie movie) {
         movieDao.addMovie(movie);
+        genreService.editAddGenre(movie);
+        countryService.editAddCountry(movie);
 
     }
 
     @Transactional
     @Override
     public void editMovie(Movie movie) {
-        logger.info("Service editMovie is started");
+        logger.debug("Service editMovie is started");
+        genreService.editAddGenre(movie);
+        countryService.editAddCountry(movie);
         movieDao.editMovie(movie);
+        logger.debug("Service editMovie finished work.");
     }
+
+    @Override
+    public void rateMovie(int movieId, double rating, User user) {
+        logger.debug("Service rateMovie is started.");
+
+    }
+
 
 }

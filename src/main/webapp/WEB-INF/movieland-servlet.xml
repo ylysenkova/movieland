@@ -17,7 +17,7 @@
 
     <mvc:interceptors>
 
-        <bean class="com.ylysenkova.movieland.web.controller.Interceptor" />
+        <bean class="com.ylysenkova.movieland.web.Interceptor" />
 
     </mvc:interceptors>
 

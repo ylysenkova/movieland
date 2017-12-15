@@ -23,10 +23,8 @@ public class GenreController {
     @Autowired
     private GenreService genreService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public
-    @ResponseBody
-    List<Genre> getAll() {
+    @RequestMapping( method = RequestMethod.GET)
+    @ResponseBody public List<Genre> getAll() {
         logger.debug("Sending request...");
         long startTime = System.currentTimeMillis();
         List<Genre> genres = genreService.getAll();
