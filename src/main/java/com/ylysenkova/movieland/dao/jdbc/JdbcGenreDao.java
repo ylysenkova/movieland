@@ -12,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Repository(value = "jdbcGenreDao")
 public class JdbcGenreDao implements GenreDao {
@@ -38,6 +37,8 @@ public class JdbcGenreDao implements GenreDao {
     private String getGenreByMovieIdSQL;
     @Autowired
     private String removeLinkGenreMovieSQL;
+    @Autowired
+    private String insertMovieGenreSQL;
 
     @Override
     public List<Genre> getAll() {
@@ -105,4 +106,20 @@ public class JdbcGenreDao implements GenreDao {
 
         logger.info("Link genre-movie is removed.");
     }
+
+    @Override
+    public void editAddGenre(Movie movie) {
+        removeGenreMovieLink(movie);
+        List<Map<String, Integer>> sqlParametersMap = new ArrayList<>();
+        Map<String, Integer> fillSqlParameters = new HashMap<>();
+        for (Genre genre : movie.getGenres()) {
+            fillSqlParameters.put("movieId", movie.getId());
+            sqlParametersMap.add(fillSqlParameters);
+            fillSqlParameters.put("genreId", genre.getId());
+            sqlParametersMap.add(fillSqlParameters);
+        }
+        SqlParameterSource[] sqlParameters = SqlParameterSourceUtils.createBatch(sqlParametersMap.toArray());
+        namedParameterJdbcTemplate.batchUpdate(insertMovieGenreSQL, sqlParameters);
+    }
+
 }

@@ -33,4 +33,9 @@ public class GenreServiceImpl implements GenreService {
         genreDao.removeGenreMovieLink(movie);
     }
 
+    @Override
+    public void editAddGenre(Movie movie) {
+        genreDao.editAddGenre(movie);
+    }
+
 }

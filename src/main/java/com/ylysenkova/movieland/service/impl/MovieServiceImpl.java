@@ -76,6 +76,8 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void addMovie(Movie movie) {
         movieDao.addMovie(movie);
+        genreService.editAddGenre(movie);
+        countryService.editAddCountry(movie);
 
     }
 
@@ -83,8 +85,8 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void editMovie(Movie movie) {
         logger.debug("Service editMovie is started");
-        genreService.removeGenreMovieLink(movie);
-        countryService.removeCountryMovieLink(movie);
+        genreService.editAddGenre(movie);
+        countryService.editAddCountry(movie);
         movieDao.editMovie(movie);
         logger.debug("Service editMovie finished work.");
     }

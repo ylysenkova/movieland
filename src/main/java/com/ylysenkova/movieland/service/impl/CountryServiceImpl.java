@@ -33,4 +33,9 @@ public class CountryServiceImpl implements CountryService{
     public void removeCountryMovieLink(Movie movie) {
         countryDao.removeCountryMovieLink(movie);
     }
+
+    @Override
+    public void editAddCountry(Movie movie) {
+        countryDao.editAddCountry(movie);
+    }
 }

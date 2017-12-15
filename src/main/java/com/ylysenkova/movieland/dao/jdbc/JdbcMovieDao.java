@@ -45,10 +45,6 @@ public class JdbcMovieDao implements MovieDao {
     @Autowired
     private String insertMovieSQL;
     @Autowired
-    private String insertMovieGenreSQL;
-    @Autowired
-    private String insertMovieCountrySQL;
-    @Autowired
     private String updateMovieSQL;
 
     @Override
@@ -153,26 +149,7 @@ public class JdbcMovieDao implements MovieDao {
         sqlParameterSource.addValue("price", movie.getPrice());
         sqlParameterSource.addValue("picturePath", movie.getPicturePath());
         namedParameterJdbcTemplate.update(insertMovieSQL, sqlParameterSource, generatedMovieId);
-        List<Map<String, Integer>> sqlParametersMap = new ArrayList<>();
-        Map<String, Integer> fillSqlParameters = new HashMap<>();
-        for (Genre genre : movie.getGenres()) {
-            fillSqlParameters.put("movieId", Integer.valueOf(generatedMovieId.getKey().toString()));
-            sqlParametersMap.add(fillSqlParameters);
-            fillSqlParameters.put("genreId", genre.getId());
-            sqlParametersMap.add(fillSqlParameters);
-        }
-        SqlParameterSource[] sqlParameters = SqlParameterSourceUtils.createBatch(sqlParametersMap.toArray());
-        namedParameterJdbcTemplate.batchUpdate(insertMovieGenreSQL, sqlParameters);
-
-        for (Country country : movie.getCountries()) {
-            fillSqlParameters.put("movieId", Integer.valueOf(generatedMovieId.getKey().toString()));
-            sqlParametersMap.add(fillSqlParameters);
-            fillSqlParameters.put("countryId", country.getId());
-            sqlParametersMap.add(fillSqlParameters);
-        }
-        sqlParameters = SqlParameterSourceUtils.createBatch(sqlParametersMap.toArray());
-        namedParameterJdbcTemplate.batchUpdate(insertMovieCountrySQL, sqlParameters);
-
+        movie.setId(Integer.valueOf(generatedMovieId.getKey().toString()));
     }
 
     @Override
@@ -189,26 +166,6 @@ public class JdbcMovieDao implements MovieDao {
         sqlParameterSource.addValue("price", movie.getPrice());
         sqlParameterSource.addValue("picturePath", movie.getPicturePath());
         namedParameterJdbcTemplate.update(updateMovieSQL, sqlParameterSource);
-
-        List<Map<String, Integer>> sqlParametersMap = new ArrayList<>();
-        Map<String, Integer> fillSqlParameters = new HashMap<>();
-        for (Genre genre : movie.getGenres()) {
-            fillSqlParameters.put("movieId", Integer.valueOf(generatedMovieId.getKey().toString()));
-            sqlParametersMap.add(fillSqlParameters);
-            fillSqlParameters.put("genreId", genre.getId());
-            sqlParametersMap.add(fillSqlParameters);
-        }
-        SqlParameterSource[] sqlParameters = SqlParameterSourceUtils.createBatch(sqlParametersMap.toArray());
-        namedParameterJdbcTemplate.batchUpdate(insertMovieGenreSQL, sqlParameters);
-
-        for (Country country : movie.getCountries()) {
-            fillSqlParameters.put("movieId", Integer.valueOf(generatedMovieId.getKey().toString()));
-            sqlParametersMap.add(fillSqlParameters);
-            fillSqlParameters.put("countryId", country.getId());
-            sqlParametersMap.add(fillSqlParameters);
-        }
-        sqlParameters = SqlParameterSourceUtils.createBatch(sqlParametersMap.toArray());
-        namedParameterJdbcTemplate.batchUpdate(insertMovieCountrySQL, sqlParameters);
     }
 
 

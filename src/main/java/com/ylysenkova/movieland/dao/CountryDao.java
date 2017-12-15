@@ -14,4 +14,6 @@ public interface CountryDao {
     List<Country> getAll();
 
     void removeCountryMovieLink(Movie movie);
+
+    void editAddCountry(Movie movie);
 }

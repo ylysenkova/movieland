@@ -12,12 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Repository(value = "jdbcCountryDao")
 public class JdbcCountryDao implements CountryDao{
@@ -38,6 +37,8 @@ public class JdbcCountryDao implements CountryDao{
     private String getAllCountriesSQL;
     @Autowired
     private String removeLinkCountryMovieSQL;
+    @Autowired
+    private String insertMovieCountrySQL;
 
 
     @Override
@@ -105,6 +106,21 @@ public class JdbcCountryDao implements CountryDao{
         namedParameterJdbcTemplate.update(removeLinkCountryMovieSQL, sqlParameterSource);
 
         logger.info("Link between Country and Movie was removed.");
+    }
+
+    @Override
+    public void editAddCountry(Movie movie) {
+        removeCountryMovieLink(movie);
+        List<Map<String, Integer>> sqlParametersMap = new ArrayList<>();
+        Map<String, Integer> fillSqlParameters = new HashMap<>();
+        for (Country country : movie.getCountries()) {
+            fillSqlParameters.put("movieId", movie.getId());
+            sqlParametersMap.add(fillSqlParameters);
+            fillSqlParameters.put("countryId", country.getId());
+            sqlParametersMap.add(fillSqlParameters);
+        }
+        SqlParameterSource[] sqlParameters = SqlParameterSourceUtils.createBatch(sqlParametersMap.toArray());
+        namedParameterJdbcTemplate.batchUpdate(insertMovieCountrySQL, sqlParameters);
     }
 
 }
