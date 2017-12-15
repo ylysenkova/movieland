@@ -35,6 +35,8 @@ public class JdbcGenreDao implements GenreDao {
     private String getAllGenres;
     @Autowired
     private String getGenreByThreeMovieId;
+    @Autowired
+    private String getGenreByMovieId;
 
     @Override
     public List<Genre> getAll() {
@@ -45,7 +47,7 @@ public class JdbcGenreDao implements GenreDao {
     }
 
     @Override
-    public void enrichMovieWithGenres(List<Movie> movieList) {
+    public void enrichMoviesWithGenres(List<Movie> movieList) {
         logger.debug("Enrichment movies with genres is started.");
 
         Set<Integer> movieIds = new HashSet<>();
@@ -68,5 +70,24 @@ public class JdbcGenreDao implements GenreDao {
             }
             movie.setGenres(genreList);
         }
+    }
+
+    public void enrichMovieWithGenres(Movie movie) {
+        logger.debug("Enrichment movies with genres is started.");
+
+        int movieId = movie.getId();
+        MapSqlParameterSource sqlParameterSource = new MapSqlParameterSource();
+        sqlParameterSource.addValue("movieId", movieId);
+
+        List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByMovieId, sqlParameterSource, movieGenreMapper);
+
+            List<Genre> genreList = new ArrayList<>();
+
+            for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
+                if (movie.getId() == movieGenreMap.getKey()) {
+                    genreList.add(movieGenreMap.getValue());
+                }
+            }
+            movie.setGenres(genreList);
     }
 }

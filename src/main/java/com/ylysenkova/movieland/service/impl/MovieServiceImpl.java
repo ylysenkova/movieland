@@ -34,8 +34,8 @@ public class MovieServiceImpl implements MovieService {
     public List<Movie> getThreeMovies() {
         List<Movie> enrichedMovie = new ArrayList<>();
         enrichedMovie.addAll(movieDao.getThreeMovies(movieDao.getThreeMovieIds()));
-        genreService.enrichMovieWithGenres(enrichedMovie);
-        countryService.enrichMovieWithCountries(enrichedMovie);
+        genreService.enrichMoviesWithGenres(enrichedMovie);
+        countryService.enrichMoviesWithCountries(enrichedMovie);
         return enrichedMovie;
     }
 
@@ -46,13 +46,11 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie getMovieById(int movieId) {
         Movie movieForEnrichment = movieDao.getMovieById(movieId);
-        List<Movie> enrichedMovieWithReview = new ArrayList<>();
         reviewService.enrichMovieWithReview(movieForEnrichment);
-        enrichedMovieWithReview.add(movieForEnrichment);
-        genreService.enrichMovieWithGenres(enrichedMovieWithReview);
-        countryService.enrichMovieWithCountries(enrichedMovieWithReview);
+        genreService.enrichMovieWithGenres(movieForEnrichment);
+        countryService.enrichMovieWithCountries(movieForEnrichment);
 
-        return enrichedMovieWithReview.get(0);
+        return movieForEnrichment;
     }
 
     public List<Movie> getAllSorted(String field, Sorting direction) {

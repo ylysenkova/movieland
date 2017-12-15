@@ -11,7 +11,7 @@ public class MovieResponseByGenre {
     private String nameNative;
     private int yearOfRelease;
     private double rating;
-    private BigDecimal price;
+    private double price;
     private String picturePath;
 
     public MovieResponseByGenre() {
@@ -67,11 +67,11 @@ public class MovieResponseByGenre {
         this.rating = rating;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
