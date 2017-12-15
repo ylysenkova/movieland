@@ -77,4 +77,20 @@
         <constructor-arg value="select id, name from country;"/>
     </bean>
 
+    <bean id="insertMovie" class="java.lang.String">
+        <constructor-arg value="insert into movie (name_russian, name_native, year_of_release, description, rating, price, picture_path) values (:nameRussian, :nameNative, :yearOfRelease, :description, :rating, :price, :picturePath);"/>
+    </bean>
+
+    <bean id="insertMovieCountry" class="java.lang.String">
+        <constructor-arg value="insert into movie_country(movie_id, country_id) values(:movieId, :countryId);"/>
+    </bean>
+
+    <bean id="insertMovieGenre" class="java.lang.String">
+        <constructor-arg value="insert into movie_genre (movie_id, genre_id) values (:movieId, :genreId);"/>
+    </bean>
+
+    <bean id="updateMovie" class="java.lang.String">
+        <constructor-arg value="update movie set name_russian =:nameRussian, name_native =:nameNative, year_of_release =:yearOfRelease, description=:description, rating=:rating, price=:price, picture_path=:picturePath where id =:movieId;"/>
+    </bean>
+
 </beans>

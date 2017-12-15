@@ -16,6 +16,7 @@ public class Token {
     public User getUser() {
         return user;
     }
+
     public LocalDateTime getExpiredTime() {
         return expiredTime;
     }

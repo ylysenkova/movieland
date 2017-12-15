@@ -1,9 +1,14 @@
-package com.ylysenkova.movieland.model;
+package com.ylysenkova.movieland.web.dto.request;
 
-import java.math.BigDecimal;
+
+import com.ylysenkova.movieland.model.Country;
+import com.ylysenkova.movieland.model.Genre;
+import com.ylysenkova.movieland.model.Movie;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Movie {
+public class SaveMovieRequest {
 
     private int id;
     private String nameRussian;
@@ -13,24 +18,27 @@ public class Movie {
     private double rating;
     private double price;
     private String picturePath;
-    private List<Country> countries;
-    private List<Genre> genres;
-    private List<Review> reviews;
+    private List<Integer> countries;
+    private List<Integer> genres;
 
-
-    public Movie() {
+    public SaveMovieRequest() {
     }
 
-    public Movie(int id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public SaveMovieRequest(Movie movie) {
+        this.id = movie.getId();
+        this.nameRussian = movie.getNameRussian();
+        this.nameNative = movie.getNameNative();
+        this.yearOfRelease = movie.getYearOfRelease();
+        this.description = movie.getDescription();
+        this.rating = movie.getRating();
+        this.price = movie.getPrice();
+        this.picturePath = movie.getPicturePath();
+        for (Country country : movie.getCountries()) {
+            this.countries.add(country.getId());
+        }
+        for (Genre genre : movie.getGenres()) {
+            this.genres.add(genre.getId());
+        }
     }
 
     public int getId() {
@@ -65,6 +73,14 @@ public class Movie {
         this.yearOfRelease = yearOfRelease;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public double getRating() {
         return rating;
     }
@@ -89,35 +105,27 @@ public class Movie {
         this.picturePath = picturePath;
     }
 
-    public List<Country> getCountries() {
+    public List<Integer> getCountries() {
         return countries;
     }
 
-    public void setCountries(List<Country> countries) {
+    public void setCountries(List<Integer> countries) {
         this.countries = countries;
     }
 
-    public List<Genre> getGenres() {
+    public List<Integer> getGenres() {
         return genres;
     }
 
-    public void setGenres(List<Genre> genres) {
+    public void setGenres(List<Integer> genres) {
         this.genres = genres;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
     }
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", nameRussian='" + nameRussian + '\'' +
+        return "SaveMovieRequest{" +
+                "id='" + id + '\'' +
+                "nameRussian='" + nameRussian + '\'' +
                 ", nameNative='" + nameNative + '\'' +
                 ", yearOfRelease=" + yearOfRelease +
                 ", description='" + description + '\'' +
@@ -126,7 +134,6 @@ public class Movie {
                 ", picturePath='" + picturePath + '\'' +
                 ", countries=" + countries +
                 ", genres=" + genres +
-                ", reviews=" + reviews +
                 '}';
     }
 }

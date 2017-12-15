@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,8 @@ public class MovieServiceImpl implements MovieService {
     private CountryService countryService;
     @Autowired
     private ReviewService reviewService;
+    @Autowired
+    private ParallelEnrichmentService parallelEnrichmentService;
 
     @Override
     public List<Movie> getAll() {
@@ -54,10 +57,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public Movie getMovieById(int movieId) {
         Movie movieForEnrichment = movieDao.getMovieById(movieId);
-        reviewService.enrichMovieWithReview(movieForEnrichment);
-        genreService.enrichMovieWithGenres(movieForEnrichment);
-        countryService.enrichMovieWithCountries(movieForEnrichment);
-
+        parallelEnrichmentService.parallelEnrichment(movieForEnrichment);
         return movieForEnrichment;
     }
 
@@ -68,6 +68,20 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<Movie> getMoviesByGenreSorted(int genreId, String field, Sorting direction) {
         return movieDao.getMoviesByGenreSorted(genreId, field, direction);
+    }
+
+    @Transactional
+    @Override
+    public void addMovie(Movie movie) {
+        movieDao.addMovie(movie);
+
+    }
+
+    @Transactional
+    @Override
+    public void editMovie(Movie movie) {
+        logger.info("Service editMovie is started");
+        movieDao.editMovie(movie);
     }
 
 }

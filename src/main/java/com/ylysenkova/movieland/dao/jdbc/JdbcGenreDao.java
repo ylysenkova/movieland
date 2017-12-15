@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class JdbcGenreDao implements GenreDao {
         logger.debug("Method getAll returned = {}", genres);
         return genres;
     }
+
 
     @Override
     public void enrichMoviesWithGenres(List<Movie> movieList) {
@@ -81,13 +83,13 @@ public class JdbcGenreDao implements GenreDao {
 
         List<Pair<Integer, Genre>> genreMapList = namedParameterJdbcTemplate.query(getGenreByMovieId, sqlParameterSource, movieGenreMapper);
 
-            List<Genre> genreList = new ArrayList<>();
+        List<Genre> genreList = new ArrayList<>();
 
-            for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
-                if (movie.getId() == movieGenreMap.getKey()) {
-                    genreList.add(movieGenreMap.getValue());
-                }
+        for (Pair<Integer, Genre> movieGenreMap : genreMapList) {
+            if (movie.getId() == movieGenreMap.getKey()) {
+                genreList.add(movieGenreMap.getValue());
             }
-            movie.setGenres(genreList);
+        }
+        movie.setGenres(genreList);
     }
 }

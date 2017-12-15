@@ -16,7 +16,7 @@ public interface AuthenticationService {
 
     User getUserByUuid(UUID uuid);
 
-    boolean isAlive (UUID uuid);
+    boolean isAlive(UUID uuid);
 
     void logout(UUID uuid);
 }
